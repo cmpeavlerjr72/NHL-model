@@ -84,3 +84,18 @@ Decision, for each season (all free, read-only, polite crawl):
 
 Reason: Lane F1/F2/F3 hunt, `docs/ops/lines_hunt_F{1,2,3}_2026-10-15.md` (2a28c22, e3d1190, ece8f09). PM spot-check: ESPN core sample 2025-01-15 shows ML open -170/+145, close -185/+155, total 6.5 -> 5.5.
 Status: ADOPTED. Supersedes the "no free 2024-25 source" finding in INV-19. D7 (no paid odds) stands.
+
+## D11 (2026-10-15): Ruling on the ESPN core ingest and the DRatings cross-check (INV-23)
+
+The pre-set cross-check (`docs/tests/lines_crosscheck_espn_dratings_2026-10-15.md`, 112 games of 2024-25) returned:
+
+- **Moneyline close: PASS.** Median no-vig difference 0.0057, max 0.027. ESPN BET moneyline open and close is the primary 2024-25 and 2023-24 moneyline source.
+- **Puck line: consistent.** 96.4% identical lines. Use ESPN BET.
+- **Total line: FAIL**, and the result stands as recorded. Only 54.5% of lines are identical, and every miss is exactly 0.5 goal, with ESPN BET's price moving to match (over priced around -131 when its line is 0.5 lower, around +109 when 0.5 higher). ESPN BET chooses a different main total than the 10-book consensus; it is not a data error. Ruling:
+  - ESPN BET totals are graded only as their own market, at their posted line and price (L9). They are never used as "the" consensus total line, and never for CLV against another book's line.
+  - The consensus total line for 2024-25 comes from the full DRatings pull (INV-24).
+  - A price-adjusted agreement test (no-vig P(over) at a common line) is pre-registered as INV-25 before any total CLV is read. The "-68" mean over price in the equal-line bucket is not a valid American price and must be explained in INV-25.
+- **2023-24 non-ESPN-BET books:** Bet365, Titanbets, Unibet and DraftKings close moneylines (and some Betfair, SugarHouse and PointsBet rows) have both sides at plus money (sums 0.80-0.98). Their close equals current, and they are incoherent as two-way moneylines. They are excluded (`close_ml_vig_ok=False`). The usable multi-book 2023-24 moneyline consensus is about 4 book families.
+- Two 2023-24 playoff games have no pregame item. They are excluded from market grading.
+
+Status: ADOPTED. Evidence: 55f86d6.

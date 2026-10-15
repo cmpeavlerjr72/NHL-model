@@ -26,5 +26,6 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-13 | Odds API purchase decision | P1 | DEFERRED | user | D7: revisit after Control engine |
 | INV-21 | Control R2: extend edge-hit grids (lambda, w, goalie kappa, rest ridge); a dependence family allowing negative correlation / excess ties | P1 | DEFERRED | | D9 |
 | INV-22 | P2 kickoff: event-engine GameState + strength-state/penalty sub-model spec (Opus worker, engine core) | P2 | OPEN | PM | next session |
-| INV-23 | Lines ingest: ESPN core 2023-24 + 2024-25 (pregame item only) -> `data/processed/lines_*`; DRatings parser + cross-check | P1 | ASSIGNED(G) | Sonnet | brief `docs/briefs/lane_G_lines_ingest_2026-10-15.md` |
-| INV-24 | SBRO 2021-23 + DRatings full pulls | P1 | OPEN | | after INV-23 cross-check passes |
+| INV-23 | Lines ingest: ESPN core 2023-24 + 2024-25 (pregame item only); DRatings cross-check | P1 | CLOSED | Sonnet | PROOF: 2,798 events, 0 failures, 1,592 live items dropped, `lines_espn_core_v1.parquet` (55f86d6). Cross-check ML PASS, PL 96.4%, total FAIL (54.5%), ruled in D11 |
+| INV-24 | SBRO 2021-23 + full DRatings pull 2021-25 (consensus total line source) | P1 | OPEN | | D10/D11; about 70 min/season at 3 s/request, run unattended |
+| INV-25 | Price-adjusted totals agreement test ESPN BET vs DRatings (no-vig P(over) at a common line); explain the '-68' mean price | P1 | OPEN | | pre-register before any totals CLV (D11) |

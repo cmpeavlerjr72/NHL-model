@@ -18,14 +18,17 @@ PM-owned. Newest block first.
 | D8 | Forward loggers; backtests labelled "oracle goalie" |
 | D9 | Control A0 is the yardstick; the gates it fails are the event engine's bar |
 
+**Late-session add (16:47-17:20):** deep lines hunt (F1/F2 Sonnet, F3 Opus). Free open/close lines now exist for every season (D10). The ESPN core 2023-25 ingest is done (D11). The ML cross-check vs DRatings passes; totals differ by ESPN BET's choice of main line, so DRatings is the consensus total source.
+
 **Needs you**
 - Keep Windows logged in during game days so `NHL-Model-live-log` runs (09:00-23:30, every 30 min).
 - Later, for INV-19: decide on a fold-2 (2024-25) closing-line source once the market scorecard matters.
 
 **Open items, in order**
 1. INV-22: P2 kickoff in a FRESH PM session. Spec GameState and the strength-state/penalty sub-model, with an Opus worker for the engine core.
-2. INV-16: schedule the weekly resumable `pull_games.py`, which re-tries the shift-chart gaps.
-3. INV-21: Control R2 (deferred).
+2. INV-24: full DRatings + SBRO pulls, run unattended (about 70 min/season), then INV-25.
+3. INV-16: schedule the weekly resumable `pull_games.py`, which re-tries the shift-chart gaps.
+4. INV-21: Control R2 (deferred).
 
 **Worker incidents (disclosed)**
 - Lane A: one audit run hung (missing `__main__` guard); the worker killed only its own process tree. The blocked-shot owner was mis-assigned at first and rebuilt before the audit.
