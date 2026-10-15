@@ -100,6 +100,10 @@ def main():
     print(f"[{dt.datetime.now():%H:%M:%S}] request={name} commit={commit[:10]} types={types} ami={ami}")
     if a.dry_run:
         print("dry run; user-data bytes:", len(ud)); return
+    try:  # clear a stale marker from an earlier run of the same name
+        HfApi(token=tok).delete_file(f"results/aws/{name}/_done.json", repo_id=HF_REPO, repo_type="dataset")
+    except Exception:
+        pass
     iid = itype = None
     for t in types:
         try:
