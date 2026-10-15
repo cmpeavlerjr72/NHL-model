@@ -1,4 +1,4 @@
-﻿"""Grade any sim output (docs/ops/sim_output_schema.md) against G1-G9 (docs/gates.yaml).
+"""Grade any sim output (docs/ops/sim_output_schema.md) against G1-G9 (docs/gates.yaml).
 
     eval_gates.py --results results/<tag> --season 20242025 [--out docs/tests/gates_<tag>_<date>.md]
 
@@ -14,7 +14,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from nhl_sim.data.load import load_reference  # noqa: E402
-from nhl_sim.eval.gates import evaluate, load_sim_output, load_tolerances, real_games  # noqa: E402
+from nhl_sim.eval import g1 as G1  # noqa: E402
+from nhl_sim.eval.gates import _gate_status, evaluate, load_sim_output, load_tolerances, real_games  # noqa: E402
 
 
 def fmt(v):
@@ -48,7 +49,19 @@ def main(argv=None):
     if miss:
         print(f"WARNING: sim lacks {len(miss)} real games of the season; graded on the overlap")
     real = real[real.game_id.isin(sim.game_id)]
-    res = evaluate(sim, real, tg, load_tolerances(a.gates_config), a.segment)
+    tol = load_tolerances(a.gates_config)
+    res = evaluate(sim, real, tg, tol, a.segment)
+    st_path = Path(a.results) / "strength_toi.parquet"
+    if st_path.exists():   # G1 from event-level output (sim_output_schema.md strength_toi extension)
+        st = pd.read_parquet(st_path)
+        rf = G1.real_frame(a.season)
+        rf = rf[rf.game_id.isin(real.game_id)]
+        if a.segment != "all":
+            gt_ = 2 if a.segment == "RS" else 3
+            rf = rf[rf.game_type == gt_]
+        st = st[st.game_id.isin(rf.game_id)]
+        checks = G1.evaluate(st, rf, tol, len(rf), int(tol["min_cell_n"]))
+        res["G1"] = dict(status=_gate_status([c for c in checks if c["status"] != "NO-TOLERANCE"]), checks=checks)
     tag = Path(a.results).name
     out = Path(a.out) if a.out else Path("docs/tests") / f"gates_{tag}_{date.today().isoformat()}.md"
     out.parent.mkdir(parents=True, exist_ok=True)

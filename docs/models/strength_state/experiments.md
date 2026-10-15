@@ -84,3 +84,12 @@ At every level the multi-level rule requires, for the fold-2 winner and runner-u
 ### Results
 
 (append below this line)
+
+#### SS-R1 results (Lane H, 2026-10-15; full report `docs/tests/strength_state_ss_r1_2026-10-15.md`)
+
+- Engine mechanics: unit-tested (`tests/engine/`). Fold-1 replay over 4,201 games: gap-aware agreement 99.993%, strict carry-forward 98.13%. 99.65% of the strict misses fall inside ambiguous event gaps of the event-sampled pbp code. Rule gaps fixed: consecutive service by one player, the OT hold applying only to an outnumbered team, and expire-before-events timing.
+- Row construction: the first build used run-relative 60 s chunks, which leaked row length into the H3 clock. It was replaced by fixed-minute-grid cuts before any fold-2 number existed.
+- Frozen on fold 1: w = 0.7, prior strength 1800 (grid corner); H3 num_leaves 7, min_data_in_leaf 800, 490 rounds.
+- Fold 2, LL/game vs H0: H1 +0.052 (SE 0.010), H2 +0.510 (0.032), H3 +0.932 (0.038). H3 vs H2: +0.422 (0.032). Seed floor 0.0067. Every arm beats every simpler arm. **Offline winner H3.** Type: T1 minus T0 +0.046 (SE 0.012), **T1.**
+- G1 at 200 seeds (stub goals): H3 passes every toleranced overall cell. PP opps per team-game 2.733 vs 2.584 (+0.149, tol 0.15); the 50-seed slice gave +0.156. The RS segment FAILS (+0.166). 3v3 TOI, EN TOI and the share of minors ended by a PP goal are STUB-DEPENDENT. H2 passes overall and on RS (+0.101 / +0.119). **Literal rule: H3 selected, provisional.**
+- Findings (not decided here): (1) season-level drift, with every arm over-predicting 2024-25 by about 10%; (2) delayed-penalty reverse causality, where about 80% of the 6.4% of events in the goalie-pulled state follow a delayed-penalty signal and the sim never visits that state; (3) the G1 PP pass is a partial cancellation of (1) and (2). Recommended next experiment: SS-R2.

@@ -8,3 +8,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | control | OPEN | TESTING | R1 run and graded: winner A0, fails G5/G6/G7/G9 (bar for event engine); see docs/tests/control_r1_2026-10-15.md | (this commit) |
 | 2026-10-15 | control | TESTING | CONFIRMED-INCUMBENT (yardstick A0) | D9; docs/tests/control_r1_2026-10-15.md | (this commit) |
 | 2026-10-15 | strength_state | - | OPEN | SS-R1 pre-registered in strength_state/experiments.md | (this commit) |
+| 2026-10-15 | strength_state | OPEN | TESTING | SS-R1 run: offline H3/T1; G1 overall pass is compensated (level drift vs missing EN-state events); see docs/tests/strength_state_ss_r1_2026-10-15.md | (this commit) |
