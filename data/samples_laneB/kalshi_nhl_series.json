@@ -1,0 +1,4003 @@
+[
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWHOSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWHOSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL1PBTTS",
+  "title": "NHL Both Teams to Score in 1st Period"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "the National Hockey League",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLTEAMTOTAL",
+  "title": "NHL Team Goals Scored During Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLFIRSTGOAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLFIRSTGOAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:14:10.229686Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXWOMHOCKEYFIRSTGOAL",
+  "title": "Winter Olympics Hockey First Goal"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/TOPDRAFT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/TOPDRAFT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLDRAFTTOP",
+  "title": "Pro Hockey Top Pick"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSEASONPPTS",
+  "title": "Season Player Points"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPTS",
+  "title": "Pro Hockey Points"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLHOCKEY.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLHOCKEY.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLOT",
+  "title": "NHL Overtime"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/SERIESTOTALGAMES.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/SERIESTOTALGAMES.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESGAMES",
+  "title": "NHL Series Total Games"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYSPREADS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYSPREADS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL1PSPREAD",
+  "title": "1st Period Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/SERIESOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/SERIESOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T15:31:42.955443Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESSCORE",
+  "title": "NHL Series Exact Score"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYOVERTIME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYOVERTIME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL2OT",
+  "title": "NHL Double Overtime"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.282771Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "IIHF",
+    "url": "https://www.iihf.com/en/events/2026/wm"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXIIHFGAME",
+  "title": "IIHF Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLSAVES.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLSAVES.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSAVES",
+  "title": "Pro Hockey Saves"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLANYGOAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLANYGOAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLANYGOAL",
+  "title": "Pro Hockey Goalscorer"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLADAMS",
+  "title": "NHL Jack Adams Award"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.4063Z",
+  "settlement_sources": [
+   {
+    "name": "SHL",
+    "url": "https://www.shl.se/shl-in-english"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXSHL",
+  "title": "SHL Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T14:41:20.112346Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIES",
+  "title": "NHL Series Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T14:41:19.860265Z",
+  "settlement_sources": [
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   },
+   {
+    "name": "AP",
+    "url": "https://apnews.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL4NATIONS",
+  "title": "4 nations face off"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLFIRSTGOAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLFIRSTGOAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:14:10.229686Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXWOMHOCKEYFGOAL",
+  "title": "Winter Olympics Hockey First Goal"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.218797Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL1P",
+  "title": "NHL 1st Period Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/WOLYMPICSACHIEVE.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/WOLYMPICSACHIEVE.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:14:10.229686Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOHOCKEY",
+  "title": "Winter Olympics Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.241735Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLGAME",
+  "title": "NHL Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYSPREADS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYSPREADS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscoreusa.com/hockey/"
+   },
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOMHOCKEYSPREAD",
+  "title": "Winter Olympics Men's Hockey Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLSERIESOVERTIME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLSERIESOVERTIME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESOT",
+  "title": "NHL Series Overtime"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLANYGOAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLANYGOAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:14:10.229686Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXWOMHOCKEYGOAL",
+  "title": "Olympic Hockey Goalscorer"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLMETROPOLITAN",
+  "title": "NHL Metropolitan Division Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYSPREADS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYSPREADS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL2PSPREAD",
+  "title": "2nd Period Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.929843Z",
+  "settlement_sources": [
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   },
+   {
+    "name": "Swiss NL",
+    "url": "https://www.nl.hockey/en-int/page/home"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXKHL",
+  "title": "KHL Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/SPORTAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/SPORTAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLMVP",
+  "title": "NHL Hart Memorial Trophy Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ATHLETENEXTTEAM.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ATHLETENEXTTEAM.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLNEXTTEAM",
+  "title": "NHL Next Team"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   },
+   {
+    "name": "National Hockey League",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLLINDSAY",
+  "title": "NHL Ted Lindsay Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T14:41:20.750703Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLOVERTIME",
+  "title": "NHL Overtime"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYTOTALS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYTOTALS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL3PTOTAL",
+  "title": "3rd Period Total"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLEAST",
+  "title": "Eastern Conference Championship"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYSPREADS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYSPREADS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSPREAD",
+  "title": "NHL Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLWEST",
+  "title": "Western Conference Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.618252Z",
+  "settlement_sources": [
+   {
+    "name": "Liiga",
+    "url": "https://www.liiga.fi/en"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXLIIGA",
+  "title": "Liiga Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T14:41:19.748716Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOWHOCKEY",
+  "title": "Winter Olympics Women's Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.225879Z",
+  "settlement_sources": [
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   },
+   {
+    "name": "Champions Hockey League",
+    "url": "https://www.chl.hockey/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXEUCHLGAME",
+  "title": "Champions League Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.233384Z",
+  "settlement_sources": [
+   {
+    "name": "AHL",
+    "url": "https://theahl.com/stats/daily-schedule/2026-1-14?league=4&season=90&division=-1"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXAHLGAME",
+  "title": "AHL Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYTOTALS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYTOTALS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscoreusa.com/hockey/"
+   },
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOMHOCKEYTOTAL",
+  "title": "Winter Olympics Men's Hockey Goal Total"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWHOSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWHOSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL2PBTTS",
+  "title": "NHL Both Teams to Score in 2nd Period"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLSERIESTOTAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLSERIESTOTAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESTOTALGOAL",
+  "title": "NHL Series Total Goals"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.652183Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXAHL",
+  "title": "AHL Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/TEAMINGAME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/TEAMINGAME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "the league or association governing ",
+    "url": "https://kalshi.com/"
+   },
+   {
+    "name": "NBC Sports",
+    "url": "https://www.nbcsports.com"
+   },
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "the Associated Press",
+    "url": "https://apnews.com/"
+   },
+   {
+    "name": "Reuters",
+    "url": "https://www.reuters.com"
+   },
+   {
+    "name": "Bloomberg News",
+    "url": "https://www.bloomberg.com"
+   },
+   {
+    "name": "The New York Times",
+    "url": "https://www.nytimes.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXTEAMSINSC",
+  "title": "Teams in Stanley Cup"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSAVE",
+  "title": "Goaltender Saves"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/WOLYMPICSEVENTFINISH.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/WOLYMPICSEVENTFINISH.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:14:10.229686Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   }
+  ],
+  "tags": [
+   "Olympics"
+  ],
+  "ticker": "KXWO-HOCKEY",
+  "title": "Winter Olympics Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYTOTALS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYTOTALS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:07:31.71984Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL1PTOTAL",
+  "title": "NHL 1st Period Total"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLNORRIS",
+  "title": "NHL James Norris Memorial Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/SPORTSROLE.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/SPORTSROLE.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "New York Times",
+    "url": "https://www.nytimes.com/"
+   },
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLNEXTGM",
+  "title": "Next NHL GM"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/DRAFTPICK.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/DRAFTPICK.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLDRAFTPICK",
+  "title": "Pro Hockey Draft Pick"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:16:20.612653Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLFIRSTGOAL",
+  "title": "NHL First Goal"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NBAALLSTAR.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NBAALLSTAR.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL1STTEAM",
+  "title": "All NHL First Team"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.257731Z",
+  "settlement_sources": [
+   {
+    "name": "Kalshi using information originating from the NCAA",
+    "url": "https://www.ncaa.com/sports/icehockey-men/d1"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNCAAHGAME",
+  "title": "College Hockey Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "the Winter Olympics 2026",
+    "url": "https://www.olympics.com/en/milano-cortina-2026"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOMHOCKEYMVP",
+  "title": "Men's Winter Olympics Hockey MVP"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NCAAHOCKEY.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NCAAHOCKEY.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "Kalshi using information originating from the NCAA",
+    "url": "https://www.ncaa.com/sports/icehockey-men/d1"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNCAAHOCKEYGAME",
+  "title": "College Hockey Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEY.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEY.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNCAAHOCKEY",
+  "title": "College Hockey National Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.323267Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL3P",
+  "title": "NHL 3rd Period Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.642831Z",
+  "settlement_sources": [
+   {
+    "name": "Czech Extraliga",
+    "url": "https://www.hokej.cz/tipsport-extraliga"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXELH",
+  "title": "ELH Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLAST",
+  "title": "Pro Hockey Assists"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:48:44.086811Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLGOAL",
+  "title": "NHL Goalscorer"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/WINSTREAKTEAM.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/WINSTREAKTEAM.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:13:22.437741Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   },
+   {
+    "name": "National Hockey League",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLWSTREAK",
+  "title": "Longest NHL win streak in regular season"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 3,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:09:12.634072Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "the Basketball Governing League",
+    "url": "https://www.nba.com/"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Basketball"
+  ],
+  "ticker": "KXNBANHL",
+  "title": "NBA + NHL Champion Combo"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYTOTALS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYTOTALS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:48:44.086811Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLTOTAL",
+  "title": "NHL Total Goals"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/CITYSPORTSEXPAND.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/CITYSPORTSEXPAND.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:07:31.71984Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLEXPANSION",
+  "title": "NHL Expansion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:05:52.316685Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL2P",
+  "title": "NHL 2nd Period Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/WINTOTAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/WINTOTAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLWINS",
+  "title": "NHL wins "
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWHOSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWHOSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL3PBTTS",
+  "title": "NHL Both Teams to Score in 3rd Period"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLF10G",
+  "title": "NHL Goal in First 10 Minutes"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/SERIESCOMEBACK.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/SERIESCOMEBACK.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL30COMEBACK",
+  "title": "NHL 3-0 Series Comeback"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLRICHARD",
+  "title": "NHL Maurice \"Rocket\" Richard Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYTOTALS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYTOTALS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL2PTOTAL",
+  "title": "2nd Period Total"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPSEASONGOALS",
+  "title": "Player Goals Scored in Season"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLHART",
+  "title": "NHL Hart Memorial Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NEXTTEAM.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NEXTTEAM.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   },
+   {
+    "name": "AP",
+    "url": "https://apnews.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNEXTTEAMNHL",
+  "title": "Next Team NHL"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPACIFIC",
+  "title": "NHL Pacific Division Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLCALDER",
+  "title": "NHL Calder Memorial Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.309524Z",
+  "settlement_sources": [
+   {
+    "name": "Czech Extraliga",
+    "url": "https://www.hokej.cz/tipsport-extraliga"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/hockey/czech-republic/extraliga/#/K0tmQWEr/standings/overall/"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey/tournament/czech-republic/extraliga/237#id:76489"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXELHGAME",
+  "title": "ELH Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.248679Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey",
+   "Olympics"
+  ],
+  "ticker": "KXWOMHOCKEY",
+  "title": "Winter Olympics Men's Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.193415Z",
+  "settlement_sources": [
+   {
+    "name": "Liiga",
+    "url": "https://www.liiga.fi/en"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/hockey/finland/liiga/#/SCI7qRwB/standings/overall/"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey/tournament/finland/liiga/134#id:76515"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXLIIGAGAME",
+  "title": "Liiga Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/TEAMRECORDS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/TEAMRECORDS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:07:31.71984Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   },
+   {
+    "name": "National Hockey League",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": null,
+  "ticker": "KXNHLRECORDWORST",
+  "title": "Worst NHL Record"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/CONNSMYTHE.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/CONNSMYTHE.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXCONNSMYTHE",
+  "title": "Conn Smythe trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLPLAYOFF.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLPLAYOFF.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPLAYOFF",
+  "title": "Playoff Qualifier"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.719165Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXDEL",
+  "title": "DEL Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYENTITYSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYENTITYSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSEASONGOALS",
+  "title": "Player to score X Goals in Season"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NBASERIESTOTAL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NBASERIESTOTAL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESTOTALGOALS",
+  "title": "NHL Series Total Goals"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTSUNSTRUCTURED.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTSUNSTRUCTURED.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXIIHFCHAMP",
+  "title": "IIHF World Championship winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/TITLE.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic_with_maker_fees",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   },
+   {
+    "name": "AP",
+    "url": "https://apnews.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL",
+  "title": "Stanley Cup"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/WINMARGIN.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/WINMARGIN.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSERIESSPREAD",
+  "title": "NHL Series Game Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLSEASONPOINTS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLSEASONPOINTS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLSEASONPTS",
+  "title": "NHL Season Point Totals"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ENTITYOUTCOME.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ENTITYOUTCOME.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:09:12.946614Z",
+  "settlement_sources": [
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/"
+   },
+   {
+    "name": "Swiss NL",
+    "url": "https://www.nl.hockey/en-int/page/home"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNL",
+  "title": "National League Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEY.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEY.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "Kalshi using information originating from the NCAA",
+    "url": "https://www.ncaa.com/sports/icehockey-men/d1"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://espn.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNCAAH",
+  "title": "College Hockey National Champion"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.210744Z",
+  "settlement_sources": [
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/hockey/switzerland/national-league/#/YwJVrFRr/"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey/tournament/switzerland/national-league-a/128#id:76908"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNLGAME",
+  "title": "National League Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/RETIRESPORT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/RETIRESPORT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:00:30.718899Z",
+  "settlement_sources": [
+   {
+    "name": "Fox Sports",
+    "url": "https://foxsports.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "AP",
+    "url": "https://apnews.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLRETIRE",
+  "title": "NHL Retire"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLATLANTIC",
+  "title": "NHL Atlantic Division Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPRES",
+  "title": "NHL President's Trophy Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLVEZINA",
+  "title": "NHL Vezina Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.292753Z",
+  "settlement_sources": [
+   {
+    "name": "DEL",
+    "url": "https://www.penny-del.org/startseite"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/ice-hockey/tournament/germany/del/225#id:77522"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscore.com/hockey/germany/del/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXDELGAME",
+  "title": "DEL Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLAWARD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLAWARD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLROSS",
+  "title": "NHL Art Ross Trophy"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEY.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEY.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T08:02:28.792359Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "IIHF",
+    "url": "https://www.iihf.com/en/events/2026/wm"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXIIHF",
+  "title": "Who will win IIHF championship?"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYSPREADS.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYSPREADS.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T07:57:20.40478Z",
+  "settlement_sources": [
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHL3PSPREAD",
+  "title": "NHL 3rd Period Spread"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHLPLAYOFFWHOSTAT.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHLPLAYOFFWHOSTAT.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLPLAYOFFGOALS",
+  "title": "NHL Playoffs Goal Leader (by Round)"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/CANADACUP.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/CANADACUP.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXCANADACUP",
+  "title": "Canada winning Stanley Cup"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.274811Z",
+  "settlement_sources": [
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/tournament/ice-hockey/sweden/shl/261#id:75679"
+   },
+   {
+    "name": "Flashscore",
+    "url": "https://www.flashscoreusa.com/hockey/sweden/shl/#/CMVpiF7T/standings/overall/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXSHLGAME",
+  "title": "SHL Game"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/ACHIEVEMENTSUNSTRUCTURED.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/ACHIEVEMENTSUNSTRUCTURED.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "The Wall Street Journal",
+    "url": "https://www.wsj.com/"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLFINALSEXACT",
+  "title": "NHL Championship Series Score"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/NHL.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/NHL.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "annual",
+  "last_updated_ts": "2026-10-15T08:08:18.921908Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   },
+   {
+    "name": "Fox Sports",
+    "url": "https://www.foxsports.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXNHLCENTRAL",
+  "title": "NHL Central Division Winner"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "one_off",
+  "last_updated_ts": "2026-10-15T18:05:52.301331Z",
+  "settlement_sources": [
+   {
+    "name": "NHL",
+    "url": "https://www.nhl.com"
+   },
+   {
+    "name": "ESPN",
+    "url": "https://www.espn.com/"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXINTHOCKEY",
+  "title": "International Hockey"
+ },
+ {
+  "additional_prohibitions": [
+   "Current players, coaches, and staff of the league, association, or organization(s) governing the event. For college leagues/associations specifically, or where otherwise appropriate (as identified by the Exchange), this applies to current players/coaches/staff of the specific sport in <event> rather than the league/association as a whole (e.g., if the Division I Gonzaga Men\u2019s Basketball Team is playing in <event>, this prohibition will restrict trades by current players/coaches/staff on NCAA Basketball, rather than all current players/coaches/staff in any NCAA sport).",
+   "Paid employees of the league and league participants",
+   "Owners of teams and the league",
+   "and household members and immediate family of all above",
+   "Persons who are employed by any of the Source Agencies are not permitted to trade on the Contract.",
+   "Persons who hold any material, non-public information on the Underlying are not permitted to trade on the Contract."
+  ],
+  "categories": [
+   "Sports"
+  ],
+  "category": "Sports",
+  "contract_terms_url": "https://assets.kalshi.com/contract_terms/HOCKEYWINNINGINPERIOD.pdf",
+  "contract_url": "https://assets.kalshi.com/regulatory/product-certifications/HOCKEYWINNINGINPERIOD.pdf",
+  "exchange_index": 0,
+  "fee_multiplier": 1,
+  "fee_type": "quadratic",
+  "frequency": "custom",
+  "last_updated_ts": "2026-10-15T18:05:52.329833Z",
+  "settlement_sources": [
+   {
+    "name": "KHL",
+    "url": "https://en.khl.ru/?utm_referrer=https%3a%2f%2fwww.google.com%2f"
+   },
+   {
+    "name": "Sofascore",
+    "url": "https://www.sofascore.com/tournament/ice-hockey/russia/khl/268#id:77998"
+   }
+  ],
+  "tags": [
+   "Hockey"
+  ],
+  "ticker": "KXKHLGAME",
+  "title": "KHL Game"
+ }
+]
