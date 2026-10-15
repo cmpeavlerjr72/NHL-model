@@ -20,9 +20,11 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-8 | Starting-goalie pregame source with timestamps (honest backtests) | P0/P4 | CLOSED | Sonnet | PROOF: Daily Faceoff logger live, 22 rows/run with status + fetched_at (8d552ba); history = oracle goalie (D8) |
 | INV-10 | Forward loggers (goalies, Kalshi, DKeX) + Task Scheduler | P0 | CLOSED | Sonnet | PROOF: `NHL-Model-live-log` fired 15:00 and 15:30, LastTaskResult 0; ~3.9k Kalshi + ~5.85k DKeX rows/run; 5 tests pass (8d552ba). PM removed user email from User-Agents |
 | INV-11 | ESPN pickcenter coverage, all weeks 2023-24 and 2024-25 | P0 | CLOSED | Sonnet | PROOF: `docs/tests/espn_lines_coverage_2026-10-15.md` (f56669e): 2023-24 single Unibet line 100%, 2024-25 0%, 2025-26 DK open+close 71% |
-| INV-19 | Historical closes for 2024-25 (fold 2) | P1 | OPEN | | ESPN empty; Kalshi /historical starts 2025-04; market scorecard on fold 2 needs a source or D7 revisit |
+| INV-19 | Historical closes for 2024-25 (fold 2) | P1 | CLOSED | Sonnet x2 + Opus | PROOF: ESPN core `/odds` 2024-25 open+close ML/PL/total on 73/73 sampled games (2a28c22), PM spot-check; DRatings second source (ece8f09); D10 |
 | INV-20 | Kalshi logger rows include futures series; filter to game/prop markets downstream | P4 | OPEN | | |
 | INV-12 | Kalshi fee schedule verification (fee PDF 429'd) | P4 | OPEN | | CFB figure 0.07*P*(1-P) unverified for NHL |
 | INV-13 | Odds API purchase decision | P1 | DEFERRED | user | D7: revisit after Control engine |
 | INV-21 | Control R2: extend edge-hit grids (lambda, w, goalie kappa, rest ridge); a dependence family allowing negative correlation / excess ties | P1 | DEFERRED | | D9 |
 | INV-22 | P2 kickoff: event-engine GameState + strength-state/penalty sub-model spec (Opus worker, engine core) | P2 | OPEN | PM | next session |
+| INV-23 | Lines ingest: ESPN core 2023-24 + 2024-25 (pregame item only) -> `data/processed/lines_*`; DRatings parser + cross-check | P1 | ASSIGNED(G) | Sonnet | brief `docs/briefs/lane_G_lines_ingest_2026-10-15.md` |
+| INV-24 | SBRO 2021-23 + DRatings full pulls | P1 | OPEN | | after INV-23 cross-check passes |
