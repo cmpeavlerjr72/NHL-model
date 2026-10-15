@@ -93,3 +93,44 @@ At every level the multi-level rule requires, for the fold-2 winner and runner-u
 - Fold 2, LL/game vs H0: H1 +0.052 (SE 0.010), H2 +0.510 (0.032), H3 +0.932 (0.038). H3 vs H2: +0.422 (0.032). Seed floor 0.0067. Every arm beats every simpler arm. **Offline winner H3.** Type: T1 minus T0 +0.046 (SE 0.012), **T1.**
 - G1 at 200 seeds (stub goals): H3 passes every toleranced overall cell. PP opps per team-game 2.733 vs 2.584 (+0.149, tol 0.15); the 50-seed slice gave +0.156. The RS segment FAILS (+0.166). 3v3 TOI, EN TOI and the share of minors ended by a PP goal are STUB-DEPENDENT. H2 passes overall and on RS (+0.101 / +0.119). **Literal rule: H3 selected, provisional.**
 - Findings (not decided here): (1) season-level drift, with every arm over-predicting 2024-25 by about 10%; (2) delayed-penalty reverse causality, where about 80% of the 6.4% of events in the goalie-pulled state follow a delayed-penalty signal and the sim never visits that state; (3) the G1 PP pass is a partial cancellation of (1) and (2). Recommended next experiment: SS-R2.
+
+---
+
+## PM ruling on SS-R1 (2026-10-15, D12)
+
+- The literal rule selects H3 (hazard) and T1 (type). **H3 is NOT confirmed.** Its G1 PP-opportunity pass (2.733 vs 2.584, tolerance 0.15, inside by 0.001) comes from two known biases partly cancelling. Season-level drift over-predicts by about 10%, and the delayed-penalty goalie-pull states the sim never visits under-predicts by about 6%. A passing aggregate over a biased sub-model is a failure (CLAUDE.md, bottom-up rule). The regular-season-only cell also fails for H3 (2.730 vs 2.564).
+- H3's offline lead over H2 (+0.42 log-lik per game, 13 SE) is recorded as real. H3 stays the arm to beat in SS-R2.
+- Mechanics replay: the gap-aware measure (99.993%) is the one the 99% bar binds, because seconds inside undatable pbp gaps cannot be scored. The strict carry-forward measure (98.13%) is reported alongside it from now on.
+- Status: strength_state stays TESTING. No arm ships.
+
+## SS-R2: penalty hazard with the two SS-R1 biases fixed (pre-registered 2026-10-15 by the PM, before any run)
+
+### Changes vs SS-R1 (shared by every arm; everything not listed here is unchanged)
+
+1. **Delayed-penalty state.** When a penalty-taking event follows a delayed-penalty signal against the same team, its pre-event state is the state at the signal, before the pull. The seconds between the signal and the whistle are hazard exposure in that pre-signal state, not 'other'. Penalties that occur with a goalie pulled and no preceding signal (a trailing-team pull) keep state 'other'; they are counted and reported, and they wait for the stage-8 pull model. The delayed-penalty 6v5 itself is an engine mechanic, logged as a stage-8 candidate, not part of SS-R2.
+2. **In-season league level.** Every arm (including H0, which becomes H0' = H0 cells x this level) gets an as-of league penalty level for the current season:
+   - log(league rate in the season to date before this game date, gamma-shrunk toward the previous season's final rate with strength k in league-games), as a log ratio vs the previous season's final rate;
+   - k is tuned on fold 1 only, from {50, 150, 450}, then frozen;
+   - season dummies are removed from H1-H3 (they cannot extrapolate to a held-out season), and H0' keeps the strength-state x period-type cells.
+3. **Rating grid extended** because the SS-R1 choice sat on the corner: w in {0.7, 0.85, 1.0} and prior strength in {1800, 5400} team-minutes, tuned on fold 1 only.
+
+### Arms
+
+H0', H1', H2', H3' = SS-R1's H0-H3 with changes 1-3. The H3' hyperparameter grid is the SS-R1 one. T1 carries over unchanged; it is not re-raced.
+
+### Metric, folds, noise floor, decision rule
+
+Identical to SS-R1 (fold 2 selects; game-block bootstrap with 1,000 resamples; H3' seed retrain; > 2 SE and > the seed floor; simpler wins ties; complexity H0' < H1' < H2' < H3').
+
+### Bias checks (pre-registered; every one must pass before the closed-loop result is read as clean)
+
+- **Season level:** predicted / actual penalty-taking events per team-game on fold 2, overall and by month. Pass is within +/-3% overall, with no month beyond +/-8% at n >= 100 games (smaller months UNDERPOWERED).
+- **State 'other':** the share of fold-2 events in state 'other' after change 1 is reported, and the sim-vs-real shortfall attributable to it is <= 1.5%.
+
+### Closed-loop G1
+
+As in SS-R1: 200 seeds, the same labelled goal stub, and the 100- vs 200-seed stability check. G1 cells are reported **separately for the regular season and the playoffs** (like-for-like rule), as well as overall. A pass requires the regular-season cells to pass. Playoff cells under min_cell_n are UNDERPOWERED. Per-team PP opportunities are reported with n and labelled.
+
+### Results
+
+(append below this line)

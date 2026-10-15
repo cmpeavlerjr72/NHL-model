@@ -99,3 +99,16 @@ The pre-set cross-check (`docs/tests/lines_crosscheck_espn_dratings_2026-10-15.m
 - Two 2023-24 playoff games have no pregame item. They are excluded from market grading.
 
 Status: ADOPTED. Evidence: 55f86d6.
+
+## D12 (2026-10-15): SS-R1 ruling; strength-state stays TESTING, SS-R2 pre-registered
+
+Lane H (1b3abfe) built the GameState engine core (rulebook penalty mechanics; the replay agrees with pbp on 99.993% of seconds, gap-aware) and ran SS-R1.
+
+- The literal rule picks H3 (LightGBM hazard) and T1. H3 beats H2 by +0.42 log-lik/game (13 SE).
+- H3's G1 PP-opportunity pass is compensated: season-level drift is +10%, missing delayed-penalty states are about -6%, and the regular-season cell fails. Under the bottom-up rule that is not a pass, so no arm ships.
+- SS-R2 is pre-registered in `docs/models/strength_state/experiments.md`. It moves the pre-event state to the delayed-penalty signal, adds an as-of in-season league level, and extends the rating grid. It also adds pre-registered bias checks, and its G1 is split by regular season vs playoffs.
+- The gap-aware replay measure binds the 99% bar; the strict measure is always reported.
+
+Reason: `docs/tests/strength_state_ss_r1_2026-10-15.md`.
+Status: ADOPTED. SS-R2 runs on the next day's Opus slot (INV-26).
+
