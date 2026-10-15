@@ -8,7 +8,7 @@ PM-owned. Newest block first.
 
 **Done with you**
 - GitHub remote `cmpeavlerjr72/NHL-model` connected, pushed and verified.
-- HF dataset `mvpeav/nhl-sim-data` created (private); AWS approved (default $60/session cap until you say otherwise).
+- HF dataset `mvpeav/nhl-sim-data` created (private); AWS approved, $60/session cap confirmed.
 
 **Needs you**
 - Possibly a fresh DraftKings Predictions HAR capture (Lane B will say which pages).

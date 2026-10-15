@@ -28,6 +28,6 @@ Status: ADOPTED; historical source OPEN.
 
 ## D5 (2026-10-15): Hosting and compute
 
-Decision: GitHub `cmpeavlerjr72/NHL-model` (main); private HF dataset `mvpeav/nhl-sim-data` for bulk data; AWS spot compute approved, operator-lane only, per-session spend cap (default $60).
+Decision: GitHub `cmpeavlerjr72/NHL-model` (main); private HF dataset `mvpeav/nhl-sim-data` for bulk data; AWS spot compute approved, operator-lane only, per-session spend cap $60 (user-confirmed).
 Reason: user approval 2026-10-15.
 Status: ADOPTED.

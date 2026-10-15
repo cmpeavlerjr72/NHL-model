@@ -79,7 +79,7 @@ The objective is profitability against lines (Kalshi, DraftKings Predictions exc
 
 ## Compute
 
-Home box first. AWS is approved by the user (2026-10-15) for heavy sim / sweep runs: only a designated OPERATOR lane touches AWS, via box requests in `docs/ops/box_queue/`; spot instances only; every instance is terminated and the termination verified with `describe-instances` before the lane reports; spend cap per session is set in that session's worker rules (default $60 unless the user says otherwise). Never leave an instance idle.
+Home box first. AWS is approved by the user (2026-10-15) for heavy sim / sweep runs: only a designated OPERATOR lane touches AWS, via box requests in `docs/ops/box_queue/`; spot instances only; every instance is terminated and the termination verified with `describe-instances` before the lane reports; spend cap per session is set in that session's worker rules ($60, confirmed by the user 2026-10-15). Never leave an instance idle.
 
 ## Git practice
 
