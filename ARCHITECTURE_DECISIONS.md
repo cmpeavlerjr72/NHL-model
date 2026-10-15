@@ -25,3 +25,9 @@ Status: ADOPTED (shape only; components OPEN).
 Decision: grade against Kalshi, DKeX and historical closing lines (source TBD by audit). Read-only; no agent places orders.
 Reason: user answer 2026-10-15.
 Status: ADOPTED; historical source OPEN.
+
+## D5 (2026-10-15): Hosting and compute
+
+Decision: GitHub `cmpeavlerjr72/NHL-model` (main); private HF dataset `mvpeav/nhl-sim-data` for bulk data; AWS spot compute approved, operator-lane only, per-session spend cap (default $60).
+Reason: user approval 2026-10-15.
+Status: ADOPTED.

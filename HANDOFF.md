@@ -6,9 +6,11 @@ PM-owned. Newest block first.
 
 **Headline:** NHL-Model scaffolded with the CBB rules (Opus PM, no Fable). Two P0 lanes running: data ingest/audit and lines-source audit.
 
+**Done with you**
+- GitHub remote `cmpeavlerjr72/NHL-model` connected, pushed and verified.
+- HF dataset `mvpeav/nhl-sim-data` created (private); AWS approved (default $60/session cap until you say otherwise).
+
 **Needs you**
-- Create a private GitHub repo (e.g. `cmpeavlerjr72/NHL-Model`) or approve me adding the remote once you do. `gh` is not installed on this box.
-- Approve an HF dataset name for bulk data (suggest `mvpeav/nhl-sim-data`).
 - Possibly a fresh DraftKings Predictions HAR capture (Lane B will say which pages).
 
 **Open items, in order**

@@ -18,7 +18,8 @@ Never end your turn while a job you started is still running. Wait in-turn with 
 
 - Home box, shared. Your core cap is in your brief.
 - Network pulls: at most 4 concurrent requests to any one host, retry with exponential backoff, cache raw responses to disk, never re-fetch a cached file. Identify a polite User-Agent.
-- No AWS this session.
+- AWS: approved by the user, but no lane this session is the operator; no lane launches instances today.
+- Commit AND push (`git push origin main`), then verify with `git ls-remote origin main`. If a push is rejected because another lane pushed first, do not force or rebase: report it to the PM.
 - No orders, trades, or account actions on Kalshi, DraftKings, or any venue. Read-only market data only. Never print or commit credentials.
 
 ## Git on the shared tree

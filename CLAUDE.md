@@ -75,11 +75,15 @@ The objective is profitability against lines (Kalshi, DraftKings Predictions exc
 
 - Primary source: the public NHL API (`api-web.nhle.com`, `api.nhle.com/stats`): schedule, play-by-play with shot coordinates, shift charts, boxscores, rosters. Poll politely (rate limit, retry with backoff, cache raw JSON; never re-fetch what is on disk).
 - Third-party data (MoneyPuck, Natural Stat Trick, Evolving-Hockey, etc.) only after its terms are checked and recorded in `docs/ops/data_sources.md`. Do not scrape sites whose terms or robots forbid it.
-- Bulk data (`data/raw`, `results`) is gitignored. `data/processed` and `data/reference` are tracked except model-artifact directories over 20 MB.
+- Bulk data (`data/raw`, `results`) is gitignored and synced to the private HF dataset `mvpeav/nhl-sim-data` (token: `HF_TOKEN` in the gitignored `.env`, never printed or committed). `data/processed` and `data/reference` are tracked except model-artifact directories over 20 MB, which sync to HF.
+
+## Compute
+
+Home box first. AWS is approved by the user (2026-10-15) for heavy sim / sweep runs: only a designated OPERATOR lane touches AWS, via box requests in `docs/ops/box_queue/`; spot instances only; every instance is terminated and the termination verified with `describe-instances` before the lane reports; spend cap per session is set in that session's worker rules (default $60 unless the user says otherwise). Never leave an instance idle.
 
 ## Git practice
 
-Local repo, branch `main` (GitHub remote pending user setup). Commit after every meaningful change; once a remote exists, push and verify with `git ls-remote origin main`. Tracked files stay under 50MB. Never commit `.env` or any API key.
+Remote: `https://github.com/cmpeavlerjr72/NHL-model.git`, branch `main`. Commit and push after every meaningful change. Verify pushes with `git ls-remote origin main` (quiet pushes can swallow rejections). Tracked files stay under 50MB. Never commit `.env` or any API key.
 
 ## Scripts convention
 
