@@ -1,0 +1,97 @@
+{
+ "dr_ml_home_nv_offshore": {
+  "n": 112,
+  "mean": 0.007079936244872932,
+  "median": 0.005730243409187097,
+  "p95": 0.018038048885697266,
+  "max": 0.026950723699992962,
+  "argmax": "1fd049c7-1d3b-551a-ac66-d5b4dfcb7846"
+ },
+ "dr_ml_home_nv_vegas": {
+  "n": 112,
+  "mean": 0.007079936244872932,
+  "median": 0.005730243409187097,
+  "p95": 0.018038048885697266,
+  "max": 0.026950723699992962,
+  "argmax": "1fd049c7-1d3b-551a-ac66-d5b4dfcb7846"
+ },
+ "dr_ml_home_bookmed_offshore": {
+  "n": 112,
+  "mean": 0.005858000836385027,
+  "median": 0.00432620642610787,
+  "p95": 0.016018551731760075,
+  "max": 0.026657248462564898,
+  "argmax": "1fd049c7-1d3b-551a-ac66-d5b4dfcb7846"
+ },
+ "dr_ml_home_bookmed_vegas": {
+  "n": 112,
+  "mean": 0.006024457983409698,
+  "median": 0.004446100308240386,
+  "p95": 0.01651027119179329,
+  "max": 0.03085487242100038,
+  "argmax": "b4aee6ce-3ff1-56bd-ba2f-5c617a76db23"
+ },
+ "dr_ml_home_open_nv_offshore_vs_espn_open": {
+  "n": 112,
+  "mean": 0.01196887660273302,
+  "median": 0.008269488593539598,
+  "max": 0.20239880059970017
+ },
+ "dr_ml_home_open_nv_vegas_vs_espn_open": {
+  "n": 112,
+  "mean": 0.009368717040028082,
+  "median": 0.0087522555722164,
+  "max": 0.05585578846980932
+ },
+ "dr_total_close_mode==espn_total_close": {
+  "n": 112,
+  "pct_identical": 54.46428571428571
+ },
+ "dr_total_close_novig_col==espn_total_close": {
+  "n": 112,
+  "pct_identical": 55.35714285714286
+ },
+ "dr_total_open==espn_total_open": {
+  "n": 112,
+  "pct_identical": 56.25
+ },
+ "dr_pl_away_close_mode==espn_pl_away_close": {
+  "n": 112,
+  "pct_identical": 96.42857142857143
+ },
+ "dr_pl_away_open==espn_pl_away_open": {
+  "n": 112,
+  "pct_identical": 95.53571428571429
+ },
+ "total_close_diff_counts(dr-espn)": {
+  "-0.5": 26,
+  "0.0": 61,
+  "0.5": 25
+ },
+ "total_close_by_month_identical_pct": {
+  "2024-10": 37.5,
+  "2024-11": 37.5,
+  "2024-12": 37.5,
+  "2025-01": 52.2,
+  "2025-02": 66.7,
+  "2025-03": 68.8,
+  "2025-04": 87.5
+ },
+ "total_open_diff_counts(dr-espn)": {
+  "-0.5": 22,
+  "0.0": 63,
+  "0.5": 25,
+  "1.0": 2
+ },
+ "total_n_where_dr_open_eq_espn_open_but_close_differs": 15,
+ "n_games_by_month": {
+  "2024-10": 16,
+  "2024-11": 16,
+  "2024-12": 16,
+  "2025-01": 23,
+  "2025-02": 9,
+  "2025-03": 16,
+  "2025-04": 16
+ },
+ "n_regular_season": 112
+}
