@@ -18,7 +18,7 @@ import requests
 ROOT = Path(__file__).resolve().parents[3]
 RAW_DIR = ROOT / "data" / "raw" / "live"
 LOG_DIR = ROOT / "logs" / "live"
-UA = "NHL-Model-research/0.1 (personal read-only research; contact cmpeavlerjr@gmail.com)"
+UA = "NHL-Model-research/0.1 (personal read-only research)"
 
 
 def utc_now() -> dt.datetime:

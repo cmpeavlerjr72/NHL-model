@@ -17,8 +17,10 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-5 | Gate reference builder + eval_gates.py | P1 | CLOSED | PM | merged into INV-17 |
 | INV-6 | Control engine (team-rate yardstick) bake-off | P1 | ASSIGNED(E) | Sonnet | spec `docs/models/control/experiments.md` R1; brief `docs/briefs/lane_E_foundations_control_2026-10-15.md` |
 | INV-7 | Seed-noise study | P1 | OPEN | | after Control |
-| INV-8 | Starting-goalie pregame source with timestamps (honest backtests) | P0/P4 | ASSIGNED(D) | Sonnet | Daily Faceoff forward logger; history = oracle goalie (D8) |
-| INV-10 | Forward loggers (goalies, Kalshi, DKeX) + Task Scheduler | P0 | ASSIGNED(D) | Sonnet | brief `docs/briefs/lane_D_loggers_2026-10-15.md` |
-| INV-11 | ESPN pickcenter coverage, all weeks 2023-24 and 2024-25 | P0 | ASSIGNED(D) | Sonnet | chained in lane D |
+| INV-8 | Starting-goalie pregame source with timestamps (honest backtests) | P0/P4 | CLOSED | Sonnet | PROOF: Daily Faceoff logger live, 22 rows/run with status + fetched_at (8d552ba); history = oracle goalie (D8) |
+| INV-10 | Forward loggers (goalies, Kalshi, DKeX) + Task Scheduler | P0 | CLOSED | Sonnet | PROOF: `NHL-Model-live-log` fired 15:00 and 15:30, LastTaskResult 0; ~3.9k Kalshi + ~5.85k DKeX rows/run; 5 tests pass (8d552ba). PM removed user email from User-Agents |
+| INV-11 | ESPN pickcenter coverage, all weeks 2023-24 and 2024-25 | P0 | CLOSED | Sonnet | PROOF: `docs/tests/espn_lines_coverage_2026-10-15.md` (f56669e): 2023-24 single Unibet line 100%, 2024-25 0%, 2025-26 DK open+close 71% |
+| INV-19 | Historical closes for 2024-25 (fold 2) | P1 | OPEN | | ESPN empty; Kalshi /historical starts 2025-04; market scorecard on fold 2 needs a source or D7 revisit |
+| INV-20 | Kalshi logger rows include futures series; filter to game/prop markets downstream | P4 | OPEN | | |
 | INV-12 | Kalshi fee schedule verification (fee PDF 429'd) | P4 | OPEN | | CFB figure 0.07*P*(1-P) unverified for NHL |
 | INV-13 | Odds API purchase decision | P1 | DEFERRED | user | D7: revisit after Control engine |

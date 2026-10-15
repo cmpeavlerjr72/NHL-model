@@ -19,3 +19,4 @@ PM-owned. Newest block first.
 
 **Worker incidents (disclosed)**
 - none yet
+- PM (2026-10-15): two worker-written User-Agent strings contained the user's email and were sent to NHL API, Daily Faceoff, Kalshi and DKeX for about 1.5 hours. Removed; the string is generic now. The old string remains in git history (private repo).

@@ -16,7 +16,7 @@ import requests
 
 WEB = "https://api-web.nhle.com/v1"
 STATS = "https://api.nhle.com/stats/rest/en"
-USER_AGENT = "NHL-Model research client (cmpeavlerjr@gmail.com)"
+USER_AGENT = "NHL-Model-research/0.1 (personal read-only research)"
 MAX_CONCURRENT = 4
 FINAL_STATES = {"OFF", "FINAL"}
 
