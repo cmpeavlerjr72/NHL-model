@@ -18,7 +18,11 @@ Never end your turn while a job you started is still running. Wait in-turn with 
 
 - Home box, shared. Your core cap is in your brief.
 - Network pulls: at most 4 concurrent requests to any one host, retry with exponential backoff, cache raw responses to disk, never re-fetch a cached file. Identify a polite User-Agent.
-- AWS: approved by the user, but no lane this session is the operator; no lane launches instances today.
+- AWS (updated 18:55 by the PM, at the user's request to use AWS rather than wait on local runs): **Lane O is the only OPERATOR** and the only lane that touches AWS (us-east-1, spot only, $60 session cap, every instance terminated and the termination verified with `describe-instances` before Lane O reports).
+  - Any other lane whose measured 3-minute slice projects a step longer than **15 minutes** locally does NOT wait on the home box. It writes a box request `docs/ops/box_queue/req_<lane>_<step>_<HHMM>.md` with: the exact command, the git commit to run at, the inputs (they must be on HF or in git), the outputs and where they go back (HF path), and the cores/RAM needed.
+  - Lane O picks the request up and runs it.
+  - The requesting lane continues with whatever does not depend on the result, then waits in-turn for `docs/ops/box_queue/done_<same name>.md`.
+  - Rate-limited network pulls are NOT moved to AWS. Spreading a polite crawl over more IPs is not polite.
 - Commit AND push (`git push origin main`), then verify with `git ls-remote origin main`. If a push is rejected because another lane pushed first, do not force or rebase: report it to the PM.
 - No orders, trades, or account actions on Kalshi, DraftKings, or any venue. Read-only market data only. Never print or commit credentials.
 
