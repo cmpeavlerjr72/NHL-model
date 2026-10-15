@@ -9,7 +9,7 @@ Read in order: `PROJECT_STATUS.md` -> `docs/FRAMEWORK_PLAN.md` -> `ARCHITECTURE_
 
 Opus 5.5 is the project manager (the main session): writes specs and briefs, reviews bake-off tables and gate reports, makes decisions, writes the decision docs. Worker agents do the reading, coding, and analysis:
 
-- **Opus**: engine core and cascade sub-models only. At most 1 Opus worker per day.
+- **Opus**: only where the work needs it: engine core, cascade sub-model design and bake-offs, subtle diagnosis (leaks, compensating biases, rule gaps). There is no fixed daily cap (user, 2026-10-15). Every Opus brief states in one line why Sonnet would not do as well; if that line can't be written, the brief goes to Sonnet.
 - **Sonnet**: pipelines, ingest, graders, bake-off runners, audits.
 - **Haiku**: lookups and summaries.
 
