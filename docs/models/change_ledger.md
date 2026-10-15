@@ -9,4 +9,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | control | TESTING | CONFIRMED-INCUMBENT (yardstick A0) | D9; docs/tests/control_r1_2026-10-15.md | (this commit) |
 | 2026-10-15 | strength_state | - | OPEN | SS-R1 pre-registered in strength_state/experiments.md | (this commit) |
 | 2026-10-15 | strength_state | OPEN | TESTING | SS-R1 run: offline H3/T1; G1 overall pass is compensated (level drift vs missing EN-state events); see docs/tests/strength_state_ss_r1_2026-10-15.md | (this commit) |
-| 2026-10-15 | strength_state | OPEN | TESTING | SS-R1 run (1b3abfe); H3 not confirmed, SS-R2 pre-registered (D12) | (this commit) |
+| 2026-10-15 | strength_state | TESTING | TESTING (ruling) | D12: H3 not confirmed (compensated G1); SS-R2 pre-registered | 2b7ebe0 |
