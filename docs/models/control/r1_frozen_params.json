@@ -1,0 +1,89 @@
+{
+ "tuned_on": "fold 1 (test 2023-24) only; dispersion fits on fold-1 train (2022-23 as-of)",
+ "grid_lambda_w": [
+  {
+   "lambda": 1,
+   "w": 0.5,
+   "fold1_A0_logscore": -3.908470640018517
+  },
+  {
+   "lambda": 1,
+   "w": 0.7,
+   "fold1_A0_logscore": -3.9087461319258505
+  },
+  {
+   "lambda": 1,
+   "w": 0.9,
+   "fold1_A0_logscore": -3.909202107723153
+  },
+  {
+   "lambda": 3,
+   "w": 0.5,
+   "fold1_A0_logscore": -3.8846605940761556
+  },
+  {
+   "lambda": 3,
+   "w": 0.7,
+   "fold1_A0_logscore": -3.8849072668136126
+  },
+  {
+   "lambda": 3,
+   "w": 0.9,
+   "fold1_A0_logscore": -3.885390070767645
+  },
+  {
+   "lambda": 10,
+   "w": 0.5,
+   "fold1_A0_logscore": -3.861316937350865
+  },
+  {
+   "lambda": 10,
+   "w": 0.7,
+   "fold1_A0_logscore": -3.861563010268778
+  },
+  {
+   "lambda": 10,
+   "w": 0.9,
+   "fold1_A0_logscore": -3.862230584342656
+  },
+  {
+   "lambda": 30,
+   "w": 0.5,
+   "fold1_A0_logscore": -3.8442851519066084
+  },
+  {
+   "lambda": 30,
+   "w": 0.7,
+   "fold1_A0_logscore": -3.8444532154962268
+  },
+  {
+   "lambda": 30,
+   "w": 0.9,
+   "fold1_A0_logscore": -3.845491462627668
+  }
+ ],
+ "lambda": 30,
+ "w": 0.5,
+ "grid_kappa": [
+  {
+   "kappa": 250,
+   "fold1_A1_logscore": -3.847303393275853
+  },
+  {
+   "kappa": 500,
+   "fold1_A1_logscore": -3.8478635619170265
+  },
+  {
+   "kappa": 1000,
+   "fold1_A1_logscore": -3.848269867683826
+  },
+  {
+   "kappa": 2000,
+   "fold1_A1_logscore": -3.848462846221928
+  }
+ ],
+ "kappa": 250,
+ "lambda3": 6.610696135189609e-05,
+ "phi_A3": 0.00010004769069174008,
+ "phi_A4": 0.00010005393043006718
+}
