@@ -6,7 +6,7 @@ Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION 
 
 | Model | Cascade stage | Status | Doc |
 |---|---|---|---|
-| control | yardstick | OPEN | - |
+| control | yardstick | OPEN (R1 pre-registered) | [model](control/model.md) |
 | strength_state | 1 | OPEN | - |
 | deployment | 2 | OPEN | - |
 | shot_attempt | 3 | OPEN | - |

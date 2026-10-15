@@ -14,7 +14,7 @@ Created 2026-10-15. Companion to `cfb-props-sim/docs/SIM_GUARDRAILS.md` and `CBB
 
 ## 2. Reference targets
 
-Targets are not typed into this document. They are built per season by `scripts/build_gate_reference.py` into `data/reference/gate_targets_{season}.parquet` from verified data, because several move year over year (scoring, PP opportunities, shot volume). The first data audit fills a summary table here.
+Targets are not typed into this document. They are built per season by `scripts/build_gate_reference.py` into `data/reference/gate_targets_{season}.parquet` from verified data, because several move year over year (scoring, PP opportunities, shot volume). Per-season reference numbers from the first audit: `docs/tests/data_audit_nhl_api_2026-10-15.md` section 5 (goals/game ex-SO 5.7-6.3 across seasons and game types; SOG/game falls 57.6 -> 47.9 over 2021-26, see LEARNINGS L13). Gates always compare like-for-like per season, never pooled.
 
 ## 3. Gates
 
