@@ -143,3 +143,40 @@ As in SS-R1: 200 seeds, the same labelled goal stub, and the 100- vs 200-seed st
 - SS-R1's H3 lead was mostly the delayed-penalty artefact: 0.27 of its 0.42 nats/game over H2 (and 0.36 of H2's 0.51 over H0) came from 'other'-state rows.
 - Bias checks: **FAIL for every arm.** Season level overall: H0' +2.4%, H1' +2.7%, H2' +2.5% PASS; H3' +3.08% FAIL. By month: January 2025 fails in every arm (+10.5% to +11.2%, n = 224 games); all other months with n >= 100 pass. 'Other' shortfall: net -0.3% to +0.1% PASS (raw share 1.54%, upper bound).
 - Closed-loop G1: **NOT RUN** (the brief bars the closed loop on an arm that fails a bias check; H3' and H2' both fail). No G1 cell has a status other than NOT RUN. Status stays TESTING.
+
+---
+
+## PM ruling on SS-R2 (2026-10-15, D13)
+
+- The result is accepted as reported. H3' wins offline (+0.084 over H2', 7 SE). Every arm fails the bias checks: January 2025 runs +10.5% to +11.2% at n = 224 games (about 4 SE), and H3' runs +3.08% overall. G1 was correctly not run. strength_state stays TESTING.
+- The 'other' check binds on the net shortfall attributable to that state, as worded, and it passes. The raw share (1.54%) is reported, not gated.
+- Grid: w = 1.0 is the natural maximum of a carry weight, not a grid defect. Prior strength 1,800 is interior across SS-R1 + SS-R2 (200 to 5,400). Only k = 50 is a true corner, and SS-R3 extends it.
+- Forking-paths guard: SS-R3 is the third fold-2-informed respec. Every SS-R3 bias check is therefore also reported on fold 1, and a fix counts only if it removes the monthly bias on fold 1 as well. If SS-R3 still fails, the PM decides between accepting an arm with its biases listed and stopping work on stage 1. No SS-R4 is pre-authorised.
+
+## SS-R3: in-season seasonality profile (pre-registered 2026-10-15 by the PM, before any run)
+
+### Change vs SS-R2 (everything else identical, incl. the T1 carry-over)
+
+- **Season-phase profile p(b).** The bins are b in {Oct, Nov, Dec, Jan, Feb, Mar, Apr (regular season), playoffs}.
+  - It is estimated from TRAINING seasons only, as the log ratio of each season's league penalty-taking rate in bin b to that same season's full-season rate, averaged across training seasons with equal weight.
+  - It enters every arm as a fixed offset.
+- **De-seasonalised level.** The as-of in-season league level from SS-R2 is computed on profile-adjusted exposure (observed count / count expected under p), so October's high rate no longer lifts the season-to-date mean.
+- k is re-tuned on fold 1 only, from {15, 50, 150}. w and the prior strength stay frozen at the SS-R2 values (1.0, 1,800).
+
+### Arms
+
+H0''-H3'' are SS-R2's H0'-H3' with the change. The SS-R2 arms are carried as the no-profile comparators; they are not refit.
+
+### Metric, noise floor, decision rule, bias checks
+
+These are identical to SS-R2. The bias checks are additionally reported on fold 1, as a diagnostic; the fold-2 checks gate. A profile arm is preferred over its SS-R2 twin only if it passes the bias checks the twin failed and its fold-2 log-likelihood is not worse by more than 2 SE.
+
+### Closed-loop G1
+
+This is the same as SS-R2, for the selected arm and the next simpler arm that passes the bias checks.
+- The engine hazard lookup takes the per-game level and profile offsets. It must be built, with a unit test that the offsets reproduce the offline predicted rate for a sample of games to within 0.5%.
+- The G1 runs may go to Lane O; otherwise they run locally.
+
+### Results
+
+(append below this line)

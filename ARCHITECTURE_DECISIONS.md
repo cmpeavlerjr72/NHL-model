@@ -112,3 +112,12 @@ Lane H (1b3abfe) built the GameState engine core (rulebook penalty mechanics; th
 Reason: `docs/tests/strength_state_ss_r1_2026-10-15.md`.
 Status: ADOPTED. SS-R2 runs on the next day's Opus slot (INV-26).
 
+## D13 (2026-10-15): SS-R2 ruling; SS-R3 seasonality profile pre-registered
+
+SS-R2 (9b14319) removed the delayed-penalty artefact. Goalie-pulled penalty rows fell from 6.36% to 1.54%, and that artefact accounted for 0.27 of H3's 0.42-nat lead over H2. H3' still wins offline. Every arm fails the pre-registered bias checks (January +11%, about 4 SE; H3' +3.08% overall), so G1 was not run. strength_state stays TESTING.
+
+- The cause is within-season seasonality, which a season-to-date level cannot see. SS-R3 adds a training-only season-phase profile and a de-seasonalised level.
+- Forking-paths guard: the SS-R3 checks are also reported on fold 1, and no SS-R4 is pre-authorised.
+- SS-R3 goes to Sonnet. It re-runs the existing pipeline with one added offset, and needs no Opus judgement (CLAUDE.md fit-for-purpose rule).
+
+Reason: `docs/tests/strength_state_ss_r2_2026-10-15.md`. Status: ADOPTED (INV-27).
