@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+    (function() {
+      var theme = localStorage.getItem('ks-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Google Fonts: JetBrains Mono for data, DM Sans for UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Font sizes + colour tokens, shared with the legacy query iframe so the
+         two surfaces cannot drift apart. See the file header for the rules. -->
+    <link rel="stylesheet" href="/legacy/assets/ks-tokens.css" />
+    <title>KillerSports</title>
+    <script type="module" crossorigin src="/assets/index-BkFA1ZGK.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Bo9uBIMP.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

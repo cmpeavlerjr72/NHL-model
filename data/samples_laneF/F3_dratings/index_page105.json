@@ -1,0 +1,418 @@
+[
+ {
+  "uuid": "68117af4-51e2-5414-8d3a-ac5671a7419d",
+  "start_utc": "2025-04-08T23:07:00Z",
+  "away_or_first": "Carolina Hurricanes",
+  "home_or_second": "Buffalo Sabres",
+  "best_offshore_ml": [
+   "-226",
+   "+205"
+  ],
+  "best_vegas_ml": [
+   "-240",
+   "+212"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+110",
+   "+1\u00bd-123"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+115",
+   "+1\u00bd-123"
+  ],
+  "final": [
+   "0",
+   "3"
+  ]
+ },
+ {
+  "uuid": "6f5ca4d2-d319-591f-8db1-d34dd801ef55",
+  "start_utc": "2025-04-08T02:37:00Z",
+  "away_or_first": "Edmonton Oilers",
+  "home_or_second": "Anaheim Ducks",
+  "best_offshore_ml": [
+   "-135",
+   "+128"
+  ],
+  "best_vegas_ml": [
+   "-128",
+   "+125"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+175",
+   "+1\u00bd-188"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+190",
+   "+1\u00bd-185"
+  ],
+  "final": [
+   "2",
+   "3"
+  ]
+ },
+ {
+  "uuid": "a92a1019-a2cb-54c9-b43a-45724658f02f",
+  "start_utc": "2025-04-08T02:37:00Z",
+  "away_or_first": "Calgary Flames",
+  "home_or_second": "San Jose Sharks",
+  "best_offshore_ml": [
+   "-220",
+   "+195"
+  ],
+  "best_vegas_ml": [
+   "-210",
+   "+200"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+120",
+   "+1\u00bd-130"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+120",
+   "+1\u00bd-135"
+  ],
+  "final": [
+   "3",
+   "2"
+  ]
+ },
+ {
+  "uuid": "e0062793-a538-586f-b420-db621862801b",
+  "start_utc": "2025-04-08T02:37:00Z",
+  "away_or_first": "Seattle Kraken",
+  "home_or_second": "Los Angeles Kings",
+  "best_offshore_ml": [
+   "+215",
+   "-240"
+  ],
+  "best_vegas_ml": [
+   "+216",
+   "-240"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-122",
+   "-1\u00bd+110"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-130",
+   "-1\u00bd+115"
+  ],
+  "final": [
+   "2",
+   "1"
+  ]
+ },
+ {
+  "uuid": "855819cc-c6a8-5c38-8f73-442fed197119",
+  "start_utc": "2025-04-07T23:37:00Z",
+  "away_or_first": "St. Louis Blues",
+  "home_or_second": "Winnipeg Jets",
+  "best_offshore_ml": [
+   "+171",
+   "-180"
+  ],
+  "best_vegas_ml": [
+   "+183",
+   "-185"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-157",
+   "-1\u00bd+147"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-155",
+   "-1\u00bd+145"
+  ],
+  "final": [
+   "1",
+   "3"
+  ]
+ },
+ {
+  "uuid": "816a6936-b69f-5cf1-81da-02f41e209f4f",
+  "start_utc": "2025-04-07T23:07:00Z",
+  "away_or_first": "Tampa Bay Lightning",
+  "home_or_second": "New York Rangers",
+  "best_offshore_ml": [
+   "-152",
+   "+136"
+  ],
+  "best_vegas_ml": [
+   "-150",
+   "+138"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+167",
+   "+1\u00bd-188"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+175",
+   "+1\u00bd-185"
+  ],
+  "final": [
+   "5",
+   "1"
+  ]
+ },
+ {
+  "uuid": "fa6267ea-e955-55fb-8806-629501193ce4",
+  "start_utc": "2025-04-07T02:07:00Z",
+  "away_or_first": "Vegas Golden Knights",
+  "home_or_second": "Vancouver Canucks",
+  "best_offshore_ml": [
+   "-170",
+   "+160"
+  ],
+  "best_vegas_ml": [
+   "-170",
+   "+162"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+145",
+   "+1\u00bd-157"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+150",
+   "+1\u00bd-160"
+  ],
+  "final": [
+   "3",
+   "2"
+  ]
+ },
+ {
+  "uuid": "356168a6-d166-5e74-a72e-6dab6aaca122",
+  "start_utc": "2025-04-06T23:07:00Z",
+  "away_or_first": "Montreal Canadiens",
+  "home_or_second": "Nashville Predators",
+  "best_offshore_ml": [
+   "-109",
+   "-102"
+  ],
+  "best_vegas_ml": [
+   "-105",
+   "-105"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-265",
+   "-1\u00bd+225"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-260",
+   "-1\u00bd+235"
+  ],
+  "final": [
+   "2",
+   "1"
+  ]
+ },
+ {
+  "uuid": "2695313e-9ad0-56bd-bc10-15d193742145",
+  "start_utc": "2025-04-06T22:07:00Z",
+  "away_or_first": "Pittsburgh Penguins",
+  "home_or_second": "Chicago Blackhawks",
+  "best_offshore_ml": [
+   "-126",
+   "+117"
+  ],
+  "best_vegas_ml": [
+   "-125",
+   "+115"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+190",
+   "+1\u00bd-207"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+185",
+   "+1\u00bd-210"
+  ],
+  "final": [
+   "1",
+   "3"
+  ]
+ },
+ {
+  "uuid": "96e5b223-fc6c-5a61-89f2-e7ed104cccf9",
+  "start_utc": "2025-04-06T22:07:00Z",
+  "away_or_first": "Boston Bruins",
+  "home_or_second": "Buffalo Sabres",
+  "best_offshore_ml": [
+   "+164",
+   "-174"
+  ],
+  "best_vegas_ml": [
+   "+175",
+   "-175"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-158",
+   "-1\u00bd+146"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-155",
+   "-1\u00bd+145"
+  ],
+  "final": [
+   "3",
+   "6"
+  ]
+ },
+ {
+  "uuid": "b45e7b0f-e72e-5e72-9a60-559d3dd7ab0b",
+  "start_utc": "2025-04-06T21:37:00Z",
+  "away_or_first": "Florida Panthers",
+  "home_or_second": "Detroit Red Wings",
+  "best_offshore_ml": [
+   "+121",
+   "-127"
+  ],
+  "best_vegas_ml": [
+   "+120",
+   "-114"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-240",
+   "-1\u00bd+220"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+240",
+   "+1\u00bd-280"
+  ],
+  "final": [
+   "1",
+   "2"
+  ]
+ },
+ {
+  "uuid": "5b416785-b383-50ee-94bf-27f23e815bb4",
+  "start_utc": "2025-04-06T21:07:00Z",
+  "away_or_first": "Columbus Blue Jackets",
+  "home_or_second": "Ottawa Senators",
+  "best_offshore_ml": [
+   "+135",
+   "-147"
+  ],
+  "best_vegas_ml": [
+   "+140",
+   "-140"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-173",
+   "-1\u00bd+160"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-175",
+   "-1\u00bd+170"
+  ],
+  "final": [
+   "0",
+   "4"
+  ]
+ },
+ {
+  "uuid": "f4c8c0a6-e9eb-5bd7-b8f6-a7ba2b663d01",
+  "start_utc": "2025-04-06T19:07:00Z",
+  "away_or_first": "Dallas Stars",
+  "home_or_second": "Minnesota Wild",
+  "best_offshore_ml": [
+   "-121",
+   "+112"
+  ],
+  "best_vegas_ml": [
+   "-128",
+   "+127"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+198",
+   "+1\u00bd-215"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+200",
+   "+1\u00bd-210"
+  ],
+  "final": [
+   "2",
+   "3"
+  ]
+ },
+ {
+  "uuid": "f24c7bd2-af7f-5fe6-8455-067916689e4c",
+  "start_utc": "2025-04-06T16:36:00Z",
+  "away_or_first": "Washington Capitals",
+  "home_or_second": "New York Islanders",
+  "best_offshore_ml": [
+   "-142",
+   "+130"
+  ],
+  "best_vegas_ml": [
+   "-139",
+   "+130"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+175",
+   "+1\u00bd-188"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+175",
+   "+1\u00bd-200"
+  ],
+  "final": [
+   "1",
+   "4"
+  ]
+ },
+ {
+  "uuid": "b43fd828-0683-5cb7-bbd0-c8d99fb15c3c",
+  "start_utc": "2025-04-06T02:07:00Z",
+  "away_or_first": "Vegas Golden Knights",
+  "home_or_second": "Calgary Flames",
+  "best_offshore_ml": [
+   "-142",
+   "+129"
+  ],
+  "best_vegas_ml": [
+   "-145",
+   "+135"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+168",
+   "+1\u00bd-184"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+175",
+   "+1\u00bd-180"
+  ],
+  "final": [
+   "3",
+   "2"
+  ]
+ },
+ {
+  "uuid": "279ffbc2-250a-510e-91a7-ecc33de2a981",
+  "start_utc": "2025-04-06T02:07:00Z",
+  "away_or_first": "Seattle Kraken",
+  "home_or_second": "San Jose Sharks",
+  "best_offshore_ml": [
+   "-159",
+   "+145"
+  ],
+  "best_vegas_ml": [
+   "-160",
+   "+155"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+152",
+   "+1\u00bd-168"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+155",
+   "+1\u00bd-160"
+  ],
+  "final": [
+   "5",
+   "1"
+  ]
+ }
+]

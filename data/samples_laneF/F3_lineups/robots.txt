@@ -1,0 +1,53 @@
+User-agent: *
+Disallow: /cgi-bin/
+Disallow: /cdn-cgi/
+Disallow: /ads.txt
+Disallow: /wp-admin/
+Disallow: /search/
+Disallow: /recommends/
+Disallow: /visit/
+Disallow: /claim/
+Disallow: /betting/go/
+Disallow: /wp-go/
+Disallow: /nba/iframe-depth-charts/
+Disallow: /mlb/iframe-depth-charts/
+Disallow: /nfl/iframe-depth-charts/
+
+Disallow: /wp-content/upgrade/
+Disallow: /wp-json/
+Disallow: /xmlrpc.php
+Disallow: /*/trackback
+Disallow: /*/comments
+Disallow: /*/feed
+Disallow: /*?replytocom
+Disallow: /*?s=
+Disallow: /*&s=
+Disallow: /*?wpmp_switcher=desktop
+
+# Block analytics/tracking parameters
+Disallow: /*?utm
+Disallow: /*&utm
+Disallow: /*?fbclid
+Disallow: /*&fbclid
+Disallow: /*?fs_match
+Disallow: /*?fs_board
+Disallow: /*?s=
+
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: SemrushBot
+Disallow: /
+User-agent: SemrushBot-SA
+Disallow: /
+User-agent: Rogerbot
+Disallow: /
+User-agent: Exabot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: Dotbot
+Disallow: /
+User-agent: Gigabot
+Disallow: /
+
+Sitemap: https://www.lineups.com/sitemap_index.xml

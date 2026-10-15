@@ -1,0 +1,418 @@
+[
+ {
+  "uuid": "c4e8a1aa-8a23-57f6-a759-2b89a0ef9fd6",
+  "start_utc": "2022-02-09T00:05:00Z",
+  "away_or_first": "New Jersey Devils",
+  "home_or_second": "Montreal Canadiens",
+  "best_offshore_ml": [
+   "-111",
+   "+101"
+  ],
+  "best_vegas_ml": [
+   "-107",
+   "+100"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+225",
+   "+1\u00bd-260"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+230",
+   "-1\u00bd+224"
+  ],
+  "final": [
+   "7",
+   "1"
+  ]
+ },
+ {
+  "uuid": "c39f3fe4-6a7d-5259-ac89-3e3b62a0ab4a",
+  "start_utc": "2022-02-08T00:05:00Z",
+  "away_or_first": "New Jersey Devils",
+  "home_or_second": "Ottawa Senators",
+  "best_offshore_ml": [
+   "+110",
+   "-121"
+  ],
+  "best_vegas_ml": [
+   "+110",
+   "-112"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-210",
+   "-1\u00bd+180"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-210",
+   "-1\u00bd+190"
+  ],
+  "final": [
+   "1",
+   "4"
+  ]
+ },
+ {
+  "uuid": "c7ef5e85-c355-5931-82be-ea005ea56fa0",
+  "start_utc": "2022-02-08T00:05:00Z",
+  "away_or_first": "Carolina Hurricanes",
+  "home_or_second": "Toronto Maple Leafs",
+  "best_offshore_ml": [
+   "+115",
+   "-125"
+  ],
+  "best_vegas_ml": [
+   "+118",
+   "-125"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-205",
+   "-1\u00bd+175"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-196",
+   "-1\u00bd+180"
+  ],
+  "final": [
+   "3",
+   "4"
+  ]
+ },
+ {
+  "uuid": "0fc22706-fa95-5e13-b01b-5a8f624f90c6",
+  "start_utc": "2022-02-03T02:35:00Z",
+  "away_or_first": "Minnesota Wild",
+  "home_or_second": "Chicago Blackhawks",
+  "best_offshore_ml": [
+   "-172",
+   "+160"
+  ],
+  "best_vegas_ml": [
+   "-165",
+   "+155"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+148",
+   "+1\u00bd-165"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+155",
+   "+1\u00bd-155"
+  ],
+  "final": [
+   "5",
+   "0"
+  ]
+ },
+ {
+  "uuid": "55eae7f4-ca78-58a6-9570-0bd8c39d79ca",
+  "start_utc": "2022-02-03T02:35:00Z",
+  "away_or_first": "Calgary Flames",
+  "home_or_second": "Utah Mammoth",
+  "best_offshore_ml": [
+   "-277",
+   "+250"
+  ],
+  "best_vegas_ml": [
+   "-266",
+   "+240"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd-115",
+   "+1\u00bd-105"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd-104",
+   "+1\u00bd-110"
+  ],
+  "final": [
+   "4",
+   "2"
+  ]
+ },
+ {
+  "uuid": "ab399c3a-4f4f-5023-8774-3d479e031ce1",
+  "start_utc": "2022-02-03T00:35:00Z",
+  "away_or_first": "Los Angeles Kings",
+  "home_or_second": "Detroit Red Wings",
+  "best_offshore_ml": [
+   "-124",
+   "+115"
+  ],
+  "best_vegas_ml": [
+   "-122",
+   "+117"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+185",
+   "+1\u00bd-210"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+189",
+   "+1\u00bd-210"
+  ],
+  "final": [
+   "5",
+   "3"
+  ]
+ },
+ {
+  "uuid": "7abd5bb2-1550-53ac-8cc8-dabba3a0d1b6",
+  "start_utc": "2022-02-03T00:05:00Z",
+  "away_or_first": "Seattle Kraken",
+  "home_or_second": "New York Islanders",
+  "best_offshore_ml": [
+   "+190",
+   "-210"
+  ],
+  "best_vegas_ml": [
+   "+187",
+   "-200"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-145",
+   "-1\u00bd+128"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-144",
+   "-1\u00bd+140"
+  ],
+  "final": [
+   "3",
+   "0"
+  ]
+ },
+ {
+  "uuid": "ed6b06dc-61a1-5acb-8df8-b0f9ad82e6e5",
+  "start_utc": "2022-02-03T00:05:00Z",
+  "away_or_first": "Edmonton Oilers",
+  "home_or_second": "Washington Capitals",
+  "best_offshore_ml": [
+   "-121",
+   "+110"
+  ],
+  "best_vegas_ml": [
+   "-120",
+   "+110"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-265",
+   "-1\u00bd+230"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+210",
+   "+1\u00bd-232"
+  ],
+  "final": [
+   "5",
+   "3"
+  ]
+ },
+ {
+  "uuid": "c47b45fb-89e7-5860-8c8d-a6157f91ca70",
+  "start_utc": "2022-02-02T03:05:00Z",
+  "away_or_first": "Buffalo Sabres",
+  "home_or_second": "Vegas Golden Knights",
+  "best_offshore_ml": [
+   "+400",
+   "-455"
+  ],
+  "best_vegas_ml": [
+   "+400",
+   "-440"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd+160",
+   "-1\u00bd-175"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd+155",
+   "-1\u00bd-165"
+  ],
+  "final": [
+   "2",
+   "5"
+  ]
+ },
+ {
+  "uuid": "604ce797-f167-5c0c-b633-07fcd2786692",
+  "start_utc": "2022-02-02T02:05:00Z",
+  "away_or_first": "Utah Mammoth",
+  "home_or_second": "Colorado Avalanche",
+  "best_offshore_ml": [
+   "+445",
+   "-510"
+  ],
+  "best_vegas_ml": [
+   "+450",
+   "-530"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd+170",
+   "-1\u00bd-190"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd+175",
+   "-1\u00bd-185"
+  ],
+  "final": [
+   "3",
+   "2"
+  ]
+ },
+ {
+  "uuid": "9a5162b6-71b7-5d38-a7c5-b84b0db4c3c3",
+  "start_utc": "2022-02-02T01:35:00Z",
+  "away_or_first": "Calgary Flames",
+  "home_or_second": "Dallas Stars",
+  "best_offshore_ml": [
+   "-123",
+   "+111"
+  ],
+  "best_vegas_ml": [
+   "-117",
+   "+109"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+200",
+   "+1\u00bd-225"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+210",
+   "+1\u00bd-230"
+  ],
+  "final": [
+   "4",
+   "3"
+  ]
+ },
+ {
+  "uuid": "626242be-18ee-5644-912e-6aec571f7ea7",
+  "start_utc": "2022-02-02T01:05:00Z",
+  "away_or_first": "Vancouver Canucks",
+  "home_or_second": "Nashville Predators",
+  "best_offshore_ml": [
+   "+165",
+   "-170"
+  ],
+  "best_vegas_ml": [
+   "+165",
+   "-170"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-155",
+   "-1\u00bd+145"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-155",
+   "-1\u00bd+150"
+  ],
+  "final": [
+   "2",
+   "4"
+  ]
+ },
+ {
+  "uuid": "0c9ddba0-ec02-598f-ba5f-04f59bf2db49",
+  "start_utc": "2022-02-02T00:35:00Z",
+  "away_or_first": "Ottawa Senators",
+  "home_or_second": "New York Islanders",
+  "best_offshore_ml": [
+   "+210",
+   "-235"
+  ],
+  "best_vegas_ml": [
+   "+205",
+   "-227"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-115",
+   "-1\u00bd+100"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-120",
+   "-1\u00bd+102"
+  ],
+  "final": [
+   "1",
+   "4"
+  ]
+ },
+ {
+  "uuid": "ab891733-3c3f-5794-a373-e347970d30e7",
+  "start_utc": "2022-02-02T00:05:00Z",
+  "away_or_first": "Winnipeg Jets",
+  "home_or_second": "Philadelphia Flyers",
+  "best_offshore_ml": [
+   "-157",
+   "+145"
+  ],
+  "best_vegas_ml": [
+   "-159",
+   "+150"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+165",
+   "+1\u00bd-185"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+165",
+   "+1\u00bd-170"
+  ],
+  "final": [
+   "1",
+   "3"
+  ]
+ },
+ {
+  "uuid": "dfb45ae2-3934-5392-bbe0-2d1e4b27a865",
+  "start_utc": "2022-02-02T00:05:00Z",
+  "away_or_first": "Seattle Kraken",
+  "home_or_second": "Boston Bruins",
+  "best_offshore_ml": [
+   "+240",
+   "-265"
+  ],
+  "best_vegas_ml": [
+   "+230",
+   "-255"
+  ],
+  "best_offshore_pl": [
+   "+1\u00bd-115",
+   "-1\u00bd-102"
+  ],
+  "best_vegas_pl": [
+   "+1\u00bd-115",
+   "-1\u00bd+107"
+  ],
+  "final": [
+   "2",
+   "3"
+  ]
+ },
+ {
+  "uuid": "39ec0729-78aa-5b5a-abcc-4a2e88229285",
+  "start_utc": "2022-02-02T00:05:00Z",
+  "away_or_first": "Florida Panthers",
+  "home_or_second": "New York Rangers",
+  "best_offshore_ml": [
+   "-149",
+   "+140"
+  ],
+  "best_vegas_ml": [
+   "-150",
+   "+145"
+  ],
+  "best_offshore_pl": [
+   "-1\u00bd+165",
+   "+1\u00bd-180"
+  ],
+  "best_vegas_pl": [
+   "-1\u00bd+165",
+   "+1\u00bd-170"
+  ],
+  "final": [
+   "2",
+   "5"
+  ]
+ }
+]

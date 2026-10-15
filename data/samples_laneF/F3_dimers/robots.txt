@@ -1,0 +1,19 @@
+User-agent: *
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+Allow: /
+Disallow: /news/preview/
+Disallow: /go/
+Disallow: /pro/finalize
+Disallow: /bet-hub/*/schedule/2020_
+Disallow: /bet-hub/*/schedule/2021_
+Disallow: /bet-hub/*/schedule/2022_
+
+User-agent: googlebot-news
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+Disallow: /
+Disallow: /news/preview/
+Disallow: /news/$
+Allow: /news/
+Allow: /*/news
+
+Sitemap: https://www.dimers.com/sitemap.xml
