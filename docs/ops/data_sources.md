@@ -18,3 +18,10 @@ One row per source. Verdicts from Lane B audit 2026-10-15 (details: `lines_sourc
 | NHL.com / `api-web.nhle.com` | schedule, pbp, shifts, boxscores (project primary) | all | NHL.com Hockeyverse ToS bars scraping and non-personal use; no published terms found for the stats API: RISK FLAGGED for PM | polite GET, cache |
 | OddsPortal | odds | | forbids automated access and commercial use. DO NOT USE | none |
 | Princeton DSS Historical Sports Odds | NHL 2008-2023 open/close ML, O/U | | access/licence unverified (bot-check page) | lead only |
+
+## Lane I additions (2026-10-15)
+
+| Source | What | Coverage | Terms verdict | Access method |
+|---|---|---|---|---|
+| SportsbookReviewsOnline NHL archive (`sportsbookreviewsonline.com/scoresoddsarchives/nhl-odds-YYYY-YY/`) | one consensus open/close moneyline, one puck line, open/close total per game, in an inline HTML table (the old xlsx download links are gone) | 2021-22 complete (1401 of 1401 incl. playoffs, to 2022-06-26); 2022-23 **truncated by the source at 2022-11-27** (342 of 1400); 2023-24 onward not published | robots.txt 2026-10-15: `User-agent: *  Disallow: /go/  Allow: /` (archive pages allowed). No ToS or licence page found for the archive; no login or bot wall. Verdict: robots-permitted, personal research use, 2 page fetches total, cached | `scripts/pull_lines_sbro.py` (3 s spacing, cached under `data/raw/sbro/`), parser `scripts/build_lines_sbro.py` |
+| DRatings completed-game pages (`dratings.com/predictor/nhl-hockey-predictions/...`) | open + per-book close ML, PL, total (5 offshore + 5 Vegas books; fewer in 2021-22), best line, no-vig close | 2019-20 to now on the site; pulled 2021-22 to 2024-25 only (2025-26 sealed, not pulled) | robots `Disallow:` empty (Lane F3); no ToS page found (`/terms/` 404). Crawl at 3 s per request start, <= 3 in flight, personal research | `scripts/pull_dratings_full.py` (scheduled task `NHL-Model-dratings-pull`), parser `src/nhl_sim/dratings.py`, builder `scripts/build_lines_dratings.py` |
