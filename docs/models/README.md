@@ -1,0 +1,17 @@
+# Models index
+
+Every sub-model gets `docs/models/<model>/{model,features,experiments}.md` per `DOCUMENTATION_STANDARD.md`. Status changes go to `change_ledger.md` in the same commit.
+
+Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION / REFUTED / CONFIRMED-INCUMBENT / OPEN / DEFERRED / BANKED.
+
+| Model | Cascade stage | Status | Doc |
+|---|---|---|---|
+| control | yardstick | OPEN | - |
+| strength_state | 1 | OPEN | - |
+| deployment | 2 | OPEN | - |
+| shot_attempt | 3 | OPEN | - |
+| shot_attributes | 4 | OPEN | - |
+| attempt_outcome | 5 | OPEN | - |
+| goal_given_sog | 6 | OPEN | - |
+| faceoff_stoppage | 7 | OPEN | - |
+| end_game (pull / OT / SO) | 8 | OPEN | - |

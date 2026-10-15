@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.har
+data/raw/*
+!data/raw/.gitkeep
+results/*
+!results/.gitkeep
+logs/*
+!logs/.gitkeep
+.claude/worktrees/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/

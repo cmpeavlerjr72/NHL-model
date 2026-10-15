@@ -1,0 +1,51 @@
+# Provisional gate tolerances -- SIM_GUARDRAILS.md section 3.
+# Placeholders until the first data audit and the seed-noise study replace them.
+# eval_gates.py reads this file at run time; change tolerances here only.
+
+min_cell_n: 300  # cells with n < 300 are UNDERPOWERED, never PASS/FAIL
+
+# G1 -- strength-state TOI (minutes per game) and PP opportunities per team-game
+g1_toi_min: 0.75
+g1_pp_opps: 0.15
+
+# G2 -- shot attempts / SOG per 60, by strength state (relative error)
+g2_rate_rel: 0.03
+
+# G3 -- xG per shot (relative error), location mix (pp)
+g3_xg_rel: 0.03
+g3_mix_pp: 1.5
+
+# G4 -- save percentage per cell (pp)
+g4_sv_pp: 0.5
+
+# G5 -- dispersion
+g5_sd_ratio_lo: 0.95
+g5_sd_ratio_hi: 1.05
+g5_corr: 0.05
+g5_ks_p: 0.10
+g5_total_cell_pp: 1.0   # |P_sim(total=k) - P_real(total=k)| per k
+
+# G6 -- home ice
+g6_win_pp: 1.5
+g6_goal_diff: 0.08
+
+# G7 -- end game
+g7_reg_tie_pp: 1.5
+g7_shootout_pp: 1.0
+g7_en_goals_per_game: 0.03
+
+# G8 -- player layer
+g8_toi_mean_min: 1.0
+g8_toi_sd_ratio_lo: 0.9
+g8_toi_sd_ratio_hi: 1.1
+g8_ks_p: 0.10
+
+# G9 -- accuracy
+g9_total_bias: 0.10
+g9_margin_bias: 0.08
+g9_slope_lo: 0.95
+g9_slope_hi: 1.05
+
+# G10 -- market leak screen
+g10_surprise_corr: 0.15
+g10_clv_agreement: 0.53
