@@ -83,8 +83,8 @@ def main():
     head = subprocess.run(["git", "ls-remote", REPO_URL, "HEAD"], capture_output=True, text=True).stdout.split()[0]
     if a.smoke:
         name = "smoke_O"
-        req = {"command": "python -m pytest -q -x 2>&1 | tail -20; mkdir -p results/_smoke; echo smoke $(date -u +%FT%TZ) > results/_smoke/smoke_out.txt",
-               "outputs": "results/_smoke/smoke_out.txt", "vcpu": "2", "max_minutes": "20", "inputs": "", "extras": "dev"}
+        req = {"command": "mkdir -p results/_smoke; python -m pytest -q > /tmp/pt.log 2>&1; RC=$?; tail -5 /tmp/pt.log; (date -u +%FT%TZ; tail -3 /tmp/pt.log) > results/_smoke/smoke_out.txt; exit $RC",
+               "outputs": "results/_smoke/smoke_out.txt", "vcpu": "2", "max_minutes": "20", "inputs": "", "extras": "sim,dev"}
     else:
         req = parse_request(a.request)
         name = re.sub(r"^req_", "", Path(a.request).stem)
