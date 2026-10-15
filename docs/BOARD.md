@@ -15,7 +15,7 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-4 | GitHub remote + HF dataset for bulk data | P0 | CLOSED | PM | PROOF: remote `cmpeavlerjr72/NHL-model` push verified via ls-remote (eb3d750); HF dataset `mvpeav/nhl-sim-data` created private=True; AWS approved (D5) |
 | INV-9 | `scripts/hf_sync_data.py` (port from CBB) for data/raw + results | P0 | ASSIGNED(PM) | Sonnet->PM | PORT DONE 147e3cd: 12 offline tests pass, live probe push/pull/delete byte-identical; remaining: PM runs first raw push after Lane A |
 | INV-5 | Gate reference builder + eval_gates.py | P1 | CLOSED | PM | merged into INV-17 |
-| INV-6 | Control engine (team-rate yardstick) bake-off spec | P1 | SPEC COMMITTED | PM | `docs/models/control/experiments.md` R1; build/run lane after INV-15/17 |
+| INV-6 | Control engine (team-rate yardstick) bake-off | P1 | ASSIGNED(E) | Sonnet | spec `docs/models/control/experiments.md` R1; brief `docs/briefs/lane_E_foundations_control_2026-10-15.md` |
 | INV-7 | Seed-noise study | P1 | OPEN | | after Control |
 | INV-8 | Starting-goalie pregame source with timestamps (honest backtests) | P0/P4 | ASSIGNED(D) | Sonnet | Daily Faceoff forward logger; history = oracle goalie (D8) |
 | INV-10 | Forward loggers (goalies, Kalshi, DKeX) + Task Scheduler | P0 | ASSIGNED(D) | Sonnet | brief `docs/briefs/lane_D_loggers_2026-10-15.md` |
