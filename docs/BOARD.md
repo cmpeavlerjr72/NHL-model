@@ -13,7 +13,7 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-18 | 2021-22 shootout typing | P0 | OPEN | | audit open item |
 | INV-3 | Lines-source audit: historical closes, Kalshi NHL, DKeX (HAR), goalie confirmations, third-party terms | P0 | CLOSED | Sonnet | PROOF: `docs/ops/lines_sources_audit_2026-10-15.md`, register `docs/ops/data_sources.md` (55dae7f); decisions D6-D8 |
 | INV-4 | GitHub remote + HF dataset for bulk data | P0 | CLOSED | PM | PROOF: remote `cmpeavlerjr72/NHL-model` push verified via ls-remote (eb3d750); HF dataset `mvpeav/nhl-sim-data` created private=True; AWS approved (D5) |
-| INV-9 | `scripts/hf_sync_data.py` (port from CBB) for data/raw + results | P0 | ASSIGNED(PM) | Sonnet->PM | PORT DONE 147e3cd: 12 offline tests pass, live probe push/pull/delete byte-identical; remaining: PM runs first raw push after Lane A |
+| INV-9 | `scripts/hf_sync_data.py` (port from CBB) for data/raw + results | P0 | CLOSED | Sonnet->PM | PROOF: port 147e3cd (12 tests, live round-trip byte-identical); first raw + results push 2026-10-15, `status` = 0 files outstanding |
 | INV-5 | Gate reference builder + eval_gates.py | P1 | CLOSED | PM | merged into INV-17 |
 | INV-6 | Control engine (team-rate yardstick) bake-off | P1 | CLOSED | Sonnet | PROOF: `docs/tests/control_r1_2026-10-15.md` (56ff992); A0 adopted as yardstick, D9 |
 | INV-7 | Seed-noise study | P1 | OPEN | | after Control |
