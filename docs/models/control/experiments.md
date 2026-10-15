@@ -81,3 +81,17 @@ One script, `scripts/grade_control.py`, scores every arm blind. The arm labels a
 ### Results
 
 (append below; do not edit above this line)
+
+#### R1 results (graded 2026-10-15 by Lane E; full record `docs/tests/control_r1_2026-10-15.md`)
+
+Fold 2 (train through 2023-24, test 2024-25, 1,398 games), analytic mean log score of the realised (home, away) final score, oracle goalie where used. Frozen on fold 1 only (`r1_frozen_params.json`): lambda 30, w 0.5, goalie kappa 250, lambda3 6.6e-5, phi 1.0e-4, A4 rest ridge 100.
+
+| arm | mean log score | diff vs A0 (95% paired bootstrap) | ML Brier |
+|---|---:|---|---:|
+| A0 | -3.86446 | - | 0.2411 |
+| A1 | -3.86611 | -0.0017 [-0.0077, +0.0042] | 0.2406 |
+| A2 | -3.86611 | -0.0017 [-0.0077, +0.0042] | 0.2406 |
+| A3 | -3.86613 | -0.0017 [-0.0077, +0.0042] | 0.2406 |
+| A4 | -3.86497 | -0.0006 [-0.0083, +0.0070] | 0.2394 |
+
+Seed floor (SD of smoothed simulated estimates, 4 x 10,000 seeds): 0.0018 to 0.0026, above the 0.001 minimum; the analytic metric itself has zero seed variance. Winner under the decision rule: **A0** (nothing beats a simpler arm; A1 = A2 = A3 because the data want no positive dependence). Gate statuses for A0 on fold 2: G5 FAIL (P(total=4) -1.99 pp, 6 -1.03 pp, 10+ +2.16 pp; total SD ratio 1.082; score correlation -0.036 vs actual -0.115), G6 FAIL (home win 52.8% vs 56.5%), G7 FAIL (regulation ties 15.9% vs 20.8%; EN NEEDS-INSTRUMENTATION), G9 FAIL, G1-G4 and G8 NEEDS-INSTRUMENTATION. These failures are the bar the event engine must clear; real home/away scores are negatively correlated (-0.12) so A2/A3 (positive dependence only) could not help. Deviation: A4's first fold-2 run failed numerically (one game lambda 2e4) with a near-unpenalised rest term; the rest-term ridge was then chosen on fold 1 and re-frozen before the final run (record section "Incident"). Grid edges were hit for lambda, w, kappa and the A4 ridge: R2 candidates. No status decision is made here (the PM sets ADOPTED).
