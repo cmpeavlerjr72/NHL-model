@@ -49,3 +49,19 @@ Status: ADOPTED.
 Decision: scheduled read-only loggers capture Daily Faceoff goalie status (with fetched_at), Kalshi NHL market snapshots and DKeX NHL board snapshots from today forward. 2021-26 backtests use box-score starters and are labelled "oracle goalie" (no bulk pregame goalie history exists).
 Reason: Lane B audit; user approved scheduled tasks 2026-10-15.
 Status: ADOPTED.
+
+## D9 (2026-10-15): Control R1 ruling: A0 is the yardstick
+
+Decision: A0 (independent Poisson, as-of ridge ratings, unpenalised home term, no goalie term) is the yardstick. No richer arm beat it beyond the noise floor on fold 2 (all diffs vs A0 have 95% intervals spanning 0). Under the R1 decision rule it is adopted with its gate failures listed as the bar the event engine must clear:
+
+| Gate | Control A0 (fold 2) | Actual 2024-25 |
+|---|---|---|
+| G5 total SD ratio | 1.082 | 0.95-1.05 band |
+| G5 home/away score correlation | -0.036 | -0.115 |
+| G5 P(total=4) | off 1.99 pp | - |
+| G7 regulation-tie rate | 15.9% | 20.8% |
+| G6/G9 home win | 52.8% | 56.5% |
+
+A4 is the variant repaired after a numerical blow-up on the first fold-2 pass. The repair was chosen on fold 1 and no fold-2 scores were computed before it, and it is disclosed in `docs/tests/control_r1_2026-10-15.md`. It did not win either way.
+Reason: `docs/tests/control_r1_2026-10-15.md`, commits d2ed7fa..56ff992.
+Status: ADOPTED (yardstick). Control R2 (extend edge-hit grids; a dependence family allowing negative correlation and excess ties) is DEFERRED (INV-21). The event engine is the priority.
