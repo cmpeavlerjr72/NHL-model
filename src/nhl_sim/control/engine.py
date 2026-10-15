@@ -1,4 +1,4 @@
-﻿"""Control R1 engine (INV-6): as-of ridge Poisson team ratings + score models A0-A4. Spec: docs/models/control/experiments.md R1.
+"""Control R1 engine (INV-6): as-of ridge Poisson team ratings + score models A0-A4. Spec: docs/models/control/experiments.md R1.
 
 Season ids are NHL ids (20212022). ARI and UTA are one franchise index. Reads data only through nhl_sim.data.load.
 """
@@ -198,8 +198,9 @@ def _center(th, T, k):
 class Chain:
     """Season-by-season ridge chain for one (design, lambda, carry w, kappa)."""
 
-    def __init__(self, data: Data, design: str, lam: float, w: float, kappa: float = 500.0):
+    def __init__(self, data: Data, design: str, lam: float, w: float, kappa: float = 500.0, pen_rest: float = 1e-3):
         self.d, self.design, self.lam, self.w, self.kappa = data, design, lam, w, kappa
+        self.pen_rest = pen_rest
         self.T = len(data.teams)
         self.k = len(DESIGNS[design])
         self.p = 2 + self.k + 2 * self.T
@@ -227,6 +228,9 @@ class Chain:
     def _pen(self):
         pen = np.full(self.p, float(self.lam))
         pen[:2 + self.k] = 1e-3
+        for nm in ('own_b2b', 'opp_b2b', 'own_long', 'opp_long'):
+            if nm in DESIGNS[self.design]:
+                pen[2 + DESIGNS[self.design].index(nm)] = self.pen_rest
         return pen
 
     def final(self, s):

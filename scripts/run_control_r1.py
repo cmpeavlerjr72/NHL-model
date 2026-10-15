@@ -1,4 +1,4 @@
-﻿"""Control R1 (INV-6) runner. Stages:
+"""Control R1 (INV-6) runner. Stages:
   tune   fold 1 only: grid lambda x w on A0, kappa on A1, lambda3 / phi fit on fold-1 train; writes the frozen params.
   fold2  loads frozen params, runs A0-A4 on 2024-25, writes hashed-label prediction files for grade_control.py.
   sim    samples N seeds per game for one arm on fold 2 into results/<tag>/ (schema docs/ops/sim_output_schema.md).
@@ -22,6 +22,7 @@ FROZEN = Path("docs/models/control/r1_frozen_params.json")
 SALT = "R1-2026-10-15"
 ARMS = ["A0", "A1", "A2", "A3", "A4"]
 DESIGN = {"A0": "base", "A1": "gk", "A2": "gk", "A3": "gk", "A4": "gkrest"}
+GRID_PEN_REST = [1e-3, 1, 10, 100]
 GRID_LAM, GRID_W, GRID_KAPPA = [1, 3, 10, 30], [0.5, 0.7, 0.9], [250, 500, 1000, 2000]
 
 
@@ -75,9 +76,24 @@ def tune():
             best_k = (sc, kappa)
     kappa = best_k[1]
     out["kappa"] = kappa
+    # A4 stability (found at the first fold-2 run: spec-literal near-unpenalised rest terms gave lambda=2e4 on game 4 of
+    # 2024-25). Ridge on the rest terms only is chosen HERE on fold 1; literal value reported alongside.
+    out['grid_pen_rest'] = []
+    best_r = None
+    for pr in GRID_PEN_REST:
+        p = E.Chain(d, 'gkrest', lam, w, kappa, pr).asof(20232024)
+        reg = E.reg_pmf('A3', p.lam_h.values, p.lam_a.values, {'phi': 1e-4})
+        F, _ = E.final_pmf(reg, gs.q_ot.values, gs.p_home_tie.values)
+        sc = float(np.nanmean(E.logscore(F, gs.hg.values, gs.ag.values)))
+        mx = float(max(p.lam_h.max(), p.lam_a.max()))
+        out['grid_pen_rest'].append({'pen_rest': pr, 'fold1_A4_logscore_phi0': sc, 'max_lambda': mx})
+        print(now(), f'pen_rest={pr} A4 fold1 logscore {sc:.5f} max lambda {mx:.2f}', flush=True)
+        if np.isfinite(sc) and mx < 12 and (best_r is None or sc > best_r[0]):
+            best_r = (sc, pr)
+    out['pen_rest'] = best_r[1]
     tr = season_games(d, 20222023)
     for key, design in (("gk", "gk"), ("gkrest", "gkrest")):
-        p = E.Chain(d, design, lam, w, kappa).asof(20222023)
+        p = E.Chain(d, design, lam, w, kappa, out['pen_rest'] if design == 'gkrest' else 1e-3).asof(20222023)
         rates = (p.lam_h.values, p.lam_a.values)
         if key == "gk":
             out["lambda3"] = E.fit_lambda3(rates, tr.reg_h.values, tr.reg_a.values)
@@ -98,7 +114,7 @@ def fold2():
     RES.mkdir(parents=True, exist_ok=True)
     rates = {}
     for design in ("base", "gk", "gkrest"):
-        rates[design] = E.Chain(d, design, lam, w, kappa).asof(s)
+        rates[design] = E.Chain(d, design, lam, w, kappa, fz['pen_rest'] if design == 'gkrest' else 1e-3).asof(s)
     labels = {}
     for arm in ARMS:
         p = rates[DESIGN[arm]]
@@ -122,7 +138,7 @@ def sim(arm, n_seeds=1000):
     s = 20242025
     d = E.build_data()
     gs = season_games(d, s)
-    p = E.Chain(d, DESIGN[arm], lam, w, kappa).asof(s)
+    p = E.Chain(d, DESIGN[arm], lam, w, kappa, fz['pen_rest'] if DESIGN[arm] == 'gkrest' else 1e-3).asof(s)
     par = {"lambda3": fz["lambda3"], "phi": fz["phi_A3"] if arm == "A3" else fz.get("phi_A4")}
     tag = f"control_r1_{arm}_fold2"
     parts = []
