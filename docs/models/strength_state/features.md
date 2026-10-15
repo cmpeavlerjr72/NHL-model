@@ -1,4 +1,4 @@
-# Strength-state / penalty process: features (SS-R1)
+# Strength-state / penalty process: features (SS-R1, SS-R2 changes in section 4)
 
 Built by `scripts/build_strength_state_tables.py` (code: `src/nhl_sim/strength_state/{penalty_map,events,timeline,tables,models}.py`) into `data/processed/strength_state/*_v1*`. Every feature is the PRE-event state; feature builders raise on missing inputs (L5); ratings are relative to their snapshot league mean (L1).
 
@@ -71,3 +71,13 @@ Ratings writer: `created_at` = latest puck drop of the games used + 6 h; `assert
 - Run-relative 60 s chunking with a row-midpoint clock (first build): rows end at the event's whistle, so a within-run clock leaked the row length to H3 (60 s full chunks starting at period starts had midpoint 30 and y = 0 by construction). Replaced before any fold-2 number was produced by cuts on the fixed minute grid and a per-row constant game-minute clock.
 - Player-level penalty rates: out of scope for SS-R1 (candidate for SS-R2, stage 2).
 - Delayed-penalty pre-event state: NOT implemented in SS-R1 (spec says the goalie state is a feature level). Finding for SS-R2: about 80% of the 6.4-6.8% of events whose pre-event state is `other` follow a delayed-penalty signal against the same team (goalie pulled because of the penalty itself).
+
+## 4. SS-R2 changes (tables `*_v2*`; code `delayed.py`, `league_level.py`, `models_r2.py`)
+
+| Feature | Change | Source / computation | Notes |
+|---|---|---|---|
+| `st` | delayed-penalty state | Inside every delayed-penalty signal window, the goalie digits of the pbp carry-forward code are replaced by the code of the last event before the signal. The window runs from the signal second up to (not including) the first STOPPAGE / GOAL / PENALTY / PERIOD_END / GAME_END after it. Skater counts stay the engine replay. | A goalie already pulled before the signal stays pulled. The signal event's own code is not used, because pbp sometimes stamps it post-pull. Windows: `delayed_windows_v2.parquet`. Fold-2 'other' events: 6.36% -> 1.54% |
+| `level` | new, every arm, fixed offset (coefficient 1) | `league_level_v2.parquet` `level_k{50,150,450}`: log((E + 2k r_prev) / (H + 2k) / r_prev), with E and H the current season's events and team-hours in games with an earlier date and r_prev the previous season's final rate per team-hour | `created_at` = last puck drop of the previous date + 6 h, `created_at < puck_drop` asserted. 2021-22 = 0 (no prior season in the data). Frozen k = 50 |
+| `season_f` | removed | | GLM `cell` = st x ptype, pooled over training seasons; H3' features = `models_r2.LGB_FEATURES` |
+| `taken_own`, `drawn_opp` | grid extended | `ratings_grid_v2.parquet`: w in {0.7, 0.85, 1.0}, prior strength in {1800, 5400} | frozen w = 1.0, b = 1800 |
+| type rows `st` | follows the new `st` | `type_rows_v2.parquet` | T1 not re-raced (SS-R1 fit carried over) |

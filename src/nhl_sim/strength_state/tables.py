@@ -21,11 +21,17 @@ def _bucket(x):
     return (np.clip(x, -2, 2) + 2).astype(np.int8)       # 0..4 = <=-2, -1, 0, +1, >=+2
 
 
-def season_rows(ev: pd.DataFrame):
+def season_rows(ev: pd.DataFrame, delayed_fix: bool = False):
     """One season (or subset) of events -> (rows, type_rows, team_game, tl). `rows` has two rows (home, away view)
-    per interval."""
+    per interval. delayed_fix=True (SS-R2 change 1, `delayed.py`): the goalie state of every delayed-penalty signal
+    window is the pre-signal state; tl gains "delayed_windows" and "delayed_changed_s". False reproduces v1."""
     tl = season_timeline(ev)
     games, sk, prev = tl["games"], tl["sk"], tl["prev"]
+    if delayed_fix:
+        from nhl_sim.strength_state.delayed import apply_delayed_fix, delayed_windows
+        win = delayed_windows(ev, games.game_id.to_numpy())
+        prev, changed = apply_delayed_fix(prev, win)
+        tl["delayed_windows"], tl["delayed_changed_s"] = win, changed
     N, T = sk.shape[:2]
     end = games.end_t.to_numpy()
     gi = {g: i for i, g in enumerate(games.game_id.to_numpy())}

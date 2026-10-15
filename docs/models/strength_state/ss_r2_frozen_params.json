@@ -1,0 +1,150 @@
+{
+ "tuned_on": "fold 1 only: train 2021-22 + 2022-23, test 2023-24",
+ "grid_H1": [
+  {
+   "k": 50,
+   "w": 0.7,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.96368913852902
+  },
+  {
+   "k": 50,
+   "w": 0.7,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96273389248219
+  },
+  {
+   "k": 50,
+   "w": 0.85,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.962888579246034
+  },
+  {
+   "k": 50,
+   "w": 0.85,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96367363420507
+  },
+  {
+   "k": 50,
+   "w": 1.0,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.9626088031311
+  },
+  {
+   "k": 50,
+   "w": 1.0,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96574945792721
+  },
+  {
+   "k": 150,
+   "w": 0.7,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.96793645533855
+  },
+  {
+   "k": 150,
+   "w": 0.7,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96704331453039
+  },
+  {
+   "k": 150,
+   "w": 0.85,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.96708491653146
+  },
+  {
+   "k": 150,
+   "w": 0.85,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96791750739115
+  },
+  {
+   "k": 150,
+   "w": 1.0,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.96674830195697
+  },
+  {
+   "k": 150,
+   "w": 1.0,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.96992674131483
+  },
+  {
+   "k": 450,
+   "w": 0.7,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.97155327641139
+  },
+  {
+   "k": 450,
+   "w": 0.7,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.97077273183965
+  },
+  {
+   "k": 450,
+   "w": 0.85,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.97067193307495
+  },
+  {
+   "k": 450,
+   "w": 0.85,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.97161591903373
+  },
+  {
+   "k": 450,
+   "w": 1.0,
+   "prior_strength_min": 1800,
+   "fold1_H1_ll_per_game": -35.970302070810504
+  },
+  {
+   "k": 450,
+   "w": 1.0,
+   "prior_strength_min": 5400,
+   "fold1_H1_ll_per_game": -35.97359709086692
+  }
+ ],
+ "lgb_grid": [
+  {
+   "num_leaves": 7,
+   "min_data_in_leaf": 200,
+   "best_iter_inner": 260,
+   "fold1_H3_ll_per_game": -35.65127813255664
+  },
+  {
+   "num_leaves": 7,
+   "min_data_in_leaf": 800,
+   "best_iter_inner": 429,
+   "fold1_H3_ll_per_game": -35.64076082340532
+  },
+  {
+   "num_leaves": 15,
+   "min_data_in_leaf": 200,
+   "best_iter_inner": 146,
+   "fold1_H3_ll_per_game": -35.6566815264985
+  },
+  {
+   "num_leaves": 15,
+   "min_data_in_leaf": 800,
+   "best_iter_inner": 142,
+   "fold1_H3_ll_per_game": -35.65133496331698
+  }
+ ],
+ "k": 50,
+ "w": 1.0,
+ "prior_strength_min": 1800,
+ "lgb": {
+  "num_leaves": 7,
+  "min_data_in_leaf": 800,
+  "learning_rate": 0.05,
+  "n_rounds": 429,
+  "inner_split": "last 20% of fold-1 training games by date"
+ },
+ "elapsed_s": 36.14959502220154
+}

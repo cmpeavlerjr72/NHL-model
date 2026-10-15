@@ -134,3 +134,12 @@ As in SS-R1: 200 seeds, the same labelled goal stub, and the 100- vs 200-seed st
 ### Results
 
 (append below this line)
+
+#### SS-R2 results (Lane H2, 2026-10-15; full report `docs/tests/strength_state_ss_r2_2026-10-15.md`)
+
+- Change 1 (delayed-penalty state, `delayed.py`, tables `*_v2*`): fold-2 events in state 'other' 590 (6.36%) -> 143 (1.54%); the residual is trailing-team pulls (123 in the last 3 min of regulation, 17 in OT). Test `tests/test_delayed_penalty_state.py`.
+- Change 2 (as-of league level, fixed offset in every arm, no season dummies; 2021-22 level 0 for want of a prior season) and change 3, frozen on fold 1: k = 50, w = 1.0, prior strength 1800 (all grid corners; grid not extended). H3' num_leaves 7, min_data_in_leaf 800, 429 rounds.
+- Fold 2, LL/game vs H0': H1' +0.051 (SE 0.011), H2' +0.262 (0.020), H3' +0.345 (0.020); H3' vs H2' +0.084 (0.012); seed floor 0.00025. **Offline winner H3'** (literal rule), runner-up H2'. T1 carried over, not re-raced.
+- SS-R1's H3 lead was mostly the delayed-penalty artefact: 0.27 of its 0.42 nats/game over H2 (and 0.36 of H2's 0.51 over H0) came from 'other'-state rows.
+- Bias checks: **FAIL for every arm.** Season level overall: H0' +2.4%, H1' +2.7%, H2' +2.5% PASS; H3' +3.08% FAIL. By month: January 2025 fails in every arm (+10.5% to +11.2%, n = 224 games); all other months with n >= 100 pass. 'Other' shortfall: net -0.3% to +0.1% PASS (raw share 1.54%, upper bound).
+- Closed-loop G1: **NOT RUN** (the brief bars the closed loop on an arm that fails a bias check; H3' and H2' both fail). No G1 cell has a status other than NOT RUN. Status stays TESTING.

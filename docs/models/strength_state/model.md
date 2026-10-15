@@ -1,6 +1,6 @@
 # Strength-state / penalty process (cascade stage 1)
 
-Status: TESTING (SS-R1 run 2026-10-15; final status is the PM's call). Numbers live in `experiments.md` (SS-R1 Results) and `docs/tests/strength_state_ss_r1_2026-10-15.md`; this file summarises.
+Status: TESTING (SS-R1 and SS-R2 run 2026-10-15; final status is the PM's call). Numbers live in `experiments.md` (SS-R1 / SS-R2 Results), `docs/tests/strength_state_ss_r1_2026-10-15.md` and `docs/tests/strength_state_ss_r2_2026-10-15.md`; this file summarises.
 
 ## 1. Purpose
 
@@ -68,3 +68,10 @@ Feature order: `models.LGB_FEATURES`. No NaN fills: missing ratings raise. `st` 
 - These two biases partly cancel in the closed loop (+10% level, about -6% missing 'other' events). A G1 pass on PP opportunities would therefore not be clean evidence.
 - Score-state terms are exercised by stub goals only. They must be re-gated when stage 6 lands.
 - Player-level penalty rates belong to SS-R2 / stage 2.
+
+## 10. SS-R2 (2026-10-15)
+
+- Changes shared by every arm: pre-event state at the delayed-penalty signal (tables `*_v2*`, `delayed.py`); an as-of in-season league level as a fixed offset with no season dummies (`league_level.py`, `models_r2.py`); the extended ratings grid. Frozen on fold 1: k = 50, w = 1.0, prior strength 1800 (grid corners).
+- Offline: H3' > H2' > H1' > H0' (H3' vs H2' +0.084 nats/game, SE 0.012). SS-R1's large H3 lead mostly came from 'other'-state rows (the delayed-penalty artefact).
+- Bias checks fail for every arm: the January 2025 month level is +10.5% to +11.2%, and H3' overall is +3.08%. G1 was not run. Known gap: within-season seasonality (October high, mid-winter low), which a to-date level cannot carry. SS-R3 candidate: a seasonality profile.
+- Consumption (if an SS-R2 arm is ever selected): `models_r2.LGB_FEATURES`. The level offset is per game, so `lookup.hazard_table` needs an SS-R2 path that multiplies by exp(level). That path is not built yet.
