@@ -94,3 +94,36 @@ def stub_tables(season: int):
     st = ev[(ev.event == "STOPPAGE") & (ev.period_type == "OT") & (ev.game_type == 2)]
     stop_rate = len(st) / max(1, rs_ot.sum())
     return dict(goal_rate=rate, goal_n=n, goal_exposure_h=expo / 3600.0, stop_rate_ot=stop_rate)
+
+
+def hazard_table_v3(arm: str, model, team_rows: pd.DataFrame, chunk: int = 64) -> np.ndarray:
+    """SS-R3 hazard lookup (H2''/H3''). Same layout as `hazard_table`. The SS-R3 arms carry a FIXED offset
+    `level` (de-seasonalised as-of league level + season-phase profile p(b), constant within a game), so
+    mu = base_rate(state, ratings, clock) x exp(level_g). The model is evaluated at level 0 and the per-game offset is
+    applied as a multiplier (the offset has coefficient 1 in both arms, so this is exact).
+    team_rows: one row per (game, team) with game_id, team, taken_own, drawn_opp, is_home, b2b_own, b2b_opp, level."""
+    from nhl_sim.strength_state import models_r2 as R
+    games = np.sort(team_rows.game_id.unique())
+    m, per, ptype, last5 = minute_grid()
+    st, sc, pdf = np.meshgrid(np.arange(N_ST_ENGINE), np.arange(5), np.arange(5), indexing="ij")
+    K = st.size
+    base = pd.DataFrame({"minute": np.repeat(np.arange(N_MIN), K), "st": np.tile(st.ravel(), N_MIN),
+                         "sc": np.tile(sc.ravel(), N_MIN), "pdiff": np.tile(pdf.ravel(), N_MIN)})
+    base["period"], base["ptype"], base["last5"] = per[base.minute], ptype[base.minute], last5[base.minute]
+    base["clock"], base["t0"], base["exposure_s"] = base.minute, base.minute * 60, 3600
+    base["cell"] = base.st.astype(np.int64) * 10 + base.ptype      # no season term (SS-R2 change 2)
+    tr = team_rows.sort_values(["game_id", "team"]).reset_index(drop=True)
+    if len(tr) != 2 * len(games):
+        raise ValueError("need exactly one row per (game, team)")
+    B = len(base)
+    out = np.zeros((len(tr), B), np.float32)
+    for a in range(0, len(tr), chunk):
+        part = tr.iloc[a:a + chunk]
+        big = base.loc[np.tile(np.arange(B), len(part))].reset_index(drop=True)
+        for c in ("taken_own", "drawn_opp", "is_home", "b2b_own", "b2b_opp"):
+            big[c] = np.repeat(part[c].to_numpy(), B)
+        big["level"] = 0.0
+        mu = R.predict_lgb(model, big) if arm.startswith("H3") else R.predict_glm(model, big)
+        mu = np.asarray(mu, np.float64).reshape(len(part), B) * np.exp(part["level"].to_numpy(float))[:, None]
+        out[a:a + len(part)] = mu.astype(np.float32)
+    return out.reshape(len(games), 2, N_MIN, N_ST_ENGINE, 5, 5)
