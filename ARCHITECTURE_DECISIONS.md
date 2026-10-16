@@ -446,3 +446,18 @@ Status: ADOPTED.
 - **Next.** There is no SL-R7 without the user (D30, D32). The options go to the user once G-R3 (the as-of response scale, INV-53) reports, because G-R3 decides whether a tracking scale is a viable stage-4 fix.
 
 Status: ADOPTED; the user decision is pending.
+
+## D40 (2026-10-16, user decision): C1s adopted for stage 6; one more stage-4 round (SL-R7) with an as-of response scale
+
+- **G-R3 (252e539, 40fe701).** The as-of goalie scale (H90, P2000) fixes the goalie response: R 0.98 (UNDERPOWERED), against 0.70 for the fixed scale. Team R is 0.99. Every bias check passes (save% +0.06 pp, goals +0.23%). The fold-1 guard would pass (R 1.08 / 1.05). The LL vs C0 is +0.0052 (SE 0.0042), 1.2 SE.
+- **Rule harmonised (user).** When the simpler comparator is a flat stand-in that cannot be adopted (D24), a candidate is selected if it is eligible (every bias check, R in band, D13 guard) and not worse than the comparator by > 2 SE. This matches the SL-R4 to SL-R6 wording. The G-R3 text said "beats C0 by > 2 SE"; that inconsistency was the PM's. Under the harmonised rule, **C1s is selected**, and goal becomes CONFIRMED-INCUMBENT (provisional): the as-of goalie scale plus team finishing at a fixed scale, on level M1 K500. Listed:
+  - the LL gain is 1.2 SE;
+  - goalie R is UNDERPOWERED;
+  - no H/P cell met the [0.9, 1.1] training parity band (fallback H90, per-season R 1.13-1.18);
+  - the goalie step-0 trend.
+
+  The closed loop waits for the engine wiring (INV-60).
+- **Stage 4 (user).** One more round, SL-R7: L1x-ot0 with the INV-53 as-of response scale on the Qa ratings (for and against), with everything else frozen from SL-R6 / D38. It is to be pre-registered at the start of the next session, before any run. If it fails, the latest model goes back to the user with options; there is no automatic SL-R8.
+- **INV-53 status.** The as-of scale works on goalies. Blocks (D34) and the stage-3 over-response (D33) are candidates for it next, each pre-registered separately.
+
+Status: ADOPTED.

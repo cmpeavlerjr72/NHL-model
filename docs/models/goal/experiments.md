@@ -175,3 +175,13 @@ If C1s is not selected, stage 6 stays on the C0 stand-in. The PM then reports th
 - Fold 2 (blind): **C1s is eligible but not selected.** Bias is clean (save% +0.06 pp, PP +0.56, RS goals +0.23%). Goalie R is 0.98 (CI 0.57-2.67, UNDERPOWERED) and team R 0.99, both in band. Its LL vs C0 is +0.0052 (SE 0.0042), short of 2 SE. Floor 0.00249 (frozen). C1 reproduces G-R2 (goalie R 0.70).
 - Fold 1: C1s R 1.08 / 1.05, bias clean, +0.0079 (SE 0.0043). D13 guard: not applicable.
 - Stage 6 stays on the C0 stand-in, per the spec.
+
+---
+
+## PM ruling on G-R3 and the user decision (2026-10-16, D40)
+
+- The selection rule is harmonised with stage 4: eligible, and not worse than the flat stand-in by > 2 SE.
+- C1s is selected: as-of goalie scale H90 P2000, team finishing at a fixed scale, level M1 K500.
+- Status: CONFIRMED-INCUMBENT (provisional).
+- Listed: LL +1.2 SE, goalie R UNDERPOWERED, the parity fallback, and the step-0 trend.
+- The engine wiring and closed loop are INV-60.

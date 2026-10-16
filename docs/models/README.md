@@ -10,12 +10,9 @@ Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION 
 | strength_state | 1 | CONFIRMED-INCUMBENT (provisional, H3''-LC2+T2, D18; INV-34 open) | [model](strength_state/model.md) |
 | deployment | 2 | OPEN | - |
 | shot_attempt | 3 | CONFIRMED-INCUMBENT (provisional, A3g-c, D20; 3v3 to stage 8, INV-35) | [experiments](shot_attempt/experiments.md) |
-| shot_attribute | 4 | BUILDING (SL-R6 running; L0s engine STAND-IN, D32) | [experiments](shot_attribute/experiments.md) |
-| block | 5a | BUILDING (SB-R4 running; B0 engine STAND-IN, D32) | [experiments](block/experiments.md) |
-| miss | 5b | BUILDING (SM-R1 running) | [experiments](miss/experiments.md) |
-| goal | 6 | BUILDING (G-R1 pre-registered) | [experiments](goal/experiments.md) |
-| shot_attributes | 4 | OPEN | - |
-| attempt_outcome | 5 | OPEN | - |
-| goal_given_sog | 6 | OPEN | - |
+| shot_attribute | 4 | BUILDING (SL-R6 failed, D39; SL-R7 granted, D40; L0s engine STAND-IN) | [experiments](shot_attribute/experiments.md) |
+| block | 5a | BUILDING (team ratings parked, D34; B0 engine STAND-IN) | [experiments](block/experiments.md) |
+| miss | 5b | BUILDING (team terms parked, D37; S0t STAND-IN, not yet in engine) | [experiments](miss/experiments.md) |
+| goal | 6 | CONFIRMED-INCUMBENT (provisional, C1s as-of goalie scale, D40; engine wiring INV-60) | [experiments](goal/experiments.md) |
 | faceoff_stoppage | 7 | OPEN | - |
 | end_game (pull / OT / SO) | 8 | OPEN | - |

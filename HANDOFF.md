@@ -2,6 +2,53 @@
 
 PM-owned. Newest block first.
 
+## SUMMARY FOR USER 2026-10-16 (day session, 09:20-14:10)
+
+**Headline:** The cascade now runs end to end in the engine. Stages 1, 3 and 6 have provisional models: penalties, shot attempts, and the goal model with goalie talent. Stages 4, 5a and 5b run on labelled flat stand-ins. The day's main finding: team and goalie rating effects fade season to season, so any effect strength fixed from past seasons over-reacts next season. An as-of (in-season) effect strength now fixes this for goalies, and stage 4 gets one more round with it.
+
+**Decisions D18-D40** (in `ARCHITECTURE_DECISIONS.md`)
+
+| # | Decision |
+|---|---|
+| D18 | Stage 1 re-levelled: H3''-LC2 + T2. INV-29 is closed, so team power-play ratings are unblocked |
+| D19-D20 | Stage 3: A3g-c is the provisional model. 3v3 moves to the overtime model (stage 8) |
+| D21, D25 | DRatings puck-line sign flagged, not repaired. Suspect games are excluded, and a near pick'em sensitivity is reported |
+| D22 | Totals sources agree. DRatings is the consensus closing total |
+| D23 | Blocks are decided before location. Block coordinates mark the block point, not the shot origin |
+| D24-D31 | Stage 4: five rounds. Location drifts across recording eras. A tree model's size can't set the response strength. The stop rule went to you |
+| D32 (you) | The response check is a slope across rating tenths. Stand-ins are allowed in the engine |
+| D33 | Stages 1 and 3 pass the new check. Stage 3 over-reacts by about 15%, within the band, and is on watch |
+| D34, D37 | Block and miss team effects parked. Their flat stand-ins carry the stage |
+| D35, D38 | PM errors, caught and fixed. The era level could pass its own check by construction. Overtime rows were leaking regulation score effects |
+| D36, D40 (you) | Goal model C1s adopted, using the in-season goalie effect strength |
+| D39, D40 (you) | Stage 4 gets one more round (SL-R7), using the in-season effect strength |
+
+**Needs you:** nothing right now. Keep Windows logged in for the live loggers. The weekly pull runs on Mondays at 06:00.
+
+**Open items, in order**
+1. INV-59, SL-R7. Pre-register it first thing, then give it to an Opus worker.
+2. INV-60, one engine lane:
+   - wire the C1s goal model in place of the goal stub;
+   - move the L0s stand-in level to M1 K500 (INV-57);
+   - give the B0 stand-in its own 4v4 and 3v3 groups (INV-54);
+   - add the S0t miss stand-in;
+   - run the plumbing loop.
+3. INV-53, next applications: blocks, then the stage-3 over-response.
+4. INV-42 (stage-3 4v4 hazard) and INV-34 (seasonal profile shape).
+5. INV-12: retry the Kalshi fee schedule.
+6. Stage 7 (rebounds, faceoffs) and stage 8 (goalie pull, OT, shootout; includes INV-35), after INV-60.
+
+**AWS:** $0 spent today, and no instances exist.
+
+**Worker incidents (disclosed, none harmful)**
+- Lane G briefly printed fold-2 numbers in an intermediate document, and fixed it within a minute. No choice depended on it.
+- Lane M ran a stray `python3` Store stub, which hung its own shell. It stopped only that process.
+- Lane B left a stray empty shell, and stopped it itself.
+- PM:
+  - two spec errors (D28, D35) and one reasoning error (D27, corrected in D29);
+  - a board-row edit slip, fixed in f80f961;
+  - two shell heredoc parse failures, after which nothing was written.
+
 ## SUMMARY FOR USER 2026-10-15 (evening session, 18:40-22:40)
 
 **Headline:** P2 is under way. The engine core is built, and stage 1 (penalties / strength state) is a provisional incumbent: H3'' (a LightGBM penalty hazard) plus the T2 type model. Stage 3 (shot attempts) has a leading arm, A3g, that passes its core checks; two thin strength states, 4v4 and 3v3, still fail. A PM spec error in the league-level construction was found and fixed for attempts (D16).
