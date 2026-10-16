@@ -14,6 +14,11 @@ Only then is labels_sealed.json opened to apply the decision rule (fold 2) or at
 
     grade_shot_attribute.py --fold 2      -> docs/tests/shot_attribute_sl_r1_grade_2026-10-16.md (+ results json)
     grade_shot_attribute.py --fold 1      -> fold-1 diagnostic section appended to the same file
+    grade_shot_attribute.py --round r4 --fold 1|2   SL-R4 (L0s, L3c; seed pair L3c / L3cs2, floor 0 per D26). Fold 1
+                                       is the D13 guard (every SL-R1 bias check must pass for L3c) and gets its own
+                                       report; fold 2 decision: L3c is selected if eligible and not worse than L0s by
+                                       > 2 SE (L0s is flat, never adoptable, D24). Per-state (5v5 / 4v4 / 3v3 split)
+                                       xG and tier rows are REPORTED, not gated (not pre-registered as gates).
     grade_shot_attribute.py --round r2 --fold 2|1   SL-R2 (L0m < L1m < L3m, seed pair L3m / L3ms2; references L0 and
                                        L0o (oracle level) graded blind but never selectable; arena reported, not gated, D23)
                                        -> docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md
@@ -45,7 +50,12 @@ ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_at
                      arena_gate=("L2", "L3", "L3s2"), title="SL-R1 blind grade (Lane A, 2026-10-16)", spec="SL-R1"),
           "r2": dict(res="results/shot_attribute_r2", report="docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md",
                      salt="SL-R2-2026-10-16", arms=("L0m", "L1m", "L3m"), seed=("L3m", "L3ms2"), refs=("L0", "L0o"),
-                     arena_gate=(), title="SL-R2 blind grade (Lane A2, 2026-10-16)", spec="SL-R2")}
+                     arena_gate=(), title="SL-R2 blind grade (Lane A2, 2026-10-16)", spec="SL-R2"),
+          "r4": dict(res="results/shot_attribute_r4", report="docs/tests/shot_attribute_sl_r4_grade_2026-10-16.md",
+                     report_f1="docs/tests/shot_attribute_sl_r4_grade_fold1_2026-10-16.md",
+                     salt="SL-R4-2026-10-16", arms=("L0s", "L3c"), seed=("L3c", "L3cs2"), refs=(),
+                     arena_gate=(), title="SL-R4 blind grade (Lane A4, 2026-10-16)", spec="SL-R4", decision="r4",
+                     states=True)}
 CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
 CLASS_TYPE = np.tile(np.arange(N_TYPE), N_CELL)           # class -> type
@@ -110,6 +120,18 @@ def grade_label(P, r, xg, dcell, W, gp, G):
     ty["diff_pp"] = ty.pred_pct - ty.actual_pct
     ty["status"] = np.where(ty.diff_pp.abs() <= MIX_PP, "PASS", "FAIL")
     out["type"] = ty
+    if CFG.get("states"):
+        st = r.st.to_numpy()
+        srows = []
+        for k, nm in enumerate(("5v5", "PP", "PK", "4v4", "3v3", "ENF", "ENA")):
+            m = st == k
+            if not m.any():
+                continue
+            srows.append(dict(state=nm, n=int(m.sum()), xg_pred=pred_xg[m].mean(), xg_act=act_xg[m].mean(),
+                              xg_rel=pred_xg[m].mean() / act_xg[m].mean() - 1,
+                              **{f"{TIER_NAMES[k2]}_diff_pp": (Pt[m, k2].mean() - At[m, k2].mean()) * 100 for k2 in range(3)},
+                              status="reported (not a gate)" + (" UNDERPOWERED" if m.sum() < N_GRP_MIN else "")))
+        out["states"] = pd.DataFrame(srows)
     # arena: predicted - actual mean (cell-representative) distance
     pd_ = P @ np.repeat(dcell, N_TYPE)
     ad_ = dcell[CLASS_CELL[cls]]
@@ -270,6 +292,8 @@ def write(fold):
         L += [f"### {a}", "", "xG_ref per attempt, predicted / actual:", "", md(R["xg"].set_index(["level", "cell"]), ".4f"), "",
               "Location tier shares (pp):", "", md(R["tier"].set_index(["level", "tier"]), ".3f"), "",
               "Type shares (pp):", "", md(R["type"].set_index("type"), ".3f"), "",
+              *(["Per team-view state (5v5 / 4v4 / 3v3 split; REPORTED, not a pre-registered gate):", "",
+                 md(R["states"].set_index("state"), ".4f"), ""] if "states" in R else []),
               "Responsiveness (Q5 - Q1 spread of mean xG_ref per attempt, pred / actual; 95% game-bootstrap CI):", "",
               md(pd.DataFrame({f"{k[0]} {k[1]}": {kk: (str(vv) if isinstance(vv, list) else vv) for kk, vv in v.items()}
                                for k, v in R["resp"].items()}).T, ".3f"), "",
@@ -278,7 +302,32 @@ def write(fold):
               md(R["arena"], ".3f"), "", "Segments (no gate):", "", md(R["segments"].set_index("segment"), ".4f"), "",
               "Per team (no gate; xG_ref per attempt):", "", md(R["teams"], ".4f"), ""]
     sel = None
-    if fold == 2:
+    d13 = None
+    if CFG.get("decision") == "r4":
+        c, b = CFG["arms"][1], CFG["arms"][0]
+        q = P[(P.a == c) & (P.b == b)]
+        dv, se = float(q.diff_per_game.iloc[0]), float(q.se.iloc[0])
+        bias_ok = S.loc[c, "bias_gate"] == "PASS"
+        if fold == 1:
+            d13 = bool(bias_ok)
+            L += ["### D13 guard (fold 1): every SL-R1 bias check must pass for L3c", "",
+                  f"- {c} bias gate on fold 1: **{S.loc[c, 'bias_gate']}** (xG fails: {S.loc[c, 'xg_fails']}; tier fails: "
+                  f"{S.loc[c, 'tier_fails']}; type fails: {S.loc[c, 'type_fails']}).",
+                  f"- Responsiveness on fold 1 (reported): {S.loc[c, 'resp_es_for']:.3f} / {S.loc[c, 'resp_es_against']:.3f}.",
+                  f"- {c} vs {b} LL per game {dv:+.4f} (SE {se:.4f}), reported.",
+                  f"- **D13 guard: {'PASS' if d13 else 'FAIL'}**", ""]
+        else:
+            el = bool(S.loc[c, "eligible"])
+            notworse = dv >= -2 * se
+            sel = c if (el and notworse) else None
+            L += ["### Decision rule (fold 2, SL-R4)", "",
+                  f"- {c} eligible (every bias check and the ES responsiveness band): **{el}** (bias {S.loc[c, 'bias_gate']}, "
+                  f"responsiveness {S.loc[c, 'resp_es_for']:.3f} / {S.loc[c, 'resp_es_against']:.3f} {S.loc[c, 'resp_gate']}).",
+                  f"- {c} vs {b}: {dv:+.4f} nats/game (SE {se:.4f}); not worse by > 2 SE: **{notworse}**. Seed floor "
+                  f"{floor:.4f} (deterministic booster, 0 per D26).",
+                  f"- {b} is flat and not adoptable (D24).",
+                  f"- **Selected: {sel}**" if sel else "- **No arm selected.**", ""]
+    elif fold == 2:
         el = [a for a in CFG["arms"] if S.loc[a, "eligible"]]
         L += ["### Decision rule (fold 2)", "", f"- Eligible arms (every bias check and the ES responsiveness band): {el or 'none'}.",
               f"- Seed floor {floor:.4f} nats/game."]
@@ -296,13 +345,16 @@ def write(fold):
                 break
         L += [f"- **Selected: {sel}**" if sel else "- **No arm selected.**", ""]
     text = "\n".join(L) + "\n"
-    if fold == 2:
+    if CFG.get("report_f1") and fold == 1:
+        Path(CFG["report_f1"]).write_text(f"# {CFG['title']}: fold 1 (D13 guard)\n\nSpec: `docs/models/shot_attribute/"
+                                          f"experiments.md` {CFG['spec']}.\n\n" + text, encoding="utf-8")
+    elif fold == 2:
         REPORT.write_text(f"# {CFG['title']}\n\nSpec: `docs/models/shot_attribute/experiments.md` {CFG['spec']}. "
                           "Bias checks gate on fold 2; fold 1 is a diagnostic.\n\n" + text, encoding="utf-8")
     else:
         with REPORT.open("a", encoding="utf-8") as fh:
             fh.write("\n" + text)
-    summ = dict(fold=fold, selected=sel, seed_floor=floor, summary=S.reset_index().to_dict("records"),
+    summ = dict(fold=fold, selected=sel, seed_floor=floor, d13_guard_pass=d13, summary=S.reset_index().to_dict("records"),
                 pairs=P.to_dict("records"))
     (RES / f"grade_fold{fold}.json").write_text(json.dumps(summ, indent=1, default=float))
     print(md(S.drop(columns=["label"]), ".4f"))

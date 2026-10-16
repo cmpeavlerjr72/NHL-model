@@ -268,3 +268,14 @@ L3c is eligible if it passes every fold-2 bias check and the ES responsiveness b
 ### Results
 
 (append below this line)
+
+### SL-R4 results (Lane A4, 2026-10-16; report `docs/tests/shot_attribute_sl_r4_2026-10-16.md`, fold-1 grade `docs/tests/shot_attribute_sl_r4_grade_fold1_2026-10-16.md`)
+
+- **Construction.** L0s: 7 states x period type. 4v4 / 3v3 cells are shrunk to the same-period-type 5v5 shares (K 500). Type given cell is the pooled-ES L0 row. Level E: the ES ratio for the ES states. L3c: the SL-R3 frozen booster from log L0s levelled; EN rows are excluded from training and served L0s (bit-identical in-sample). L3cs2 is bit-identical, so the floor is 0 (D26).
+- **In-sample (fold-2 training rows): PASS.** L3c vs L0s: 5v5 +0.07%, PP -0.08%, PK +0.27%, 4v4 +0.14%, 3v3 -0.47%, EN 0. Reported: L0s itself is -4.4% / -4.6% vs actual at 4v4 / 3v3.
+- **D13 guard (fold 1, blind): FAIL, so stop.**
+  - L3c: xG +2.62% overall, ES +4.34%, PP -3.23%, PK +5.45%, high tier +1.68 pp. L0s is the same (+2.49%).
+  - Cause: level E is zero on fold 1 (no era-2 training rows), the SL-R2 caveat. Under the oracle level (diagnostic), L3c is +0.52% overall with tiers within 0.03 pp. ENF is -3.46% under the oracle for both arms.
+  - Separate warning: L3c's fold-1 ES responsiveness is 0.37 / 0.49 (L3m was 0.68 / 0.81 on fold 1).
+- **Not done:** nothing on fold 2 was predicted or read. No decision, no engine change, no closed loop.
+- Status: BUILDING; the PM rules (proposal: re-specify the guard as vs L0s or under the oracle; booster capacity).
