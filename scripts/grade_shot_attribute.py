@@ -55,7 +55,7 @@ ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_at
                      report_f1="docs/tests/shot_attribute_sl_r4_grade_fold1_2026-10-16.md",
                      salt="SL-R4-2026-10-16", arms=("L0s", "L3c"), seed=("L3c", "L3cs2"), refs=(),
                      arena_gate=(), title="SL-R4 blind grade (Lane A4, 2026-10-16)", spec="SL-R4", decision="r4",
-                     states=True)}
+                     states=True, en_reported=True)}
 CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
 CLASS_TYPE = np.tile(np.arange(N_TYPE), N_CELL)           # class -> type
@@ -100,6 +100,8 @@ def grade_label(P, r, xg, dcell, W, gp, G):
     X = pd.DataFrame(rows)
     X["rel"] = X.pred / X.actual - 1
     X["status"] = np.where(~X.gate, "UNDERPOWERED", np.where(X.rel.abs() <= X.tol, "PASS", "FAIL"))
+    if CFG.get("en_reported"):           # D28: EN strata reported with n, gate at stage 8
+        X.loc[(X.level == "group") & X.cell.isin(["ENF", "ENA"]), "status"] = "reported (EN, gates at stage 8, D28)"
     out["xg"] = X
     # tier and type shares
     tr = []
@@ -114,6 +116,8 @@ def grade_label(P, r, xg, dcell, W, gp, G):
                            actual_pct=At[m, k].mean() * 100 if n else np.nan, diff_pp=d,
                            status="UNDERPOWERED" if not gate else ("PASS" if abs(d) <= MIX_PP else "FAIL")))
     out["tier"] = pd.DataFrame(tr)
+    if CFG.get("en_reported"):
+        out["tier"].loc[out["tier"].level.isin(["ENF", "ENA"]), "status"] = "reported (EN, gates at stage 8, D28)"
     Py = np.stack([P[:, CLASS_TYPE == k].sum(1) for k in range(N_TYPE)], 1)
     Ay = np.eye(N_TYPE)[CLASS_TYPE[cls]]
     ty = pd.DataFrame({"type": TYPE_NAMES, "pred_pct": Py.mean(0) * 100, "actual_pct": Ay.mean(0) * 100})

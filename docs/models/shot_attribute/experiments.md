@@ -289,3 +289,15 @@ L3c is eligible if it passes every fold-2 bias check and the ES responsiveness b
 - **EN strata** are reported, not gated, and gate at stage 8.
 - **Listed:** the fold-1 under-response (0.37 / 0.49) and pooled-ES type-given-cell for 4v4 / 3v3. The fold-2 band decides.
 - **Resume:** `docs/briefs/lane_A4b_shot_attribute_r4_resume_2026-10-16.md`.
+
+### SL-R4 results after D28 (Lane A4b, 2026-10-16; report `docs/tests/shot_attribute_sl_r4_2026-10-16.md` "Resume after D28", grade `docs/tests/shot_attribute_sl_r4_grade_2026-10-16.md`)
+
+- **Restated D13 guard** (fold 1, L3c minus L0s): **PASS**. xG overall +0.13%, groups within 0.21%, tiers within 0.16 pp, types within 0.05 pp. Recorded in `grade_fold1.json` with `d13_guard_basis`; the original result (false) is kept.
+- **Fold 2 (blind).** L3c vs L0s is +0.1405 nats per game (SE 0.0160), with a seed floor of 0. L3c is NOT eligible:
+  - ES responsiveness 0.675 (CI 0.50-1.06) / 0.529 (CI 0.39-0.79): FAIL;
+  - xG overall +2.0007%: FAIL (marginal; L0s is +1.86%);
+  - PK +3.31%: FAIL (L0s +2.86%).
+  - Tiers and types pass. EN is reported: ENF +0.39%, ENA +2.49%.
+  - Per state (reported): 4v4 -3.2% and 3v3 -3.1% xG, both UNDERPOWERED.
+- **No arm selected.** The closed loop was skipped and no engine change was made.
+- Status: BUILDING; the PM rules. Proposal: re-tune the booster's capacity under the L0s start, with the fold-1 spread reported per grid cell.

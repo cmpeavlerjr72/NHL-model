@@ -124,3 +124,95 @@ For this, `grade_fold1.json` must be re-ruled: the gate in `pred2` reads `d13_gu
 - Grader: `scripts/grade_shot_attribute.py`, with a new `--round r4`. The r1 / r2 paths are unchanged, apart from an unused per-state table computed only when `states` is set.
 - Reports: this file and `docs/tests/shot_attribute_sl_r4_grade_fold1_2026-10-16.md`.
 - Results (gitignored): `results/shot_attribute_r4/` (fit2.log, insample.json / .log, fold1/, grade_fold1.json, fold1/level_diag.json).
+
+---
+
+## Resume after D28 (Lane A4b, 2026-10-16)
+
+D28 (e96f793) restates the D13 guard as the fold-1 SL-R1 checks read on **L3c minus L0s**, with the oracle read reported alongside. EN strata are reported, not gated; they gate at stage 8. The restatement was committed before anything on fold 2 was predicted.
+
+**Outcome:**
+- The restated guard **PASSES**.
+- On fold 2, **L3c is not eligible**, so no arm is selected:
+  - ES responsiveness is 0.675 / 0.529 against the [0.8, 1.2] band (FAIL);
+  - xG overall is +2.0007% against the 2.000% limit (FAIL, marginal);
+  - PK is +3.31% against 3% (FAIL).
+- L3c beats L0s by +0.141 nats per game (SE 0.016).
+- The closed loop was skipped, as specified. No engine change was made.
+
+### Clock (Get-Date, EDT)
+
+| step | start | end |
+|---|---|---|
+| resume start (pull e96f793) | 11:48:30 | |
+| restated D13 guard (fold 1 only) | 11:48:54 | 11:48:57 |
+| pred2 (fold-2 hash-labelled predictions) | 11:49:07 | 11:49:12 |
+| blind fold-2 grade (`--round r4 --fold 2`) | 11:49:12 | 11:49:15 |
+
+### 1. Restated D13 guard (fold 1): PASS
+
+Computed by `scripts/diag_shot_attribute_r4_d13_restated.py`; the table is in `results/shot_attribute_r4/fold1/d13_restated.csv`.
+
+**L3c minus L0s, with the SL-R1 tolerances:**
+- xG overall: +0.13%.
+- xG by group: ES +0.19%, PP -0.05%, PK +0.21%. EN is 0 by construction (reported).
+- xG by month: the largest powered month is +0.19%.
+- Tiers: every cell is within 0.16 pp.
+- Types: every type is within 0.05 pp.
+
+**Recorded in `grade_fold1.json`:**
+- `d13_guard_basis: "L3c-minus-L0s (D28)"`
+- `d13_guard_pass: true`
+- `d13_guard_pass_original: false`
+
+The oracle read is attached to the same file: L3c +0.52% xG, tiers within 0.03 pp.
+
+### 2. Fold-2 blind grade
+
+The grade report is `docs/tests/shot_attribute_sl_r4_grade_2026-10-16.md`. It uses one grader for every arm, with labels hashed until scoring was complete. The grader now marks EN group and tier cells "reported (EN, gates at stage 8, D28)" for r4 only.
+
+| arm | LL / att | LL / game vs L0s (SE) | xG overall | xG fails | tier / type fails | ES resp for / against (95% CI) | eligible |
+|---|---:|---:|---:|---|---|---|---|
+| L0s | -3.21341 | 0 | +1.86% | none | none | -0.00 / 0.02 | no (flat, D24) |
+| **L3c** | -3.21177 | **+0.1405 (0.0160)** | **+2.0007%** | overall, PK +3.31% | none | **0.675 (0.50-1.06) / 0.529 (0.39-0.79)** | **no** |
+
+- **Seed floor:** L3cs2 is bit-identical to L3c, so the floor is 0 (D26).
+- **Per group, L3c:**
+  - xG: ES +2.65%, PP -0.48%, PK +3.31%, ENF +0.39% (reported), ENA +2.49% (reported).
+  - Tiers overall: +0.59 / -0.45 / -0.14 pp.
+- **Per state, L3c (reported):**
+
+  | state | xG | medium tier |
+  |---|---:|---:|
+  | 5v5 | +2.84% | |
+  | 4v4 | -3.18% | -5.2 pp |
+  | 3v3 | -3.07% | -9.0 pp |
+
+  4v4 and 3v3 are UNDERPOWERED.
+- **Decision as pre-registered:**
+  - L3c fails the bias checks: overall by 0.0007 pp, and PK +3.31%.
+  - L3c fails the ES responsiveness band on both sides. Against is decisive: the CI upper bound is 0.79.
+  - L3c is not worse than L0s; it is better by 8.8 SE.
+  - **No arm selected.** shot_attribute stays BUILDING.
+
+### 3. Reading (for the PM)
+
+- **The under-response is the binding failure.**
+  - Fold 1 was 0.37 / 0.49; fold 2 is 0.67 / 0.53.
+  - SL-R2's L3m, started from the class frequency, gave 1.09 / 0.86 on fold 2.
+  - The baseline start with the SL-R3 booster (lr 0.02, 31 rounds, frozen on fold 1 under an L0m start) leaves too little capacity for the rating terms.
+  - The tuning was done for L3b with an L0m start, and SL-R4 reused it as written.
+  - The next respec would be the booster's capacity (rounds / lr) re-tuned under the L0s start, with the fold-1 responsiveness spread reported per grid cell (the L24 guard).
+- **The xG +2.0007% fail is marginal.** L0s is +1.86% on the same rows, so the level carries most of it. The trees add +0.14 pp.
+- **PK +3.31% is mostly the baseline.** L0s is +2.86% on PK, and SL-R2's L0m was +2.86% too. The trees add +0.45 pp.
+- **4v4 / 3v3:**
+  - Medium-tier gaps shrink from -14.5 / -10.4 pp in the SL-R3 L0m loop to -5.2 / -9.0 pp offline.
+  - xG is still about -3%.
+  - This is consistent with the in-sample L0s -4.4% / -4.6% from the pooled-ES type-given-cell (listed in D28).
+
+### Files (resume)
+
+- `scripts/diag_shot_attribute_r4_d13_restated.py` (new).
+- `scripts/grade_shot_attribute.py`: r4 `en_reported`.
+- `docs/tests/shot_attribute_sl_r4_grade_2026-10-16.md` (fold-2 grade).
+- `results/shot_attribute_r4/` (gitignored): grade_fold1.json, grade_fold2.json, fold1/d13_restated.csv, pred2.log.
