@@ -422,3 +422,11 @@ The per-season L1-style coefficient on each construction (the SL-R1 rating, Qr, 
 - **D28 guard (fold 1, L1x minus L0s): PASS.** Everything within 0.07% xG and 0.09 pp.
 - **Stopped before fold 2.** Nothing on 2024-25 was predicted or read; no engine change, no closed loop.
 - Status: BUILDING; the PM rules. Proposal: accept the L33 OT exclusion (L1x-ot0) as a pre-holdout construction fix, then predict fold 2.
+
+---
+
+## PM ruling on the SL-R6 in-sample stop (2026-10-16, D38)
+
+- L1x-ot0 (no score terms on OT rows, per L33) is applied before any fold-2 read, with all else frozen.
+- The in-sample check and the D28 guard are re-run; if either fails, the round has failed.
+- Then the round continues as pre-registered: fold-2 grade with the D32 R gate, then the closed loop if selected.

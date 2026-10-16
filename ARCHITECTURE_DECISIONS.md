@@ -422,3 +422,18 @@ Status: ADOPTED.
 - **Decision.** S0t (tier level x cell x type x group) replaces S0 as the labelled stand-in. Miss team terms are parked after two rounds; the re-selection of the arena prior (c) is noted as a candidate, not pre-authorised. For miss-vs-SOG the location / tier / level carry the predictable signal; team terms are a refinement.
 
 Status: ADOPTED.
+
+## D38 (2026-10-16): SL-R6 in-sample stop; the OT construction fix (L33) is applied before any fold-2 read
+
+- **The stop.** L1x failed the inherited in-sample stratum check at 3v3 by 0.003 pp (-0.503%, limit 0.5%; n 3,752). Lane A6 was right to treat the check as inherited from SL-R4. Nothing on fold 2 has been predicted or read.
+- **Cause.** A PM construction gap: SL-R4 kept EN rows on the baseline (L33) but not OT rows. Every 3v3 row is OT and tied, so the pooled regulation score terms double-count on an OT baseline that already carries that state.
+- **Ruling.** This is the same kind of ruling as D28: a construction fix that applies an existing learning, made before any holdout read, within the round the user granted. It is not a new round.
+  - L1x-ot0 sets the score terms to zero on OT rows.
+  - The in-sample check and the D28 guard are re-run. Everything else stays frozen: Qa x0.75, the level M1 K500 (D35), the scales.
+  - If either check fails, the round is reported as failed.
+  - The fix extends L33 from EN to OT rows, which the learning already covers ("empty net, OT").
+- **Also accepted.**
+  - Grader `--round r6` gates responsiveness on the D32 R.
+  - The D35 switch to M1 K500 was made before any fold-2 read.
+
+Status: ADOPTED.
