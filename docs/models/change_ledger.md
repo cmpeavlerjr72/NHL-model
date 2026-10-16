@@ -16,3 +16,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | strength_state | TESTING | TESTING (ruling) | D14: H3''+T1 accepted with listed Jan-2025 bias, pending clean G1 (INV-28) | (this commit) |
 | 2026-10-15 | strength_state | TESTING | TESTING | SS-R3 closed-loop G1 (INV-28): parity test passes; RS cells PASS for H3'' and H2''; D14 decomposition CLEAN (H3'' RS +0.061 PP opps, no component > 0.15); responsiveness slopes but over-steep; see docs/tests/strength_state_g1_ssr3_2026-10-15.md | (this commit) |
 | 2026-10-15 | strength_state | TESTING | CONFIRMED-INCUMBENT (provisional) | D15: G1 RS PASS, CLEAN (b513691); rating over-response INV-29 open | (this commit) |
+| 2026-10-15 | shot_attempt | - | OPEN | SA-R1 pre-registered in shot_attempt/experiments.md | (this commit) |
