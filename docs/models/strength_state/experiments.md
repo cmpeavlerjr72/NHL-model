@@ -394,3 +394,9 @@ From the G1 decomposition: PP-opportunities-conferred spread ratios (own taken-r
 ### Results
 
 (append below this line)
+
+#### LC-2 results (Lane L2, 2026-10-16; full report `docs/tests/strength_state_lc2_2026-10-16.md`)
+
+- **Step 0 (H0'' level-only parity, genuine-prior seasons 2022-23 / 2023-24):** NO construction passes 0.5%. Max |parity| over both folds: L1 2.24%, L2c 1.85%, L2a k50/200/800 2.15/1.89/1.67%, L2b hl14/30/60 0.93/1.36/1.75%. Oracle O is 0 to rounding at the level (<= 4e-16) in both folds. **Selected by the fallback rule: L2b hl14** (smallest max |parity|; fold-2 train 2023-24 +0.93% is the listed failure; fold 1 +0.13%; exposure-weighted mean parity +0.13% fold 1, +0.29% fold 2). Fold-1 test level-only bias +1.40% (L1 +3.39%). The oracle still has fold-1 test month bias of -7.5% Oct to +7.8% Apr: the SS-R3 profile, not the level path, carries the largest remaining seasonal error.
+- **Step 1:** H0''-H3'' (+ H3'' seed 2) refit with L2b hl14 + T2. Bias checks PASS on all four arms (January 2025 +7.6% listed); fold-2 LL/game H3''L - H3'' -0.0015 (SE 0.0023, not worse by > 2 SE; seed floor 0.0011). G1 (200 seeds): RS cells PASS and RS decomposition CLEAN for H3''-LC2 and H2''-LC2; overall CLEAN; playoffs UNDERPOWERED (H2'' COMPENSATED). SS-R3c acceptance met as written for H3''-LC2.
+- **Step 2 (INV-29, Q5-Q1 spread ratio sim/actual):** H3''-LC2 RS taken 1.10, RS drawn 1.11, all-games taken 1.13, all-games drawn 1.19; spread-difference 95% team-bootstrap CIs contain 0 in every cell (ratio CIs unstable). H2''-LC2: 1.42 / 1.41 / 1.47 / 1.54, outside the band. PM rules.
