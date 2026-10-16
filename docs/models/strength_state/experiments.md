@@ -205,3 +205,17 @@ This is the same as SS-R2, for the selected arm and the next simpler arm that pa
 - G1, fold 2, 200 seeds, SS-R1 stub (unchanged), T1. 100- vs 200-seed shifts are <= 0.03 min on TOI and <= 0.011 on PP opps. Regular season, H3'': every toleranced cell PASS; PP opps / team-game 2.625 vs 2.564 (+0.061), SD 1.382 vs 1.261. H2'': PASS, 2.609 (+0.045). Overall: H3'' 2.635 (+0.051), H2'' 2.618 (+0.034). Playoffs (172 team-games): UNDERPOWERED. 3v3 TOI, EN TOI and the PP-goal share: STUB-DEPENDENT.
 - D14 decomposition of sim - actual PP opps (RS, H3''): hazard level +0.046, unreachable 'other' state -0.040, state-visit -0.005, sim-path remainder +0.037, PP opps per event +0.023. No component exceeds the 0.15 tolerance. **Verdict CLEAN** (H2'' RS CLEAN; overall CLEAN for both). The playoff decomposition reads COMPENSATED (hazard level -0.21 against +0.18 from the others) at n = 172, UNDERPOWERED.
 - Responsiveness, H3'': the sim slopes with team taken-rating and opponent drawn-rating quintiles, tracking the offline predictions. It is steeper than actual: the top-minus-bottom spread of PP opps conferred is 0.63 sim vs 0.41 actual (taken), 0.44 vs 0.24 (drawn). Sim PP opps are over-dispersed (P(0) 4.2% vs 2.6%). Local run (no AWS): a 17 min/arm projection, and the in-flight runs finished before a box request could.
+
+---
+
+## PM ruling on the SS-R3 closed-loop G1 (2026-10-15, D15): H3''+T1 is the provisional stage-1 incumbent
+
+- **D14 condition met.** The regular-season G1 cells pass for H3'' (PP opportunities 2.625 vs 2.564, tolerance 0.15), and the decomposition reads CLEAN. The parity test passes, and seeds are stable to 0.011.
+- **Status: CONFIRMED-INCUMBENT (provisional).** Stage 3 may consume the strength-state timeline from this arm.
+- **Open defect, which blocks per-team use (INV-29).** The closed-loop response to the team ratings is too steep: the top-minus-bottom quintile spread is 0.63 vs 0.41 actual on the taken rating and 0.44 vs 0.24 on the opponent drawn rating, about 3 SE each. The likely locus is under-shrunk as-of ratings or H3'' rating interactions. No team-level penalty or PP-opportunity output, and nothing downstream of team PP opportunities (team PP props, PP-unit points), may be graded or used for markets until INV-29 resolves it in a pre-registered bake-off that also checks responsiveness on fold 1.
+- **Monitoring items:**
+  - January 2025 +8.6% (D14);
+  - the playoff hazard level, 3.48 vs 3.75 events per team-game (UNDERPOWERED, n = 172 team-games);
+  - per-game over-dispersion, P(0 PP opps) 4.2% vs 2.6%;
+  - the (a') goalie-pull state the sim cannot visit, which waits for stage 8.
+- **Process note.** Lane H4's projected two-arm run was about 17 min, so it should have gone to the box queue, but it ran locally. The cost was nil. From now on, lanes file the box request before launching, not after.

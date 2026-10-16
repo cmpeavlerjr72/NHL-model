@@ -135,3 +135,15 @@ Decision, using the D13 option:
 - There is no SS-R4. Per-month penalty bias joins the live monitoring list.
 
 Reason: `docs/tests/strength_state_ss_r3_2026-10-15.md`. Status: ADOPTED (INV-28).
+
+## D15 (2026-10-15): Stage 1 (strength state) provisional incumbent: H3'' + T1
+
+The closed-loop G1 (b513691) passes the regular-season cells, with a CLEAN decomposition (H3'' PP opportunities 2.625 vs 2.564; no component near the 0.15 tolerance).
+
+Decision:
+
+- H3'' (LightGBM penalty hazard, with the in-season level and the season-phase profile) plus T1 is the provisional stage-1 incumbent. Stage 3 builds on its timeline.
+- Open defect INV-29: the sim's response to team penalty ratings is about 1.5-1.8x the actual quintile spread. Until a pre-registered fix passes, no team-level penalty or PP-opportunity quantity is used for markets or props.
+- Monitoring items are listed in the strength_state experiments ruling.
+
+Reason: `docs/tests/strength_state_g1_ssr3_2026-10-15.md`. Status: ADOPTED.

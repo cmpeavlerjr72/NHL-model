@@ -7,7 +7,7 @@ Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION 
 | Model | Cascade stage | Status | Doc |
 |---|---|---|---|
 | control | yardstick | CONFIRMED-INCUMBENT (A0, D9) | [model](control/model.md) |
-| strength_state | 1 | BUILDING (SS-R1 pre-registered) | [experiments](strength_state/experiments.md) |
+| strength_state | 1 | CONFIRMED-INCUMBENT (provisional, H3''+T1, D15; INV-29 open) | [model](strength_state/model.md) |
 | deployment | 2 | OPEN | - |
 | shot_attempt | 3 | OPEN | - |
 | shot_attributes | 4 | OPEN | - |
