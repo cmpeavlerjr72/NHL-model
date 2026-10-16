@@ -18,3 +18,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | strength_state | TESTING | CONFIRMED-INCUMBENT (provisional) | D15: G1 RS PASS, CLEAN (b513691); rating over-response INV-29 open | (this commit) |
 | 2026-10-15 | shot_attempt | - | OPEN | SA-R1 pre-registered in shot_attempt/experiments.md | (this commit) |
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R4 (INV-29 rating response) pre-registered | (this commit) |
+| 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R4 (INV-29): stop condition met (offline fold-1 spread ratio 0.81/0.85); arms not run; lead: T1 has no rating features; replay regression confirmed; see docs/tests/strength_state_ss_r4_2026-10-15.md | (this commit) |

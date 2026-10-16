@@ -255,3 +255,10 @@ This is NOT the January follow-up that D14 ruled out. It addresses the separate 
 ### Results
 
 (append below this line)
+
+#### SS-R4 results (Lane P, 2026-10-15; full report `docs/tests/strength_state_ss_r4_2026-10-15.md`)
+
+- Replay regression (current engine, fold-1 seasons): default expire-first 99.993% gap-aware / 98.134% strict; lazy-expiry 99.990% / 98.131%. SS-R1 numbers CONFIRMED.
+- Diagnosis: incumbent H3'' offline spread ratio on fold 1 = 0.81 (own taken, SE 0.12) and 0.85 (opp drawn, SE 0.18); fold 2 = 1.12 / 0.98. H2'' = 1.10 / 1.01 (fold 1), 1.36 / 1.16 (fold 2). No phase pattern separable from noise; the early-season carry-over hypothesis is not supported.
+- **Stop condition met** (fold-1 ratios both inside [0.8, 1.2]). Arms R0-R2, the grid, fold-2 grading and G1 were NOT RUN. INV-29 stays open; the D15 team-PP block stands.
+- Lead (not a finding): the closed-loop excess is in the penalty -> PP-opportunity step. Actual PP opps conferred per penalty fall with the team taken-rating (0.813 Q0 -> 0.754 Q4), the sim stays flat (0.785 -> 0.790); the coincidental share rises 16.0% -> 20.8% across taken quintiles and T1 has no rating feature. PM to decide on a type-arm bake-off.
