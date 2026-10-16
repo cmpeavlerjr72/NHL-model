@@ -28,6 +28,7 @@ from nhl_sim.shot_attribute.tables import N_CLASS
 XG_FLOOR = 0.005
 RIDGE = 1e-5                       # on the per-row mean loss (= 1e-5 x n in sum form; prior SD on W about 1 / sqrt(1e-5 n))
 REF_CLASS = 4 * 6 + 0               # gauge: W column of the reference class (20-30 ft, <= 30 deg, wrist+snap) is pinned at 0
+SCORE_COLS = [1, 2, 3, 4, 5, 6]     # sc0 .. sc6 columns of FEATS
 FEATS = ["is_home", "sc0", "sc1", "sc2", "sc4", "sc5", "sc6", "b2b_own", "b2b_opp"]
 
 
@@ -126,11 +127,22 @@ def inputs(r: pd.DataFrame, l0s: dict, off: np.ndarray, xg: np.ndarray, own_col=
     return B, C, r[own_col].to_numpy(float), r[opp_col].to_numpy(float), feat_matrix(r), r.cls.to_numpy().astype(np.int64)
 
 
-def fitter_for(r, l0s, off, xg, own_col="own_r", opp_col="opp_r", xbar=None):
+def zero_ot_score(Xc: np.ndarray, rr: pd.DataFrame) -> np.ndarray:
+    """L1x-ot0 (D38, L33): the centred score-bucket terms are switched off on OT rows (period type OT), in fit and
+    serving, so OT rows get no score deviation on top of their state baseline. Home and rest terms are unchanged."""
+    ot = rr.ptype.to_numpy() == 1
+    Xc[np.ix_(ot, SCORE_COLS)] = 0.0
+    return Xc
+
+
+def fitter_for(r, l0s, off, xg, own_col="own_r", opp_col="opp_r", xbar=None, ot0=False):
     m = MS.booster_rows(r)
     rr = r[m]
     B, C, own, opp, X, y = inputs(rr, l0s, off[m], xg, own_col, opp_col)
-    return Fitter(B, C, own, opp, X, y, xbar), rr
+    f = Fitter(B, C, own, opp, X, y, xbar)
+    if ot0:
+        zero_ot_score(f.X, rr)
+    return f, rr
 
 
 def predict_l1x(m: dict, l0s: dict, r: pd.DataFrame, off: np.ndarray, xg: np.ndarray, own_col="own_r",
@@ -141,6 +153,9 @@ def predict_l1x(m: dict, l0s: dict, r: pd.DataFrame, off: np.ndarray, xg: np.nda
     if msk.any():
         rr = r[msk]
         B, C, own, opp, X, _ = inputs(rr, l0s, off[msk], xg, own_col, opp_col)
-        Z = B + (m["s_f"] * own + m["s_a"] * opp)[:, None] * C + (X - np.asarray(m["xbar"])) @ np.asarray(m["W"])
+        Xc = X - np.asarray(m["xbar"])
+        if m.get("ot0"):
+            zero_ot_score(Xc, rr)
+        Z = B + (m["s_f"] * own + m["s_a"] * opp)[:, None] * C + Xc @ np.asarray(m["W"])
         P[msk] = _softmax(Z)
     return P

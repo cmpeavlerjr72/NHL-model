@@ -44,13 +44,14 @@ from nhl_sim.shot_attribute.tables import (GROUP_NAMES, N_CELL, N_CLASS, N_TYPE,
                                            RATING_GROUP, TIER_NAMES, TIER_OF_CELL)
 
 LEVEL = "M1_K500"          # D35 (PM correction): level E cannot be selected; SL-R2 fallback among non-E = M1 K500
-RES = Path("results/shot_attribute_r6_d35")
+OT0 = True                 # D38: L1x-ot0, score terms zeroed on OT rows (L33); scales / construction / level frozen
+RES = Path("results/shot_attribute_r6_d38")
 RES2 = Path("results/shot_attribute_r2")
 FROZEN = Path("docs/models/shot_attribute/sl_r6_d35_frozen_params.json")
 GRIDCSV = Path("docs/models/shot_attribute/sl_r6_d35_grid_fold1.csv")
 STEP0 = Path("docs/models/shot_attribute/sl_r6_step0.json")
 LEVELS = M.SA / "mix_level_v2.parquet"
-SALT = "SL-R6-D35-2026-10-16"
+SALT = "SL-R6-D38-2026-10-16"
 F = {1: ([20212022, 20222023], 20232024), 2: ([20212022, 20222023, 20232024], 20242025)}
 ARMS = ("L0s", "L1x", "L1xs2")
 MULTS = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0)
@@ -298,8 +299,10 @@ def outdir(fold):
 
 
 def _fit_fixed(tr, l0s, otr, xg, oc, pc, s, seed):
-    fzr, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc)
-    return fzr.fit(s_fixed=s, seed=seed)
+    fzr, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc, ot0=OT0)
+    m = fzr.fit(s_fixed=s, seed=seed)
+    m["ot0"] = OT0
+    return m
 
 
 def fit_fold(fold):

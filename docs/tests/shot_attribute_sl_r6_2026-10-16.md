@@ -177,3 +177,53 @@ Options (proposals; the PM decides):
 - No sim.py change and no closed loop.
 
 Resume: `scripts/train_shot_attribute_v6.py fit2 | insample | fold1 | guard | pred2` (level M1 K500), then `grade_shot_attribute.py --round r6 --fold 2` once it is written.
+
+## Resume after D38
+
+D38 (dbee933) accepted option 2: **L1x-ot0**, the same model with the centred score-bucket terms set to zero on OT rows, in fit and serving. Home and rest terms are unchanged. Everything else is frozen: Qa x0.75 (s_f 1.1947, s_a 0.9715), level M1 K500 (D35), and `sl_r6_d35_frozen_params.json`. Code: `models_x.zero_ot_score`; `train_shot_attribute_v6.py` with OT0 = True. Outputs: `results/shot_attribute_r6_d38`, salt `SL-R6-D38-2026-10-16`.
+
+Clock (EDT):
+
+| step | start | end |
+|---|---|---|
+| fold-2 and fold-1 fits (concurrent) | 13:12:00 | 13:14:36 |
+| in-sample check, D28 guard | 13:14:36 | 13:14:51 |
+| grader `--round r6`: fold-1 diagnostic, then pred2, then blind fold-2 grade | 13:15:16 | 13:15:48 |
+
+**Fits.** The fold-2 loss is 3.1847931 per row for both L1x and L1xs2 (seeded start), with max |dP| 9.5e-7. The floor is 0, and EN rows are bit-identical to L0s.
+
+**In-sample check (fold-2 training rows): PASS.** L1x-ot0 vs L0s:
+
+| stratum | 5v5 | PP | PK | 4v4 | 3v3 |
+|---|---|---|---|---|---|
+| xG | +0.023% | +0.078% | +0.048% | +0.119% | -0.021% |
+
+5v5 OT is -0.71% (n 857, not gated).
+
+**D28 guard (fold 1, L1x-ot0 minus L0s): PASS.** xG overall +0.023%, ES +0.009%, PP +0.077%, PK +0.003%, no FAIL row. Fold-1 R is 0.969 / 0.945 (oracle level: 0.966 / 0.951).
+
+**Grader.** `grade_shot_attribute.py --round r6` gates ES responsiveness on the D32 R (row deciles of the arm's own as-of Qa rating; game-block bootstrap 1,000). The old team-game Q5-Q1 is reported alongside. The grader reproduces the trainer's fold-1 R (0.969 / 0.945).
+- Fold-1 grade (diagnostic, `docs/tests/shot_attribute_sl_r6_grade_fold1_2026-10-16.md`): its absolute SL-R1-style bias read shows PK tier cells of +1.61 / -2.26 pp. Those come from the level read on fold 1 and are not the gate; the D28 guard on the deviation passed.
+
+### Fold 2 (blind, 2024-25, 119,924 unblocked attempts; `docs/tests/shot_attribute_sl_r6_grade_2026-10-16.md`)
+
+| arm | LL/game vs L0s (SE) | xG overall | ES | PP | PK | tiers / types | **R ES for (CI)** | R ES against (CI) | old Q5-Q1 for / against |
+|---|---|---|---|---|---|---|---|---|---|
+| L0s | 0 | +0.46% | | | | PASS | -0.30 | 0.43 | |
+| **L1x-ot0** | **+0.0467 (0.0181)** | +0.46% | +0.52% | -0.01% | +2.45% | all PASS (max 0.81 pp, PK high) | **1.291 (0.99-1.82) FAIL**, UNDERPOWERED | 0.966 (0.73-1.39) PASS, UNDERPOWERED | 1.330 / 1.037 |
+
+- **Bias checks:** every gated bias check passes, months included. EN is reported: ENF -1.0%, ENA +1.2%.
+- **Seed arm:** L1xs2 is identical (floor 0).
+- **PP / PK R (reported):** PP 0.23 / 0.15; PK 0.56 / 0.68 (UNDERPOWERED).
+- **Per state (reported):** 5v5 +0.67%; 4v4 -4.5% and 3v3 -3.8% (UNDERPOWERED).
+
+**Decision (as pre-registered):**
+- L1x-ot0 is **not eligible**: ES "for" R is 1.291, above the 1.2 band. Its CI (0.99-1.82) is wider than the band, so it is labelled UNDERPOWERED, but the point estimate gates (D18 / D32).
+- It is not worse than L0s; it is better by 2.6 SE.
+- **No arm is selected.** Under SL-R6 / D38, **the round has failed.**
+- There is no engine change and no closed loop: step 5 applies only on selection, and sim.py was not touched. There is no SL-R7 without the user.
+
+**Reading:**
+- "Against" lands in band on both folds (0.944 fold 1, 0.966 fold 2).
+- "For" moves from 0.969 on fold 1 to 1.291 on fold 2. The fixed scale chosen on fold 1 over-responds on the next season. This matches the step-0 finding that the Qa "for" coefficient falls season on season (1.75, 1.50, 1.21; trend z -2.5): a scale set on 2021-23 is too large for 2024-25.
+- The arena-free construction removed the arena contamination, but not the per-season decline in the "for" response.

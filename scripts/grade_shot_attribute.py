@@ -21,6 +21,8 @@ Only then is labels_sealed.json opened to apply the decision rule (fold 2) or at
                                        xG and tier rows are REPORTED, not gated (not pre-registered as gates).
     grade_shot_attribute.py --round r5 --fold 2   SL-R5 (L0s, L3d; seed pair L3d / L3ds2, floor 0): same decision as
                                        r4 (the D28 guard is computed by train_shot_attribute_v5.py guard, not here)
+    grade_shot_attribute.py --round r6 --fold 2   SL-R6 (L0s, L1x = L1x-ot0 per D38; seed pair L1x / L1xs2): decision as r4,
+                                       with responsiveness gated on the D32 slope ratio R (old Q5 - Q1 reported)
     grade_shot_attribute.py --round r2 --fold 2|1   SL-R2 (L0m < L1m < L3m, seed pair L3m / L3ms2; references L0 and
                                        L0o (oracle level) graded blind but never selectable; arena reported, not gated, D23)
                                        -> docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md
@@ -35,6 +37,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from nhl_sim.eval.responsiveness import slope_ratio  # noqa: E402
 from nhl_sim.shot_attribute.models import load_rows  # noqa: E402
 from nhl_sim.shot_attribute.tables import (GROUP_NAMES, N_CELL, N_CLASS, N_TYPE, TIER_NAMES, TIER_OF_CELL,  # noqa: E402
                                            TYPE_NAMES, cell_distance)
@@ -62,7 +65,12 @@ ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_at
                      report_f1="docs/tests/shot_attribute_sl_r5_grade_fold1_2026-10-16.md",
                      salt="SL-R5-2026-10-16", arms=("L0s", "L3d"), seed=("L3d", "L3ds2"), refs=(),
                      arena_gate=(), title="SL-R5 blind grade (Lane A5, 2026-10-16)", spec="SL-R5", decision="r4",
-                     states=True, en_reported=True)}
+                     states=True, en_reported=True),
+          "r6": dict(res="results/shot_attribute_r6_d38", report="docs/tests/shot_attribute_sl_r6_grade_2026-10-16.md",
+                     report_f1="docs/tests/shot_attribute_sl_r6_grade_fold1_2026-10-16.md",
+                     salt="SL-R6-D38-2026-10-16", arms=("L0s", "L1x"), seed=("L1x", "L1xs2"), refs=(),
+                     arena_gate=(), title="SL-R6 blind grade (Lane A6, 2026-10-16; L1x-ot0 per D38, level M1 K500 per D35)",
+                     spec="SL-R6", decision="r4", states=True, en_reported=True, resp="slope")}
 CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
 CLASS_TYPE = np.tile(np.arange(N_TYPE), N_CELL)           # class -> type
@@ -181,12 +189,21 @@ def grade_label(P, r, xg, dcell, W, gp, G):
             rt, pm, am = ratio(np.ones(G))
             br, _, _ = ratio(W)
             lo, hi = np.percentile(br, [2.5, 97.5])
+            old = dict(old_q5q1=float(rt), old_lo=float(lo), old_hi=float(hi))
+            if CFG.get("resp") == "slope":      # D32: R = 1 / slope over row deciles of the as-of rating gates
+                sr = slope_ratio(pred_xg[m], act_xg[m], x[col].to_numpy(), np.ones(int(m.sum())), x.game_id.to_numpy(),
+                                 n_boot=NB, seed=0)
+                rt, (lo, hi) = sr["R"], sr["ci"]
+                old["helper_old_q5q1"] = sr["old_q5q1"]
             if g == 0:
                 st = "PASS" if BAND[0] <= rt <= BAND[1] else "FAIL"
+                if CFG.get("resp") == "slope" and (hi - lo) > (BAND[1] - BAND[0]):
+                    st += " (UNDERPOWERED)"
             else:
                 st = "UNDERPOWERED (reported)" if (hi - lo) > (BAND[1] - BAND[0]) else "reported"
             resp[(GROUP_NAMES[g], nm)] = dict(ratio=float(rt), lo=float(lo), hi=float(hi), status=st,
-                                              pred_q=np.round(pm, 5).tolist(), act_q=np.round(am, 5).tolist())
+                                              pred_q=np.round(pm, 5).tolist(), act_q=np.round(am, 5).tolist(),
+                                              **(old if CFG.get("resp") == "slope" else {}))
     out["resp"] = resp
     # segments
     seg = {"rebound": r.rebound.to_numpy(), "rush": r.rush.to_numpy(),
@@ -305,7 +322,10 @@ def write(fold):
               "Type shares (pp):", "", md(R["type"].set_index("type"), ".3f"), "",
               *(["Per team-view state (5v5 / 4v4 / 3v3 split; REPORTED, not a pre-registered gate):", "",
                  md(R["states"].set_index("state"), ".4f"), ""] if "states" in R else []),
-              "Responsiveness (Q5 - Q1 spread of mean xG_ref per attempt, pred / actual; 95% game-bootstrap CI):", "",
+              ("Responsiveness (D32: ratio = R = 1 / slope of actual on predicted over row deciles of the as-of rating; "
+               "95% game-block bootstrap CI; ES gates [0.8, 1.2]; old_q5q1 = the SL-R1 team-game Q5 - Q1 ratio, reported):"
+               if CFG.get("resp") == "slope" else
+               "Responsiveness (Q5 - Q1 spread of mean xG_ref per attempt, pred / actual; 95% game-bootstrap CI):"), "",
               md(pd.DataFrame({f"{k[0]} {k[1]}": {kk: (str(vv) if isinstance(vv, list) else vv) for kk, vv in v.items()}
                                for k, v in R["resp"].items()}).T, ".3f"), "",
               f"Arena (n >= {N_ARENA_MIN} attempts powered): slope of (pred - actual cell-representative distance) on "

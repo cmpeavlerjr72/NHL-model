@@ -430,3 +430,15 @@ The per-season L1-style coefficient on each construction (the SL-R1 rating, Qr, 
 - L1x-ot0 (no score terms on OT rows, per L33) is applied before any fold-2 read, with all else frozen.
 - The in-sample check and the D28 guard are re-run; if either fails, the round has failed.
 - Then the round continues as pre-registered: fold-2 grade with the D32 R gate, then the closed loop if selected.
+
+### SL-R6 results after D38 (Lane A6, 2026-10-16; report `docs/tests/shot_attribute_sl_r6_2026-10-16.md` "Resume after D38", grade `docs/tests/shot_attribute_sl_r6_grade_2026-10-16.md`)
+
+- **L1x-ot0** (score terms zero on OT rows; Qa x0.75, M1 K500, scales frozen):
+  - in-sample check PASS (3v3 -0.02%; every gated stratum within 0.12%);
+  - D28 guard PASS (within 0.08%).
+- **Fold 2 (blind):** L1x-ot0 vs L0s is +0.0467 nats per game (SE 0.0181).
+  - Every gated bias check passes: xG +0.46%, PK +2.45%, tiers within 0.81 pp.
+  - **ES responsiveness R: for 1.291 (CI 0.99-1.82, UNDERPOWERED) FAIL; against 0.966 PASS.** The old Q5-Q1 is 1.33 / 1.04.
+- **Not eligible, so no arm is selected; the round has failed (D38).** No engine change, no closed loop.
+- The "for" scale chosen on fold 1 (R 0.97) over-responds on fold 2, consistent with the falling per-season Qa "for" coefficient in step 0.
+- Status: BUILDING (SL-R6 failed; user decision).
