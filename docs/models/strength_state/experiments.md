@@ -188,3 +188,13 @@ This is the same as SS-R2, for the selected arm and the next simpler arm that pa
 - Bias checks, fold 2 (gate): **FAIL for every arm.** The overall level passes for all (H3'' +1.45%). January 2025 runs +8.3% (H2'') to +9.0% (H1'') against the +/-8% limit, n = 224; all other months with n >= 100 pass. The 'other' net shortfall passes (-0.27% to +0.12%).
 - Bias checks, fold 1 (diagnostic): every profile arm passes (worst month -5.4%); the SS-R2 twins refit on fold 1 fail October 2023 (-8.7% to -9.5%). The profile fixes the fold-1 bias but not the fold-2 January one, so under the D13 guard it does not count as a fix.
 - Twin preference: no SS-R3 arm is preferred (none passes the fold-2 checks). Closed-loop G1: **NOT RUN** (no arm passed); the engine offset lookup and its parity test were not built. Status stays TESTING; the accept-with-biases-or-stop decision is the PM's (D13).
+
+---
+
+## PM ruling on SS-R3 (2026-10-15, D14): accept H3'' with its listed bias, conditional on a clean G1
+
+- **Decision.** Under the D13 option, H3'' (the literal offline winner, +0.075 over H2'' at 6 SE) is accepted as the stage-1 hazard arm, with T1 as the type arm.
+- **Known bias, listed.** H3'' runs +8.6% over actual in January 2025 (n = 224 games, against a limit of +/-8%). That is under one percentage point past the limit, while the month's own SE is about 2.6%. The bias is specific to 2024-25: the fold-1 profile arms pass every month, at worst -5.4%. Its overall level is +1.45%, inside the limit.
+- **What makes the acceptance final.** The closed-loop G1 (SS-R3 spec) has to pass on its regular-season cells, and the pass must be clean. Clean means no cell passes only because it is offset by a bias of the opposite sign, which the worker checks by reporting the sim-vs-actual decomposition of PP opportunities. H2'' runs alongside as the comparator.
+- **If G1 fails.** The failure is diagnosed to a mechanic or a sub-model, and the PM rules again. The tolerances are not relaxed.
+- **No SS-R4.** The January dip is logged as a monitoring item for the live season, in the per-month bias report.

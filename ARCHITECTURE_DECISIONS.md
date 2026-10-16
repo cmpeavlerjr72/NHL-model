@@ -121,3 +121,17 @@ SS-R2 (9b14319) removed the delayed-penalty artefact. Goalie-pulled penalty rows
 - SS-R3 goes to Sonnet. It re-runs the existing pipeline with one added offset, and needs no Opus judgement (CLAUDE.md fit-for-purpose rule).
 
 Reason: `docs/tests/strength_state_ss_r2_2026-10-15.md`. Status: ADOPTED (INV-27).
+
+## D14 (2026-10-15): SS-R3 ruling: H3'' accepted with its listed bias, conditional on a clean G1
+
+SS-R3 (f1e6399) results:
+
+- The season-phase profile fixed the overall level (H3'' +1.45%, against its SS-R2 twin's +3.08%) and removed the fold-1 monthly bias.
+- Fold-2 January 2025 still fails narrowly in every arm (+8.3% to +9.0%, limit +/-8%, monthly SE about 2.6%). That dip is specific to 2024-25 and cannot be predicted from pregame information.
+
+Decision, using the D13 option:
+
+- H3'' plus T1 is the stage-1 arm, with the January bias listed. The acceptance is final only when closed-loop G1 passes its regular-season cells cleanly (a decomposition shows no offsetting biases). H2'' runs as the comparator.
+- There is no SS-R4. Per-month penalty bias joins the live monitoring list.
+
+Reason: `docs/tests/strength_state_ss_r3_2026-10-15.md`. Status: ADOPTED (INV-28).
