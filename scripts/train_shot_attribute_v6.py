@@ -193,6 +193,19 @@ def cmd_step0():
 
 
 # ---------------------------------------------------------------------------------------------------- grid (fold 1)
+def _grid_fit(tr, te, otr, ote, l0s, xg, con, s_fixed):
+    t1 = time.time()
+    oc, pc = f"own_{con}", f"opp_{con}"
+    fz, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc)
+    m = fz.fit(s_fixed=s_fixed)
+    m["secs"] = round(time.time() - t1)
+    if s_fixed is None:
+        return m, None, None
+    P = MX.predict_l1x(m, l0s, te, ote, xg, oc, pc)
+    grp = te.grp.to_numpy()
+    return m, M.joint_ll(P, te.cls.to_numpy()), (P * xg[:, grp].T).sum(1)
+
+
 def cmd_grid():
     t0 = time.time()
     (RES / "grid").mkdir(parents=True, exist_ok=True)
@@ -210,30 +223,29 @@ def cmd_grid():
     P0 = MS.l0s_levelled(l0s, te, ote)
     ll0 = np.bincount(gp, weights=M.joint_ll(P0, te.cls.to_numpy()), minlength=G)
     rows, llg, shat = [], {}, {}
-    for con in CONS:
-        oc, pc = f"own_{con}", f"opp_{con}"
-        fz, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc)
-        t1 = time.time()
-        free = fz.fit()
+    from joblib import Parallel, delayed
+    t1 = time.time()
+    frees = Parallel(n_jobs=2, backend="loky")(delayed(_grid_fit)(tr, te, otr, ote, l0s, xg, con, None) for con in CONS)
+    for con, (free, _, _) in zip(CONS, frees):
         shat[con] = dict(s_f=free["s_f"], s_a=free["s_a"], converged=free["converged"], nit=free["nit"])
         print(now(), con, "free fit", shat[con], f"({time.time() - t1:.0f}s)", flush=True)
-        for mlt in MULTS:
-            t1 = time.time()
-            s = (mlt * free["s_f"], mlt * free["s_a"])
-            m = fz.fit(s_fixed=s)
-            P = MX.predict_l1x(m, l0s, te, ote, xg, oc, pc)
-            lg = np.bincount(gp, weights=M.joint_ll(P, te.cls.to_numpy()), minlength=G)
-            key = f"{con}_m{mlt}"
-            llg[key] = lg
-            pred = (P * xc).sum(1)
-            R = resp(pred, act, te, oc, pc, n_boot=200)
-            rec = dict(cell=key, construction=con, mult=mlt, s_f=s[0], s_a=s[1], ll_game=float(lg.mean()),
-                       ll_game_vs_L0s=float((lg - ll0).mean()), R_for=R["for"]["R"], R_against=R["against"]["R"],
-                       R_for_ci=R["for"]["ci"], R_against_ci=R["against"]["ci"], old_q5q1_for=R["for"]["old_q5q1"],
-                       old_q5q1_against=R["against"]["old_q5q1"], crit=crit(R), xg_rel=float(pred.mean() / act.mean() - 1),
-                       converged=m["converged"], nit=m["nit"], secs=round(time.time() - t1))
-            rows.append(rec)
-            print(now(), {k: (round(v, 4) if isinstance(v, float) else v) for k, v in rec.items()}, flush=True)
+    tasks = [(con, mlt) for con in CONS for mlt in MULTS]
+    outs = Parallel(n_jobs=7, backend="loky")(
+        delayed(_grid_fit)(tr, te, otr, ote, l0s, xg, con, (mlt * shat[con]["s_f"], mlt * shat[con]["s_a"]))
+        for con, mlt in tasks)
+    for (con, mlt), (m, lp, pred) in zip(tasks, outs):
+        oc, pc = f"own_{con}", f"opp_{con}"
+        lg = np.bincount(gp, weights=lp, minlength=G)
+        key = f"{con}_m{mlt}"
+        llg[key] = lg
+        R = resp(pred, act, te, oc, pc, n_boot=200)
+        rec = dict(cell=key, construction=con, mult=mlt, s_f=m["s_f"], s_a=m["s_a"], ll_game=float(lg.mean()),
+                   ll_game_vs_L0s=float((lg - ll0).mean()), R_for=R["for"]["R"], R_against=R["against"]["R"],
+                   R_for_ci=R["for"]["ci"], R_against_ci=R["against"]["ci"], old_q5q1_for=R["for"]["old_q5q1"],
+                   old_q5q1_against=R["against"]["old_q5q1"], crit=crit(R), xg_rel=float(pred.mean() / act.mean() - 1),
+                   converged=m["converged"], nit=m["nit"], secs=m["secs"])
+        rows.append(rec)
+        print(now(), {k: (round(v, 4) if isinstance(v, float) else v) for k, v in rec.items()}, flush=True)
     D = pd.DataFrame(rows)
     best = D.ll_game.idxmax()
     bk = D.cell[best]

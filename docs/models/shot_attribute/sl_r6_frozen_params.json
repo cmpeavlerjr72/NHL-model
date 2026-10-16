@@ -1,0 +1,59 @@
+{
+ "spec": "docs/models/shot_attribute/experiments.md SL-R6",
+ "level": "E",
+ "w": 0.7,
+ "prior_strength_attempts": 1000,
+ "tuned_on": "fold 1 only: free fit on fold-1 training (2021-22 + 2022-23), grid cells refit W at fixed s and predict 2023-24 (fold-1 test); LL per game paired game-block bootstrap (1,000) SE vs the best cell; R = D32 slope ratio on ES rows, deciles of the row's as-of rating (200 boots for the grid CI)",
+ "selection": "among the 14 cells within 2 SE of the best LL, the smallest max(|log R_for|, |log R_against|); ties within 0.02 to Qr (fewer inputs), then m closest to 1",
+ "s_hat_fold1": {
+  "Qr": {
+   "s_f": 1.4088128736112961,
+   "s_a": 0.8214634595074094,
+   "converged": true,
+   "nit": 220
+  },
+  "Qa": {
+   "s_f": 1.5930572502761415,
+   "s_a": 1.2887679706921178,
+   "converged": true,
+   "nit": 202
+  }
+ },
+ "best_ll_cell": "Qa_m0.75",
+ "n_within_2se": 2,
+ "tie_set": [
+  "Qa_m0.75"
+ ],
+ "per_construction": {
+  "Qr": null,
+  "Qa": {
+   "cell": "Qa_m0.75",
+   "crit": 0.05220345159681455
+  }
+ },
+ "construction": "Qa",
+ "mult": 0.75,
+ "s_f": 1.1947929377071063,
+ "s_a": 0.9665759780190883,
+ "fold1": {
+  "R_for": 0.9572723059107091,
+  "R_against": 0.9491357440152682,
+  "ll_game_vs_L0s": 0.047908744162585545
+ },
+ "l0s_fold1_ll_game": -283.98198088096854,
+ "xg_floor": 0.005,
+ "ridge": 1e-05,
+ "features": [
+  "is_home",
+  "sc0",
+  "sc1",
+  "sc2",
+  "sc4",
+  "sc5",
+  "sc6",
+  "b2b_own",
+  "b2b_opp"
+ ],
+ "grid_csv": "docs/models/shot_attribute/sl_r6_grid_fold1.csv",
+ "elapsed_s": 390
+}
