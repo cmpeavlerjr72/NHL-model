@@ -262,3 +262,38 @@ This is NOT the January follow-up that D14 ruled out. It addresses the separate 
 - Diagnosis: incumbent H3'' offline spread ratio on fold 1 = 0.81 (own taken, SE 0.12) and 0.85 (opp drawn, SE 0.18); fold 2 = 1.12 / 0.98. H2'' = 1.10 / 1.01 (fold 1), 1.36 / 1.16 (fold 2). No phase pattern separable from noise; the early-season carry-over hypothesis is not supported.
 - **Stop condition met** (fold-1 ratios both inside [0.8, 1.2]). Arms R0-R2, the grid, fold-2 grading and G1 were NOT RUN. INV-29 stays open; the D15 team-PP block stands.
 - Lead (not a finding): the closed-loop excess is in the penalty -> PP-opportunity step. Actual PP opps conferred per penalty fall with the team taken-rating (0.813 Q0 -> 0.754 Q4), the sim stays flat (0.785 -> 0.790); the coincidental share rises 16.0% -> 20.8% across taken quintiles and T1 has no rating feature. PM to decide on a type-arm bake-off.
+
+---
+
+## PM ruling on SS-R4 (2026-10-15)
+
+- **Stop condition.** SS-R4 stopped correctly at its stop condition: the fold-1 H3'' offline spread ratios are 0.81 and 0.85, inside [0.8, 1.2]. The rating construction is not the cause, and the carry-over hypothesis is refuted.
+- **Replay regression.** It confirms SS-R1's numbers, 99.993% gap-aware and 98.134% strict. The Lane I incident had no effect on any result.
+- **Locus of INV-29.** The defect moves to the penalty-type model. Penalty-prone teams take more offsetting penalties: the coincidental share is 16.0% in Q1 and 20.8% in Q5 on fold 2. That makes actual PP opportunities per penalty fall with the taken rating, from 0.813 to 0.754. T1 has no team term, so the sim stays flat at about 0.79. A back-of-envelope check: this accounts for most of the 0.22 excess in the closed-loop PP-opportunity spread.
+
+## SS-R5: penalty-type model with team terms (pre-registered 2026-10-15 by the PM, before any run)
+
+### Fold-1 replication first (forking-paths guard)
+
+The gradient was found on fold 2. Before any arm is fit, report the coincidental share and the PP opportunities per penalty by taken-rating quintile on fold 1 (2023-24) and on the fold-1 training seasons, with bootstrap CIs.
+
+**Stop condition.** If the Q5-minus-Q1 coincidental-share difference on fold 1 has a 95% CI that includes 0, SS-R5 stops. INV-29 stays open with the finding recorded as a one-season observation.
+
+### Arms (hazard H3'' unchanged; only the type model varies)
+
+| Arm | Type model |
+|---|---|
+| T1 | incumbent: multinomial logit on season + strength state + score diff bucket + period |
+| T2 | T1 + own taken-rating + opponent taken-rating (the same as-of ratings the hazard uses) |
+| T3 | T2 + as-of team offsetting-share rating: shrunk log-odds of the team's coincidental share vs the league, beta-binomial with prior strength tuned on fold 1 from {50, 150, 450} penalties, plus the opponent's offsetting-share rating |
+
+### Metric and decision rule (fold 2)
+
+- **Metric.** Multinomial log-likelihood per penalty, with a game-block bootstrap.
+- **Ranking.** A more complex arm beats a simpler one only by more than 2 SE. Ties go to the simpler arm.
+- **Closed-loop gate.** The selected arm, if it is not T1, must pass a closed-loop G1 with hazard H3''. Its regular-season cells must pass with a CLEAN decomposition. The closed-loop spread ratio of PP opportunities conferred must lie in [0.8, 1.2] on both the own taken-rating and the opponent drawn-rating quintiles.
+- **Outcomes.** If the gate passes, INV-29 closes and the D15 team-PP block lifts. If the arm wins offline but fails the gate, INV-29 stays open and the PM rules again.
+
+### Results
+
+(append below this line)
