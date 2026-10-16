@@ -1,0 +1,163 @@
+{
+ "spec": "docs/models/shot_attribute/experiments.md SL-R1",
+ "tuned_on": "fold 1 only (train 2021-22 + 2022-23, test 2023-24)",
+ "w": 0.7,
+ "prior_strength_attempts": 1000,
+ "ratings_grid": [
+  {
+   "w": 0.5,
+   "b": 300,
+   "ll_per_attempt": -3.248908,
+   "n_test": 122482,
+   "spread_for": 1.201,
+   "spread_against": 1.21,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.5,
+   "b": 1000,
+   "ll_per_attempt": -3.248952,
+   "n_test": 122482,
+   "spread_for": 1.147,
+   "spread_against": 1.12,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.5,
+   "b": 3000,
+   "ll_per_attempt": -3.249076,
+   "n_test": 122482,
+   "spread_for": 1.265,
+   "spread_against": 1.153,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.7,
+   "b": 300,
+   "ll_per_attempt": -3.248866,
+   "n_test": 122482,
+   "spread_for": 1.237,
+   "spread_against": 1.168,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.7,
+   "b": 1000,
+   "ll_per_attempt": -3.248919,
+   "n_test": 122482,
+   "spread_for": 1.191,
+   "spread_against": 1.119,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.7,
+   "b": 3000,
+   "ll_per_attempt": -3.249132,
+   "n_test": 122482,
+   "spread_for": 1.295,
+   "spread_against": 1.271,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.85,
+   "b": 300,
+   "ll_per_attempt": -3.248857,
+   "n_test": 122482,
+   "spread_for": 1.23,
+   "spread_against": 1.171,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.85,
+   "b": 1000,
+   "ll_per_attempt": -3.248892,
+   "n_test": 122482,
+   "spread_for": 1.224,
+   "spread_against": 1.173,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 0.85,
+   "b": 3000,
+   "ll_per_attempt": -3.249208,
+   "n_test": 122482,
+   "spread_for": 1.307,
+   "spread_against": 1.504,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 1.0,
+   "b": 300,
+   "ll_per_attempt": -3.248849,
+   "n_test": 122482,
+   "spread_for": 1.214,
+   "spread_against": 1.151,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 1.0,
+   "b": 1000,
+   "ll_per_attempt": -3.248925,
+   "n_test": 122482,
+   "spread_for": 1.289,
+   "spread_against": 1.192,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  },
+  {
+   "w": 1.0,
+   "b": 3000,
+   "ll_per_attempt": -3.249306,
+   "n_test": 122482,
+   "spread_for": 1.326,
+   "spread_against": 1.709,
+   "source": "tune.log of the 10:24 run (values printed to 6 / 3 dp)"
+  }
+ ],
+ "ratings_selection": "max fold-1 L1 test LL per attempt among grid cells whose fold-1 offline spread ratios (for and against) lie in [0.8, 1.2] (L24 guard, labelled interpretation)",
+ "best_ll_any_cell": {
+  "w": 1.0,
+  "b": 300,
+  "ll": -3.248849
+ },
+ "lgb": {
+  "num_leaves": 15,
+  "min_data_in_leaf": 800,
+  "learning_rate": 0.05,
+  "n_rounds": 35,
+  "inner_split": "last 20% of fold-1 training games by date",
+  "early_stopping_rounds": 50,
+  "grid": [
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 200,
+    "best_iter": 22,
+    "inner_logloss": 3.242017138996402,
+    "secs": 9
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 800,
+    "best_iter": 35,
+    "inner_logloss": 3.235842504241051,
+    "secs": 11
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 200,
+    "best_iter": 21,
+    "inner_logloss": 3.242777398427017,
+    "secs": 10
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 800,
+    "best_iter": 27,
+    "inner_logloss": 3.239435376944091,
+    "secs": 12
+   }
+  ]
+ },
+ "alpha0_l0": 10.0,
+ "c_reg_mnl": 10000.0,
+ "elapsed_s": 43
+}

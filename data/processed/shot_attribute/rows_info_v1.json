@@ -1,0 +1,38 @@
+{
+ "20212022": {
+  "n": 159791,
+  "unblocked": 121567,
+  "goals": 8703,
+  "rebound": 0.06527902072081657,
+  "rush": 0.011427427076618833,
+  "st_parity_mismatch_cells": 0,
+  "secs": 5.5
+ },
+ "20222023": {
+  "n": 163714,
+  "unblocked": 122010,
+  "goals": 8784,
+  "rebound": 0.08268688077989665,
+  "rush": 0.012033179813577335,
+  "st_parity_mismatch_cells": 0,
+  "secs": 7.0
+ },
+ "20232024": {
+  "n": 170602,
+  "unblocked": 122482,
+  "goals": 8573,
+  "rebound": 0.09298835887035321,
+  "rush": 0.015533229387697682,
+  "st_parity_mismatch_cells": 0,
+  "secs": 6.0
+ },
+ "20242025": {
+  "n": 167020,
+  "unblocked": 119924,
+  "goals": 8428,
+  "rebound": 0.09224045024547958,
+  "rush": 0.00799305472398515,
+  "st_parity_mismatch_cells": 0,
+  "secs": 6.0
+ }
+}

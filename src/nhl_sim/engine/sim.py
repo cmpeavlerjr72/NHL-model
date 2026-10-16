@@ -21,6 +21,15 @@ Per-team penalty-type variant (default off; `per_team_types=True`, SA-R3 merge o
 `sim_ss_r5.py`, which is superseded): tables["types"] has shape (G, 2, 6, 5, 4, 4), a per-game per-team type table
 (team terms, T2), indexed [game, team, st, sc, period]. Off: the shared (6, 5, 4, 4) table, as before. Parity tests
 `tests/engine/test_sim_t2_merge.py`: off is bit-identical to the pre-merge engine, on to `sim_ss_r5.simulate`.
+
+Stage-4 shot-attribute variant (default off; on when `tables` holds "attr", SL-R1, step-0 blocks rule (b)): each
+attempt of the stage-3 draw is first blocked with probability attr["p_block"][st] (a LABELLED STUB for the stage-5
+block model: the empirical block rate by strength group); an unblocked attempt draws its joint (location cell x
+type) class from attr["cdf"][g, team, interval_of_minute[minute], rating group, sc7] (78 classes, the stage-4 arm's
+lookup), and is a goal with probability attr["xg"][class, rating group] (xG_ref, a LABELLED STUB goal model replacing
+p_goal; stage 5 / 6 do not exist yet, so SOG / miss / goal is one draw). Records unblocked attempts, summed xG_ref,
+goals, and cell / type counts by (team, team-view state). Parity test `tests/engine/test_sim_attr_flag.py`: with the
+variant off the engine is bit-identical to the pre-change file (b024504).
 """
 from __future__ import annotations
 
@@ -36,6 +45,7 @@ KINDS = (MINOR, DOUBLE, MAJOR)
 UNIT_PIM = np.array([2, 4, 5])
 SWAP = np.array([0, 2, 1, 3, 4], np.int64)
 EQ_ST = {5: 0, 4: 3, 3: 4}
+ST_RGRP = np.array([0, 1, 2, 0, 0], np.int64)      # team-view state 0..4 -> rating group ES / PP-for / PK
 
 
 def team_view_state(sk: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -90,6 +100,22 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         att_st = np.zeros((N, 2, 5), np.int32)
         att_sc = np.zeros((N, 2, 7), np.int32)
         toi_st_sc = np.zeros((N, 5, 7), np.int32)
+    attr = tables.get("attr")
+    AS = None
+    if attr is not None:
+        if att is None:
+            raise ValueError("the shot-attribute variant needs the stage-3 attempt table (att_lam)")
+        cdf = attr["cdf"]
+        if cdf.ndim != 6 or cdf.shape[:2] != (G, 2) or cdf.shape[3:] != (3, 7, cdf.shape[5]):
+            raise ValueError(f"attr cdf must be (G, 2, NI, 3, 7, C), got {cdf.shape}")
+        K["attempt_block"] = rng.stream_keys(seeds, gid, "attempt_block")
+        K["attempt_attr"] = rng.stream_keys(seeds, gid, "attempt_attr")
+        nc = cdf.shape[5]
+        AS = dict(cdf=cdf, imap=np.asarray(attr["interval_of_minute"], np.int64), p_block=np.asarray(attr["p_block"], float),
+                  xg=np.asarray(attr["xg"], float), n_type=int(attr["n_type"]), n_cell=nc // int(attr["n_type"]),
+                  fen=np.zeros((N, 2, 5), np.int32), xg_sum=np.zeros((N, 2, 5)), goals=np.zeros((N, 2, 5), np.int32))
+        AS["cell"] = np.zeros((N, 2, 5, AS["n_cell"]), np.int32)
+        AS["type"] = np.zeros((N, 2, 5, AS["n_type"]), np.int32)
     lam = tables["lam"]
     M = lam.shape[2]
     lam_flat = lam.reshape(-1)
@@ -137,7 +163,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             ga &= gs.alive[a]
             gs.goal(a[ga], 1)
         else:
-            _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc)
+            _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc, AS)
         live = gs.alive[a]
         # coincidental stoppages
         r_pair = 0.5 * (lh * Ph[:, 3] + la * Pa[:, 3])
@@ -180,6 +206,9 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     so = gs.end_state == 3
     so_home = rng.uniform(K["shootout_stub"], 0, 0) < 0.5
     extra = {} if att is None else dict(att_st=att_st, att_sc=att_sc, toi_st_sc=toi_st_sc)
+    if AS is not None:
+        extra.update(attr_fen=AS["fen"], attr_xg=AS["xg_sum"], attr_goals=AS["goals"], attr_cell=AS["cell"],
+                     attr_type=AS["type"])
     return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),
@@ -192,8 +221,9 @@ def poisson_k(u: np.ndarray, lam: np.ndarray) -> np.ndarray:
     return (u >= p0).astype(np.int64) + (u >= p0 * (1.0 + lam)).astype(np.int64)
 
 
-def _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc):
-    """Stage-3 attempt draws for the alive sims `a` at second t (pre-event state), then the goals they produce."""
+def _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc, AS=None):
+    """Stage-3 attempt draws for the alive sims `a` at second t (pre-event state), then the goals they produce
+    (stub p_goal by state; or, with the stage-4 variant AS, block stub -> attribute class -> xG_ref goal draw)."""
     sc_h = np.clip(diff, -3, 3) + 3
     sc_a = 6 - sc_h
     m = min(t // 60, Ma - 1)
@@ -209,12 +239,42 @@ def _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, a
     np.add.at(att_sc, (a, 0, sc_h), kh)
     np.add.at(att_sc, (a, 1, sc_a), ka)
     ng = []
-    for team, k, st in ((0, kh, st_h), (1, ka, st_a)):
+    for team, k, st, sc in ((0, kh, st_h, sc_h), (1, ka, st_a, sc_a)):
         g = np.zeros(len(a), np.int64)
-        for j in range(2):
-            g += (k > j) & (rng.uniform(K["attempt_goal"][a], t, 2 * team + j) < p_goal[st])
+        if AS is None:
+            for j in range(2):
+                g += (k > j) & (rng.uniform(K["attempt_goal"][a], t, 2 * team + j) < p_goal[st])
+        else:
+            for j in range(2):
+                i = np.nonzero(k > j)[0]
+                if i.size:
+                    g[i] += _attribute_draw(AS, a[i], t, g_a[i], team, j, st[i], sc[i], m, K)
         ng.append(g)
     for team in (0, 1):
         for j in (1, 2):
             hit = (ng[team] >= j) & gs.alive[a]
             gs.goal(a[hit], team)
+
+
+def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
+    """Stage-4 variant, for attempt j of `team` in sims ai: block stub, then joint class, then the xG_ref goal draw.
+    Returns goals (0/1) per sim; records unblocked counts, xG_ref, goals, cell and type by team-view state."""
+    kk = 2 * team + j
+    unb = rng.uniform(K["attempt_block"][ai], t, kk) >= AS["p_block"][st]
+    if not unb.any():
+        return np.zeros(len(ai), np.int64)
+    ai, gi, st, sc = ai[unb], gi[unb], st[unb], sc[unb]
+    rg = ST_RGRP[st]
+    row = AS["cdf"][gi, team, AS["imap"][m], rg, sc]
+    u = rng.uniform(K["attempt_attr"][ai], t, kk)
+    cls = np.minimum((row <= u[:, None]).sum(1), row.shape[1] - 1)
+    x = AS["xg"][cls, rg]
+    goal = rng.uniform(K["attempt_goal"][ai], t, kk) < x
+    np.add.at(AS["fen"], (ai, team, st), 1)
+    np.add.at(AS["xg_sum"], (ai, team, st), x)
+    np.add.at(AS["goals"], (ai, team, st), goal.astype(np.int32))
+    np.add.at(AS["cell"], (ai, team, st, cls // AS["n_type"]), 1)
+    np.add.at(AS["type"], (ai, team, st, cls % AS["n_type"]), 1)
+    out = np.zeros(len(unb), np.int64)
+    out[np.nonzero(unb)[0]] = goal
+    return out

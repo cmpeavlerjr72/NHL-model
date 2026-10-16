@@ -80,3 +80,12 @@ Rebound attempts (same team, <= 3 s after a prior attempt, no stoppage), rush at
 ### Results
 
 (append below this line)
+
+### SL-R1 results (Lane A, 2026-10-16; report `docs/tests/shot_attribute_sl_r1_2026-10-16.md`, grade `docs/tests/shot_attribute_sl_r1_grade_2026-10-16.md`)
+
+- **Step 0 -> rule (b).** Block coordinates are block points: defencemen's blocked attempts sit at a median of 26 ft, against 51-53 ft unblocked. shotType is recorded on 0.00% of 128,048 blocks. Target = unblocked attempts. Vocabulary: wrist / snap drift (3.0 / 2.6 pp) absorbed by the collapse; poke / bat / between-legs / cradle appear from 2022-23 ("other" 0.002% to 0.8%), reported. Arena distance bias is real but not persistent (season-to-season corr 0.62, then 0.10).
+- **Tuning (fold 1):** ratings w = 0.7, b = 1,000. That is the max L1 LL among grid cells with both spread ratios in [0.8, 1.2] (L24 guard, labelled); the LL-best cell w = 1.0, b = 300 over-responds (1.214) and leads by 0.00007 nats per attempt. L3: 15 leaves, 800 min-data, 35 rounds.
+- **Fold 2 (blind):** no arm eligible. xG_ref per attempt pred / actual: L0 +3.91%, L1 +3.87%, L2 +3.87%, L3 +3.85% (limit 2%). ES runs +5.6% to +6.2% and PK +6.6% to +7.4% in every arm. The high-danger tier is +1.7 pp (limit 1.5); type shares all PASS. LL per game vs L0: L1 -0.088 (SE 0.037), L2 -0.095 (0.038), L3 -0.013 (0.041); seed floor 0.0166. ES responsiveness: L1 1.64 / 1.36 and L2 1.60 / 1.32 FAIL; L3 1.09 / 0.90 PASS. The arena venue gate fails for L2 / L3 against a zero L0 slope (-7.8, SE 10.1).
+- **Cause:** a drift in the recorded location mix. The ES high-danger share went 14.5 / 14.8 / 12.75 / 12.2% over 2021-22 to 2024-25 and the miss share 27 to 35%, while goals per unblocked attempt held at 0.063 to 0.060. The pooled-season mix overstates the test season (the L27 mechanism on a mix); no arm has a league-level mix term. Fold 1 shows the same signature (+2.6%).
+- **Step 5 skipped** (no eligible arm). The engine variant (`sim.py` `tables["attr"]`, default off, flag-off bit-identical to b024504 on 4 cases), the lookup (exact to 2e-5 for L1-L3) and the G3 runner are committed but have not been run in closed loop.
+- Status: BUILDING; the PM rules (proposal: SL-R2 with an as-of league mix level, plus a ruling on levelling the xG_ref yardstick).
