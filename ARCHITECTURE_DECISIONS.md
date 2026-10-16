@@ -275,3 +275,18 @@ Status: ADOPTED.
 - **Stage-3 4v4 reopened (INV-42).** Under the L0m plumbing loop's goal stub, regular-season G2 4v4 attempts per 60 moved from +2.82% to +3.08%, a marginal FAIL at 200 seeds (PASS at 100). The shift comes through score states, from the stub goal model, not from the location model. But the cell sat 0.18 pt from its line (D20), so it now fails. The fix belongs to stage 3, the 4v4 hazard's own level (as A3g-s did offline at -0.5%). It is pre-registered separately. Until then, the stage-4 gate's G2 re-check reports 4v4 as listed under INV-42 and 3v3 under INV-35, and gates every other cell.
 
 Reason: `docs/tests/shot_attribute_sl_r3_2026-10-16.md` (9d92d31). Status: ADOPTED.
+
+## D27 (2026-10-16): SB-R1 ruling; rating over-response is cross-cutting; shrinkage strength is tuned for calibrated spread, not likelihood
+
+- **SB-R1 (d18a694).** Level M1 (K = 500) passes parity (0.22-0.28 pp; the oracle 0.01). E fails here, because blocks drift within era 1. The level is essential: without it, fold-2 block share is off by -2.2 pp. Every bias check passes for B0, B1 and B2. No arm is eligible:
+  - B0 is flat.
+  - B1 (1.59 / 1.49) and B2 (1.38 / 1.43) over-respond in ES on fold 2.
+  - Fold-1 B1 was in band (0.83 / 1.18), so the fold-1 band did not transfer.
+- **Cross-cutting pattern.** As-of team ratings over-respond out of sample in three stages: penalties (INV-29, before LC-2), stage-4 L1 (1.64), and blocks (1.4-1.6). In every case the fold-1 likelihood surface over the shrinkage grid is flat (about 1e-4 nats per row). So likelihood cannot choose the prior strength, and the grids topped out at 3,000. A rating that over-responds out of sample is under-shrunk: it assumes more persistence of team differences than exists.
+- **Rule from now on, for every as-of team rating** (adopted here, applied prospectively; not retro-applied to incumbents that passed their bands):
+  - The shrinkage grid extends to a 30x range ending at least 10x past the old top.
+  - The cell is chosen on fold 1 as the one whose ES spread ratios (for and against) are closest to 1 in |log ratio|, among cells whose fold-1 LL is within 2 SE of the best cell.
+  - Likelihood alone never picks the prior strength.
+- **SB-R2** applies this rule to B1 and B2. Nothing else changes.
+
+Reason: `docs/tests/block_sb_r1_2026-10-16.md`. Status: ADOPTED.

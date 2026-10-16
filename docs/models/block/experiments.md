@@ -64,3 +64,34 @@ Deferred. The engine's block-first stub (SL-R1 / SL-R3) is replaced by the selec
 
 - Level: M1 K500 selected (simplest passer; M0 1.245 pp, E 0.817 pp fail parity; oracle 0.010). Ratings w 0.7, b 1000 (L24 in-band); B2 7 leaves / min_data 200 / 310 rounds. B2 stratum check passed.
 - Fold 2: B1 +0.071 and B2 +0.096 nats/game vs B0 (SE 0.013 / 0.014; floor 0.0006); all block-share bias checks pass for B0, B1, B2 (overall +0.33 to +0.36 pp). B1 / B2 ES responsiveness 1.59 / 1.49 and 1.38 / 1.43 FAIL the band; B0 flat. **No arm eligible; none selected.** Fold 1: B1 eligible (0.83 / 1.18), B2 fails arena gate.
+
+---
+
+## PM ruling on SB-R1 (2026-10-16, D27)
+
+- The level M1 (K = 500) is accepted.
+- No arm is eligible: B0 is flat, and B1 / B2 over-respond on fold 2.
+- The rating over-response is cross-cutting (penalties, stage 4, blocks). D27 changes how prior strength is chosen for every as-of rating.
+
+---
+
+## SB-R2: calibrated-spread rating shrinkage (pre-registered 2026-10-16 by the PM, before any run; D27)
+
+Everything not listed is as in SB-R1: the level M1 (K = 500), features, B2 structure and its tuned booster parameters, bias checks, responsiveness band, grading, and the noise floor.
+
+### Change
+
+- **Rating grid:** prior b in {1000, 3000, 10000, 30000} attempts x carry w in {0.5, 0.7, 0.85}.
+- **Selection on fold 1:** the cell minimising max(|log for-ratio|, |log against-ratio|) of the ES spread ratios, among cells with fold-1 LL within 2 SE (game-block bootstrap) of the best cell. Ties within 0.02 go to the larger b.
+- **Reporting:** the fold-1 table of LL and both ratios for every cell.
+- **Booster:** B2 is refit with the selected ratings. The booster hyperparameters stay as frozen in SB-R1.
+
+### Decision
+
+As SB-R1: eligibility = every bias check + the ES responsiveness band on fold 2. B2 must beat B1, and B1 must beat B0, by > 2 SE and > the floor.
+
+The "for" spread is near 1 pp in actual terms, with a CI on its ratio of 0.90-6.7. Where the ratio CI is wider than the band, the cell is labelled UNDERPOWERED, but the point estimate still gates (as D18).
+
+### Results
+
+(append below this line)
