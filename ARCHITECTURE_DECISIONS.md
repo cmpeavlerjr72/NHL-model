@@ -414,3 +414,11 @@ Status: ADOPTED.
 - Rating responses that drift across seasons now block three stages: blocks (D34), the goalie (step-0 z +2.35), and the stage-3 over-response watch item (D33). The as-of response scale (INV-53) is promoted, and G-R3 applies it to the goalie first. If it fails, the PM reports the goalie gap to the user, because the goalie-saves props depend on it.
 
 Status: ADOPTED.
+
+## D37 (2026-10-16): SM-R2 ruling; miss team terms parked; S0t is the stand-in
+
+- **SM-R2 (b9dc973, 372436c, faf9d5f).** The tier level M2 H30 (fallback, 0.696 pp; oracle 0.43; E not selectable) clears the SM-R1 low-tier failure: -1.7 pp becomes -1.0 pp. S1t is eligible on fold 2: +0.0214 (SE 0.0064), R 1.04 (UNDERPOWERED), arena slope passes.
+- **The binding D13 guard fails on fold 1.** The arena slope is +13.5 (SE 6.3, limit 12.6), and there is no fold-1 LL gain (-0.0048, SE 0.0083). The arena slope flips sign between folds in both rounds. The team / arena terms do not replicate, so nothing is selected.
+- **Decision.** S0t (tier level x cell x type x group) replaces S0 as the labelled stand-in. Miss team terms are parked after two rounds; the re-selection of the arena prior (c) is noted as a candidate, not pre-authorised. For miss-vs-SOG the location / tier / level carry the predictable signal; team terms are a refinement.
+
+Status: ADOPTED.
