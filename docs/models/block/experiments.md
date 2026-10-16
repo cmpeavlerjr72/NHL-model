@@ -204,3 +204,18 @@ As SB-R1, with R for responsiveness. The D13 guard: the selected arm is also in 
 ### Results
 
 (append below this line)
+
+### SB-R4 results (Lane B4, 2026-10-16; report `docs/tests/block_sb_r4_2026-10-16.md`)
+
+- Step 0 (committed f697689 before any step-1 fit). Rr / Ra remove the arena content (corr with the arena factor 0.19 / 0.14 -> -0.06 / -0.01 and 0.01 / 0.02). The per-season "against" coefficient still falls (Rr 1.18 / 1.05 / 0.83, Ra 1.09 / 0.98 / 0.81; trend z -2.3 / -2.1); "for" is non-monotone and UNDERPOWERED per season.
+- Fold-1 s grid (committed cf2633d): Rr s = 1.0 (R 0.749 / 1.292), Ra s = 1.0 (R 0.807 / 1.201); B2x base Ra.
+- Fold 2: no arm eligible; none selected. Every block-share bias check passes.
+
+  | arm | LL vs B0 | R for / against | arena slope gate |
+  |---|---|---|---|
+  | B1r | +0.060 | 1.49 / 1.52 | FAIL (2.05 SE) |
+  | B1a | +0.070 | 1.21 / 1.33 | pass |
+  | B2x | +0.095 | 1.18 / 1.36 | pass |
+
+  - Floor 0.00055. "Against" R CIs exclude the band (powered); "for" R is UNDERPOWERED (CI 0.73-3.1).
+- Fold 1: B1a 0.807 / 1.201, B2x 0.786 / 1.153, B1r 0.749 / 1.292 (B1r also fails the arena gate).
