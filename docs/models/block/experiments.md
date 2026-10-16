@@ -142,3 +142,19 @@ As SB-R1: eligibility = every fold-2 bias check + the ES responsiveness band; > 
 ### Results
 
 (append below this line)
+
+### SB-R3 results (Lane B3, 2026-10-16; report `docs/tests/block_sb_r3_2026-10-16.md`)
+
+- Step 0 (committed a12cde2 before any step-1 fit). The B1 coefficients are stable across folds: own 0.53 / 0.63, opp 0.99 / 0.94. Fitted per season alone, the defending-team ("against") response falls every training season (1.06 / 0.96 / 0.85), and so does the arena coefficient (0.75 / 0.57 / 0.20). The slope rises with rating maturity ("against" 0.72 at 0-9 games, 1.13 at 40-59), and this part is the same in every season. Cause: a pooled-season slope applied under a trend (L27 acting on a slope), plus a constant early-season over-response. Time-forward persistence (fold 2: 0.71 / 0.98) is no smaller than B1's coefficients, so step 0 predicted, before any fit, that B1p would not help.
+- Fold 2: no arm eligible; none selected. Every bias check passes for every arm.
+
+  | arm | LL vs B0 | ES "for" / "against" |
+  |---|---|---|
+  | B1p | +0.070 | 1.80 / 1.54 |
+  | B1 | +0.071 | 1.59 / 1.49 |
+  | B1m | +0.072 | 1.54 / 1.47 |
+  | B2p | +0.095 | 1.74 / 1.57 |
+
+  - Floor 0.0025. B2p beats B1 by +0.024 (SE 0.008).
+- Fold 1: B1 and B1m are in band (0.83 / 1.18); B1p and B2p fail on "against" (1.24 / 1.23); B2p also fails the arena gate.
+- Post-hoc, after the blind grade and never used to select: the 2024-25 ES row-level slope on the rating is 0.43 (SE 0.14) for "for" and 0.80 (SE 0.10) for "against", against B1's 0.64 / 0.98. The slope ratios are 1.50 / 1.22. The Q5-Q1 endpoint metric magnifies "against" (1.49), because actual Q4 is above Q5.
