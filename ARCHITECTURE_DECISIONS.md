@@ -393,3 +393,16 @@ Status: ADOPTED.
 - **Cost of parking.** Team-level block tendencies are absent from the sim. SOG-per-team cells downstream are read with that labelled.
 
 Reason: `docs/tests/block_sb_r4_2026-10-16.md`. Status: ADOPTED.
+
+## D35 (2026-10-16): PM spec error: the recording-era level E is not selectable in any level bake-off
+
+- **The error.** E (D24) estimates the era-2 level from era-2 training rows. With one era-2 training season (2023-24 in fold 2), its parity on that season is in sample, so it passes by construction. On fold 1 it amounts to no level at all. D24 listed this caveat, but the selection rules (SL-R2, SB-R1, SM-R1, G-R1) still let E win as the simplest passer or the fallback minimum. G-R1 showed the cost: E selected with "parity 0.054 pp, equal to the oracle", and fold-2 goals came out at -5.2%.
+- **Rule from now on.** E is reported in every level table, labelled "not selectable (D35)". Selection runs over M0 < M1 < M2 with the existing rule. The era flag stays in GameState as a fact (D24); it is just not a level estimator.
+- **Retroactive application.** This is re-selection on training-only parity, with the rule fixed now:
+  - Stage 4: SL-R2's non-E minimum is M1 K500 (1.30%). The L0s stand-in and SL-R6 move to M1 K500. Lane A6 was told before any further fold-2 read; if it had already read fold 2, it stops and reports.
+  - Stage 5b SM-R1 (Lane M, running): told the same.
+  - Stage 6 G-R1: re-selected in G-R2. Lane G's post-hoc fold-2 rescoring under other levels was seen by the PM. The re-selection below is set by the training parity rule alone, before that number is used for anything. The rule picks the simplest passing family (M1) and, within it, the smallest max |parity|. It does not look at fold 2.
+  - Blocks (SB-R1 to SB-R4) selected M1 K500, not E, so they are unaffected.
+- Lane G's incident (fold-2 save% and oracle printed in a step-1 doc, fixed within a minute, no choice depended on it) is accepted as disclosed.
+
+Status: ADOPTED.

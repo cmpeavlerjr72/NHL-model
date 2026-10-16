@@ -81,3 +81,29 @@ Deferred. Stages 4 / 5a are stand-ins (D32, D34), and stage 5b is in progress. O
 - Fold 2: **no arm eligible; none selected.** Every arm fails save% overall (+0.60 pp), PP (+1.30 pp) and RS goals (-5.2%), all from level E. Fold-2 R for C1 / C2: goalie 0.67 / 0.68 (FAIL, UNDERPOWERED), team 0.95 / 1.02 (in band). C1 vs C0 +0.0050 nats/game (SE 0.0037); C2 vs C0 +0.0013 (SE 0.0047). Floor 0.00091 (fold 1 bit-identical: 0).
 - Fold 1: C1 R 1.02 / 1.01 in band; bias fails PK, high tier and goals -5.0%.
 - Post-hoc (labelled, not selectable): under M1 K500 the fold-2 C0 goals would be -1.4%, oracle -0.2%. The per-cell conversion keeps rising (D23 drift); E lags.
+
+---
+
+## PM ruling on G-R1 (2026-10-16, D35)
+
+- No arm is eligible. The cause is the level: E was selected through in-sample parity (a PM spec error).
+- The goalie step-0 trend (z +2.35) is listed (INV-53).
+- The fold-2 goalie R of 0.67 is read again after the level fix.
+- Lane G's crossing protocol for the goalie and team grids (goalie first, then team) is accepted.
+
+---
+
+## G-R2: G-R1 with the level re-selected under D35 (pre-registered 2026-10-16 by the PM, before any run)
+
+Everything is frozen from G-R1 except the level: the cell table, rating constructions, (b, w, s) cells, C2 capacity and features, bias checks, R, and the decision rule.
+
+- **Level.** Re-select from G-R1's committed training parity table, with E excluded (D35). Take the simplest passing family. M0 fails (0.57 pp), so the family is M1. Within it, take the K with the smallest max |parity| on genuine-prior seasons (no fold-2 input). Write the choice into the report before any refit.
+- **Refit:**
+  - C0, C1 and C2 with the new level.
+  - The rating selection is not re-run: the fold-1 (b, w, s) cells stay. On fold 1, E equals no level, so it is re-checked only as a diagnostic. If a selected cell's fold-1 R moves outside [0.8, 1.2] under the new level, report it, and the cell is still kept.
+- **Grade:** blind on fold 2, then the bias checks, R, the fold-1 guard and the decision, as G-R1.
+- **If selected:** the engine gets the arm behind a flag as a labelled plumbing run (no gate), per G-R1's closed-loop note, after Lane A6 releases `sim.py`.
+
+### Results
+
+(append below this line)
