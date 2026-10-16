@@ -328,3 +328,12 @@ Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-
 - Fold 2 multinomial LL per penalty: T1 -0.57728, T2 -0.57416, T3 -0.57323 (SE about 0.0098 each). Paired: T2-T1 +0.00312 (SE 0.00107, 2.9 SE), T3-T1 +0.00405 (SE 0.00118), T3-T2 +0.00093 (SE 0.00054, 1.7 SE). **Selected: T2** (T3 not > 2 SE over T2; ties to simpler). Noise floor: T1-T3 are deterministic convex fits, floor 0.
 - Closed-loop G1 (T2 + H3'', 200 seeds, engine sibling `sim_ss_r5.py`): RS cells PASS, RS decomposition CLEAN (PP opps +0.088), overall CLEAN (+0.078), playoffs COMPENSATED/UNDERPOWERED as under T1. PP-opps conferred spread ratio: own taken-rating 1.19 (T1 1.54), opponent drawn-rating 1.25 (T1 1.85). Drawn ratio is outside [0.8, 1.2].
 - **Outcome: T2 wins offline, fails the closed-loop gate on the drawn-rating spread ratio. INV-29 stays open, D15 team-PP block stands; the PM rules again.**
+
+---
+
+## PM ruling on SS-R5 (2026-10-15)
+
+- **Replication.** The fold-1 replication holds: +0.060 Q5-Q1 coincidental share, 95% CI +0.036 to +0.083. The gradient is real and not a one-season artefact.
+- **T2 replaces T1 in the stage-1 incumbent.** T2 beats T1 offline by 2.9 SE, and its regular-season G1 is a CLEAN PASS. On the type model, T2 is better than T1 on every measure that was taken. The incumbent is now H3'' + T2, still subject to SS-R3c (D16).
+- **INV-29 stays open, and the D15 team-PP block stands.** The closed-loop drawn-rating spread ratio is 1.25, outside the pre-registered [0.8, 1.2]. The gate is not relaxed, even though one-season sampling error (SE about 0.08 on the actual spread) cannot separate 1.25 from the band edge. The residual sits in the penalty-count response at the top taken-rating quintile.
+- **Next for INV-29.** It is re-measured under LC-1 (SS-R3c), because the level defect may contribute. The regular-season-only spread ratio, which Lane P2 did not compute, is also reported. No new arm is pre-authorised until those two numbers exist.
