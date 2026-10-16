@@ -38,6 +38,20 @@ row is renormalised (cumsum / last) and the class drawn as before. rec_era is re
 simulate; rules.recording_era, boundary 2023-24 fixed, not fitted). Exact for L0m and for an init_score booster (L3b),
 whose levelled softmax is the unlevelled one times exp(offset), renormalised. With a unit era_mult and pdf = the
 increments of a float64 cdf it reproduces the cdf path bit for bit (tests/engine/test_sim_era_flag.py).
+
+D32 STAND-INS (two default-off flags inside tables["attr"]; flat baselines, NOT adoptable, labelled STAND-IN):
+  - block B0 (on when attr holds "p_block_game"): the block probability is p_block_game[g, rating group of the
+    team-view state, period type] (G, 3, 2) instead of the empirical p_block[st] stub: the SB-R1 B0 fit (one-hot
+    strength group x period type) with the M1 K500 as-of league block-share level as a logit offset (D27), evaluated
+    per game by engine.standins.block_b0_table. 4v4 / 3v3 take the ES group, as in B0's training rows.
+  - stage-4 L0s (on when attr holds "state_pdf"): the unblocked attempt's class row is state_pdf[st, period type]
+    (7 team-view states x 2 x 78: the SL-R4 L0s table; EN rows 5 / 6 carry the baseline and are unreachable until the
+    stage-8 goalie pull), levelled by era_mult[rec_era, rating group] exactly as the SL-R3 pdf path (L0s is served
+    levelled only; era_mult is required). No game / team / score / clock dependence: flat by construction (D24).
+  Period type = (t >= 3600), the attempt tables' ptype (period 4+). Each flag requires a label in attr["stand_in"]
+  ({"block": ..., "attr": ...}); whenever attr carries stand_in labels the output carries "stand_in" (an array of
+  "component: label" strings), so no consumer can mistake stand-in output for an adopted model's. With both flags off
+  and no labels, the output is bit-identical to 3ce7112 (tests/engine/test_sim_standins.py).
 """
 from __future__ import annotations
 
@@ -115,15 +129,42 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         if att is None:
             raise ValueError("the shot-attribute variant needs the stage-3 attempt table (att_lam)")
         levelled = "era_mult" in attr
-        cdf = attr["pdf"] if levelled else attr["cdf"]
-        if cdf.ndim != 6 or cdf.shape[:2] != (G, 2) or cdf.shape[3:] != (3, 7, cdf.shape[5]):
-            raise ValueError(f"attr cdf / pdf must be (G, 2, NI, 3, 7, C), got {cdf.shape}")
+        labels = dict(attr.get("stand_in", {}))
+        state_pdf = attr.get("state_pdf")
+        if state_pdf is not None:                       # D32 stand-in: stage-4 L0s by (team-view state, period type)
+            state_pdf = np.asarray(state_pdf, np.float64)
+            if state_pdf.ndim != 3 or state_pdf.shape[:2] != (7, 2) or not (state_pdf > 0).all():
+                raise ValueError(f"attr state_pdf must be a positive (7, 2, C) table, got {state_pdf.shape}")
+            if not levelled:
+                raise ValueError("the L0s stand-in is served levelled: attr needs era_mult")
+            if "attr" not in labels:
+                raise ValueError("attr state_pdf is a STAND-IN: attr['stand_in'] must label it ('attr')")
+            cdf = None
+            nc = state_pdf.shape[2]
+        else:
+            cdf = attr["pdf"] if levelled else attr["cdf"]
+            if cdf.ndim != 6 or cdf.shape[:2] != (G, 2) or cdf.shape[3:] != (3, 7, cdf.shape[5]):
+                raise ValueError(f"attr cdf / pdf must be (G, 2, NI, 3, 7, C), got {cdf.shape}")
+            nc = cdf.shape[5]
         K["attempt_block"] = rng.stream_keys(seeds, gid, "attempt_block")
         K["attempt_attr"] = rng.stream_keys(seeds, gid, "attempt_attr")
-        nc = cdf.shape[5]
-        AS = dict(cdf=cdf, imap=np.asarray(attr["interval_of_minute"], np.int64), p_block=np.asarray(attr["p_block"], float),
+        AS = dict(cdf=cdf, imap=np.asarray(attr.get("interval_of_minute", np.zeros(100)), np.int64),
+                  p_block=np.asarray(attr["p_block"], float) if "p_block" in attr else None,
                   xg=np.asarray(attr["xg"], float), n_type=int(attr["n_type"]), n_cell=nc // int(attr["n_type"]),
                   fen=np.zeros((N, 2, 5), np.int32), xg_sum=np.zeros((N, 2, 5)), goals=np.zeros((N, 2, 5), np.int32))
+        if state_pdf is not None:
+            AS["state_pdf"] = state_pdf
+        if "p_block_game" in attr:                      # D32 stand-in: block B0 per (game, rating group, period type)
+            pbg = np.asarray(attr["p_block_game"], np.float64)
+            if pbg.shape != (G, 3, 2) or not ((pbg >= 0) & (pbg <= 1)).all():
+                raise ValueError(f"attr p_block_game must be (G, 3, 2) probabilities, got {pbg.shape}")
+            if "block" not in labels:
+                raise ValueError("attr p_block_game is a STAND-IN: attr['stand_in'] must label it ('block')")
+            AS["p_block_game"] = pbg
+        elif AS["p_block"] is None:
+            raise ValueError("attr needs p_block (empirical stub) or p_block_game (B0 stand-in)")
+        if labels:
+            AS["stand_in"] = np.array([f"{k}: {labels[k]}" for k in sorted(labels)])
         if levelled:
             em = np.asarray(attr["era_mult"], np.float64)
             if gs.rec_era is None:
@@ -226,6 +267,8 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     if AS is not None:
         extra.update(attr_fen=AS["fen"], attr_xg=AS["xg_sum"], attr_goals=AS["goals"], attr_cell=AS["cell"],
                      attr_type=AS["type"])
+        if "stand_in" in AS:
+            extra["stand_in"] = AS["stand_in"]
     return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),
@@ -277,15 +320,12 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     """Stage-4 variant, for attempt j of `team` in sims ai: block stub, then joint class, then the xG_ref goal draw.
     Returns goals (0/1) per sim; records unblocked counts, xG_ref, goals, cell and type by team-view state."""
     kk = 2 * team + j
-    unb = rng.uniform(K["attempt_block"][ai], t, kk) >= AS["p_block"][st]
+    unb = rng.uniform(K["attempt_block"][ai], t, kk) >= block_prob(AS, gi, st, t)
     if not unb.any():
         return np.zeros(len(ai), np.int64)
     ai, gi, st, sc = ai[unb], gi[unb], st[unb], sc[unb]
     rg = ST_RGRP[st]
-    row = AS["cdf"][gi, team, AS["imap"][m], rg, sc]
-    if "era_mult" in AS:
-        row = np.cumsum(row.astype(np.float64) * AS["era_mult"][AS["rec_era"][ai], rg], 1)
-        row /= row[:, -1:]
+    row = class_cdf(AS, ai, gi, team, st, sc, m, t)
     u = rng.uniform(K["attempt_attr"][ai], t, kk)
     cls = np.minimum((row <= u[:, None]).sum(1), row.shape[1] - 1)
     x = AS["xg"][cls, rg]
@@ -298,3 +338,26 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     out = np.zeros(len(unb), np.int64)
     out[np.nonzero(unb)[0]] = goal
     return out
+
+
+def block_prob(AS, gi, st, t):
+    """Served block probability per attempt (game index gi, team-view state st, game second t): the B0 stand-in
+    p_block_game[g, rating group, period type] when on, else the empirical stub p_block[st]."""
+    if "p_block_game" in AS:
+        return AS["p_block_game"][gi, ST_RGRP[st], int(t >= 3600)]
+    return AS["p_block"][st]
+
+
+def class_cdf(AS, ai, gi, team, st, sc, m, t):
+    """Served cumulative class row per unblocked attempt (the row the engine draws the class from): the L0s stand-in
+    state_pdf[st, period type] or the arm lookup cdf / pdf[g, team, interval, rating group, sc]; levelled by
+    era_mult[rec_era, rating group] and renormalised when era_mult is present."""
+    rg = ST_RGRP[st]
+    if "state_pdf" in AS:
+        row = AS["state_pdf"][st, int(t >= 3600)]
+    else:
+        row = AS["cdf"][gi, team, AS["imap"][m], rg, sc]
+    if "era_mult" in AS:
+        row = np.cumsum(row.astype(np.float64) * AS["era_mult"][AS["rec_era"][ai], rg], 1)
+        row /= row[:, -1:]
+    return row
