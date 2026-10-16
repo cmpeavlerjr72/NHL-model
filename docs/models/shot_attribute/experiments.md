@@ -344,3 +344,21 @@ If L3d is not eligible, stage-4 work stops and the PM takes the options to the u
 ### Results
 
 (append below this line)
+
+### SL-R5 results (Lane A5, 2026-10-16; report `docs/tests/shot_attribute_sl_r5_2026-10-16.md`, grade `docs/tests/shot_attribute_sl_r5_grade_2026-10-16.md`)
+
+- **Grid and selection (fold 1; committed in 399c1c7 before any fold-2 prediction).** All 18 cells stop early, after 2 to 40 rounds (cap 2,000). Only 2 cells lie within 2 SE of the best inner LL.
+  - **L3d = lr 0.02, 15 leaves, 800 min-data, 22 rounds.** Fold-1 ES spread 0.283 / 0.382.
+  - No grid cell exceeds 0.58 on fold 1.
+  - Under the L0s start, the SL-R3 config stops at 22 rounds rather than 31, so L3d has less capacity than L3c.
+  - L3ds2 is bit-identical to L3d: the floor is 0.
+- **In-sample stratum check: PASS.** The largest gap vs L0s is 3v3 -0.41%. EN rows are bit-identical to L0s.
+- **D28 guard (fold 1, L3d minus L0s): PASS.** xG differs by at most +0.18%, tiers by at most 0.13 pp, types by at most 0.04 pp. Under the oracle level (reported), L3d is +0.49% overall.
+- **Fold 2 (blind): L3d is NOT eligible.**
+  - L3d vs L0s: +0.1316 nats per game (SE 0.0128).
+  - **ES responsiveness 0.517 (CI 0.38-0.81) / 0.413 (CI 0.31-0.62): FAIL.**
+  - **PK +3.21%: FAIL** (L0s +2.86%).
+  - xG overall +1.97% PASS; tiers and types PASS.
+- **No arm selected.** Step 4 was not run: no engine change, no closed loop.
+- **D30 stop rule applies:** stage-4 work stops, and the PM takes the options to the user.
+- Status: BUILDING (stopped; user decision).

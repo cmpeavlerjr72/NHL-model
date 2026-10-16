@@ -19,6 +19,8 @@ Only then is labels_sealed.json opened to apply the decision rule (fold 2) or at
                                        report; fold 2 decision: L3c is selected if eligible and not worse than L0s by
                                        > 2 SE (L0s is flat, never adoptable, D24). Per-state (5v5 / 4v4 / 3v3 split)
                                        xG and tier rows are REPORTED, not gated (not pre-registered as gates).
+    grade_shot_attribute.py --round r5 --fold 2   SL-R5 (L0s, L3d; seed pair L3d / L3ds2, floor 0): same decision as
+                                       r4 (the D28 guard is computed by train_shot_attribute_v5.py guard, not here)
     grade_shot_attribute.py --round r2 --fold 2|1   SL-R2 (L0m < L1m < L3m, seed pair L3m / L3ms2; references L0 and
                                        L0o (oracle level) graded blind but never selectable; arena reported, not gated, D23)
                                        -> docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md
@@ -55,6 +57,11 @@ ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_at
                      report_f1="docs/tests/shot_attribute_sl_r4_grade_fold1_2026-10-16.md",
                      salt="SL-R4-2026-10-16", arms=("L0s", "L3c"), seed=("L3c", "L3cs2"), refs=(),
                      arena_gate=(), title="SL-R4 blind grade (Lane A4, 2026-10-16)", spec="SL-R4", decision="r4",
+                     states=True, en_reported=True),
+          "r5": dict(res="results/shot_attribute_r5", report="docs/tests/shot_attribute_sl_r5_grade_2026-10-16.md",
+                     report_f1="docs/tests/shot_attribute_sl_r5_grade_fold1_2026-10-16.md",
+                     salt="SL-R5-2026-10-16", arms=("L0s", "L3d"), seed=("L3d", "L3ds2"), refs=(),
+                     arena_gate=(), title="SL-R5 blind grade (Lane A5, 2026-10-16)", spec="SL-R5", decision="r4",
                      states=True, en_reported=True)}
 CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
@@ -324,7 +331,7 @@ def write(fold):
             el = bool(S.loc[c, "eligible"])
             notworse = dv >= -2 * se
             sel = c if (el and notworse) else None
-            L += ["### Decision rule (fold 2, SL-R4)", "",
+            L += [f"### Decision rule (fold 2, {CFG['spec']})", "",
                   f"- {c} eligible (every bias check and the ES responsiveness band): **{el}** (bias {S.loc[c, 'bias_gate']}, "
                   f"responsiveness {S.loc[c, 'resp_es_for']:.3f} / {S.loc[c, 'resp_es_against']:.3f} {S.loc[c, 'resp_gate']}).",
                   f"- {c} vs {b}: {dv:+.4f} nats/game (SE {se:.4f}); not worse by > 2 SE: **{notworse}**. Seed floor "
