@@ -39,7 +39,17 @@ Decides when each team takes a shot attempt (SHOT, MISS, BLOCK, GOAL; Corsi), gi
 - Score-state terms are fed from engine state, so the closed-loop G2 is mandatory before any selection (L3). It has not been run.
 - EN states are unreachable in the engine until the stage-8 goalie-pull model exists. EN-for / EN-against attempts were 2.8% of 2024-25 attempts.
 
-## 6. Artifacts
+## 6. Consumption from the sim (built and parity-tested; no arm selected yet)
+
+```python
+from nhl_sim.shot_attempt.lookup import attempt_table, goal_stub
+tables["att_lam"] = attempt_table(arm, model, games_df, frozen_params, fold=2)   # (G, 2, 100, 5, 7) per hour
+tables["p_goal"] = goal_stub(20232024)                                            # LABELLED STUB until stage 6
+out = simulate(tables, game_ids, game_types, n_seeds, era)                       # engine variant on att_lam
+```
+G2: `scripts/run_shot_attempt_g2.py sim --arm <A> --seed0 <s> --nseeds 50` (four blocks in parallel, about 6 min), then `grade --arm <A>`. Parity: `tests/test_shot_attempt_lookup.py`.
+
+## 7. Artifacts
 
 | Path | What it is |
 |---|---|

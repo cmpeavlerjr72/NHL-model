@@ -17,6 +17,8 @@ Spec: `docs/models/shot_attempt/experiments.md` SA-R1 (committed 9edbe9d before 
 | blind grade | 20:52:28 | 20:52:40 |
 | level-anchor diagnostic (fold 1) | 20:53 | 20:55 |
 
+| step-3 code + parity test + smoke (4 seeds) | 20:58 | 21:06 |
+
 No step came near the 15-minute box-request threshold; no AWS request was filed.
 
 ## 1. Tables (`data/processed/shot_attempt/*_v1*`)
@@ -100,6 +102,29 @@ Fold 2 is gating; fold 1 is a diagnostic.
 **Decision rule, applied literally:** eligible arms are none, so the **selected arm is NONE** and the next simpler eligible arm is none. Step 3 (engine wiring for the selected arm, the parity test, and G2 with the decomposition and closed-loop responsiveness) is not run, by rule.
 
 Had the level passed, the literal ordering would read as follows. A5 does not beat A2. A4 beats A0-A2 and A5. A3 beats every simpler arm, including A4 (+0.074, SE 0.022). This is not a selection: no arm is eligible.
+
+## 4b. Step 3 status: BLOCKED by the rule; engine code built and tested, G2 not run
+
+The closed loop cannot be run as specified, because there is no selected arm. The code it needs was built so that a future selected arm can go straight to G2. Nothing here is a gate result.
+
+- **Engine variant** `src/nhl_sim/engine/sim.py`:
+  - It is default-off: it is active only when the tables hold `att_lam`.
+  - Each team draws an attempt count per second from `att_lam[g, team, minute, st, sc7]`. The draw is a Poisson inverse CDF over k in {0, 1, 2}; P(k >= 3) is about 1e-6 per second and is folded into k = 2.
+  - Each attempt is a goal with probability `p_goal[st]`. This is the LABELLED goal stub: league goals per attempt by state in 2023-24 (5v5 .0424, PP .0703, PK .0657, 4v4 .0689, 3v3 .1196). It replaces the stub goal table.
+  - RNG families are `attempt` and `attempt_goal`.
+  - It records attempts by team-view state and score bucket, and pre-event exposure by (state, bucket).
+  - Tests: `tests/engine/test_sim_attempts.py` (4 pass: rate, no stub goals, goals only from attempts, paired streams, default-off path unchanged). The existing engine tests still pass (105/105 in the full suite).
+- **Lookup** `src/nhl_sim/shot_attempt/lookup.py` (`attempt_table`, `goal_stub`).
+- **Parity test** `tests/test_shot_attempt_lookup.py`: 220 fold-2 games and 33,132 rows per arm. The sample error is at most 1.8e-9 and the maximum per-game error 3.3e-8 for A0, A1, A2, A5 and A3, against the 0.5% limit. PASS.
+- **G2 runner** `scripts/run_shot_attempt_g2.py`:
+  - It runs the sim in seed blocks, as parallel processes, then grades.
+  - Grading covers G2 RS / PO / overall, 100 vs 200 seeds, the D14-style decomposition (hazard level, unreachable EN, state visits, score-state visits, remainder; and per 60 by state) and the closed-loop responsiveness with a bootstrap CI.
+  - G2 metrics live in `src/nhl_sim/eval/g2.py`. The `eval_gates.py` G2 hook and the `build_gate_reference.py` G2 targets go to the sibling `data/reference/gate_targets_g2_20242025.parquet`; the shared targets file is not rewritten.
+  - Measured: 6 s per seed over 1,398 games, so 200 seeds is about 20 min single-process, or about 6 min as 4 parallel blocks of 50.
+- **Smoke run (plumbing only)**: 4 seeds, arm A2, which is NOT selected and NOT a gate (`results/smoke_sa_r1_A2/`). It ran end to end.
+  - 5v5 per 60 was -5.5% vs actual, matching the offline level defect.
+  - The decomposition puts -2.9 attempts/team-game on the hazard level and -1.7 on unreachable EN attempts.
+  - Two hints for later: team-game SD 9.6 sim vs 11.6 actual, and home-away attempt correlation -0.23 sim vs -0.41 actual. Both are 4-seed values.
 
 ## 5. Diagnosis: the shared league level is mis-anchored (fold-1 evidence only)
 

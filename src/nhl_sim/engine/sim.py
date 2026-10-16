@@ -9,6 +9,13 @@ Coincidental events: the hazard target counts one coincidental event for EACH te
 so a coincidental stoppage occurs at rate (lam_h p_c,h + lam_a p_c,a) / 2 (each team's count of the same events,
 averaged); each team's own non-coincidental events occur at lam (1 - p_c). This is a consequence of the target
 definition, not a tuning constant.
+
+Stage-3 variant (default off; on when `tables` holds "att_lam", SA-R1): goals are no longer drawn from the stub goal
+table. Each second each team draws its shot-attempt count from att_lam[g, team, minute, st, sc7] (attempts per hour;
+st = team-view strength 0..4, sc7 = team-view pre-event score bucket <=-3..>=+3), k in {0, 1, 2} by the Poisson
+inverse CDF (P(k >= 3) ~ lam^3 / 6 per second, about 1e-6, is folded into k = 2), and each attempt is a goal with
+probability p_goal[st] (a LABELLED STUB goal model until stage 6). Attempt counts by state / score bucket and the
+pre-event exposure by (home-view st, sc7) are recorded.
 """
 from __future__ import annotations
 
@@ -67,6 +74,16 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     gs = GameState(np.asarray(game_types)[gi], era, auto_end=True)
     K = {f: rng.stream_keys(seeds, gid, f) for f in ("goal", "penalty", "penalty_type", "coincidental",
                                                      "stoppage", "shootout_stub")}
+    att = tables.get("att_lam")
+    if att is not None:
+        K["attempt"] = rng.stream_keys(seeds, gid, "attempt")
+        K["attempt_goal"] = rng.stream_keys(seeds, gid, "attempt_goal")
+        Ma = att.shape[2]
+        att_flat = att.reshape(-1)
+        p_goal = np.asarray(tables["p_goal"], np.float64)
+        att_st = np.zeros((N, 2, 5), np.int32)
+        att_sc = np.zeros((N, 2, 7), np.int32)
+        toi_st_sc = np.zeros((N, 5, 7), np.int32)
     lam = tables["lam"]
     M = lam.shape[2]
     lam_flat = lam.reshape(-1)
@@ -99,12 +116,15 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         lh = lam_of(0, st_h, sc_h, pd_h) / 3600.0
         la = lam_of(1, st_a, 4 - sc_h, 4 - pd_h) / 3600.0
         Ph, Pa = ptyp[st_h, sc_h, per], ptyp[st_a, 4 - sc_h, per]
-        # goals (stub)
-        gh = rng.uniform(K["goal"][a], t, 0) < 1.0 - np.exp(-goal_rate[sh - 3, sa - 3])
-        ga = rng.uniform(K["goal"][a], t, 1) < 1.0 - np.exp(-goal_rate[sa - 3, sh - 3])
-        gs.goal(a[gh], 0)
-        ga &= gs.alive[a]
-        gs.goal(a[ga], 1)
+        if att is None:
+            # goals (stub)
+            gh = rng.uniform(K["goal"][a], t, 0) < 1.0 - np.exp(-goal_rate[sh - 3, sa - 3])
+            ga = rng.uniform(K["goal"][a], t, 1) < 1.0 - np.exp(-goal_rate[sa - 3, sh - 3])
+            gs.goal(a[gh], 0)
+            ga &= gs.alive[a]
+            gs.goal(a[ga], 1)
+        else:
+            _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc)
         live = gs.alive[a]
         # coincidental stoppages
         r_pair = 0.5 * (lh * Ph[:, 3] + la * Pa[:, 3])
@@ -146,7 +166,42 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         gs.end_second()
     so = gs.end_state == 3
     so_home = rng.uniform(K["shootout_stub"], 0, 0) < 0.5
-    return dict(game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
+    extra = {} if att is None else dict(att_st=att_st, att_sc=att_sc, toi_st_sc=toi_st_sc)
+    return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),
                 coinc_4v4=n_coinc_4v4, unfinished=int(gs.alive.sum()))
+
+
+def poisson_k(u: np.ndarray, lam: np.ndarray) -> np.ndarray:
+    """Poisson(lam) count in {0, 1, 2} from one uniform by the inverse CDF (k >= 3 folded into 2)."""
+    p0 = np.exp(-lam)
+    return (u >= p0).astype(np.int64) + (u >= p0 * (1.0 + lam)).astype(np.int64)
+
+
+def _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc):
+    """Stage-3 attempt draws for the alive sims `a` at second t (pre-event state), then the goals they produce."""
+    sc_h = np.clip(diff, -3, 3) + 3
+    sc_a = 6 - sc_h
+    m = min(t // 60, Ma - 1)
+
+    def lam_of(team, st, sc):
+        return att_flat[(((g_a * 2 + team) * Ma + m) * 5 + st) * 7 + sc].astype(np.float64) / 3600.0
+
+    kh = poisson_k(rng.uniform(K["attempt"][a], t, 0), lam_of(0, st_h, sc_h))
+    ka = poisson_k(rng.uniform(K["attempt"][a], t, 1), lam_of(1, st_a, sc_a))
+    np.add.at(toi_st_sc, (a, st_h, sc_h), 1)
+    np.add.at(att_st, (a, 0, st_h), kh)
+    np.add.at(att_st, (a, 1, st_a), ka)
+    np.add.at(att_sc, (a, 0, sc_h), kh)
+    np.add.at(att_sc, (a, 1, sc_a), ka)
+    ng = []
+    for team, k, st in ((0, kh, st_h), (1, ka, st_a)):
+        g = np.zeros(len(a), np.int64)
+        for j in range(2):
+            g += (k > j) & (rng.uniform(K["attempt_goal"][a], t, 2 * team + j) < p_goal[st])
+        ng.append(g)
+    for team in (0, 1):
+        for j in (1, 2):
+            hit = (ng[team] >= j) & gs.alive[a]
+            gs.goal(a[hit], team)

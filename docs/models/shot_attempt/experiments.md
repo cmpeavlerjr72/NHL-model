@@ -117,3 +117,9 @@ Thresholds are tighter than stage 1's because attempts are about 35x as frequent
 - Diagnosis (fold 1 only): the SS-R3-method level is a ratio to the previous season's final rate. Pooled as a fixed offset, it mis-anchors the cells, and the test season inherits the earlier season-to-season ratios (attempts +2.3%, +4.5%). An anchored level (a ratio to a fixed reference season) moves fold-1 A0 from -2.03% to +0.22%.
 - A separate fold-1 drift is not carried by any all-state level: PK +8% to +11%, PP -1% to -4.5%.
 - Report: `docs/tests/shot_attempt_sa_r1_2026-10-15.md`; grade: `docs/tests/shot_attempt_sa_r1_grade_2026-10-15.md`.
+- Step 3 is blocked by the rule, so no G2 was run. The code it needs is built and tested for a future selection:
+  - engine attempt variant (default-off `att_lam`, `tests/engine/test_sim_attempts.py`);
+  - lookup with parity across A0-A5 and A3 (sample error at most 1.8e-9 against the 0.5% limit, `tests/test_shot_attempt_lookup.py`);
+  - G2 runner, decomposition and closed-loop responsiveness (`scripts/run_shot_attempt_g2.py`, `src/nhl_sim/eval/g2.py`);
+  - G2 targets sibling `data/reference/gate_targets_g2_20242025.parquet`.
+- A 4-seed smoke run on A2 (plumbing only, not a gate) ran end to end.

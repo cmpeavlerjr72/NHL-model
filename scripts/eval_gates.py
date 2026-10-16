@@ -62,6 +62,22 @@ def main(argv=None):
         st = st[st.game_id.isin(rf.game_id)]
         checks = G1.evaluate(st, rf, tol, len(rf), int(tol["min_cell_n"]))
         res["G1"] = dict(status=_gate_status([c for c in checks if c["status"] != "NO-TOLERANCE"]), checks=checks)
+    parts = sorted(Path(a.results).glob("part_*.parquet"))
+    if parts and "att_h_st0" in pd.read_parquet(parts[0]).columns:   # G2 from the stage-3 attempt output (SA-R1)
+        from nhl_sim.eval import g2 as G2
+        from nhl_sim.shot_attempt.models import load_rows
+        s2 = pd.concat([pd.read_parquet(p) for p in parts], ignore_index=True)
+        s2 = s2.merge(real[["game_id", "game_type"]], on="game_id")
+        R2 = G2.real_team_arrays(load_rows([a.season]))
+        S2 = G2.sim_team_arrays(s2)
+        if a.segment != "all":
+            f = 2 if a.segment == "RS" else 3
+            R2, S2 = G2.select(R2, R2["game_type"] == f), G2.select(S2, S2["game_type"] == f)
+        T2 = G2.evaluate(S2, R2, float(tol["g2_rate_rel"]), int(tol["min_cell_n"]))
+        checks = [dict(check=f"{r.group} {r.cell}", sim=float(r.sim), real=float(r.real), tol=str(r.tol),
+                       status=r.status if r.status != "UNREACHABLE" else "NO-TOLERANCE", n=len(R2["game_id"]),
+                       note=r.note) for r in T2.itertuples()]
+        res["G2"] = dict(status=_gate_status([c for c in checks if c["status"] != "NO-TOLERANCE"]), checks=checks)
     tag = Path(a.results).name
     out = Path(a.out) if a.out else Path("docs/tests") / f"gates_{tag}_{date.today().isoformat()}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
