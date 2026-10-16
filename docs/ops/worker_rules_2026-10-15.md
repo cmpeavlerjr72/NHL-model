@@ -37,3 +37,7 @@ PM-owned, do not edit: `CLAUDE.md`, `PROJECT_STATUS.md`, `HANDOFF.md`, `ARCHITEC
 ## Reporting
 
 Full evidence goes to the doc path named in your brief, committed. Your final message to the PM is under 400 words: result per deliverable (with numbers and doc paths), what was NOT done or is PARTIAL (with the resume command), any incident you caused, the commit hashes, and the next step you recommend. Plain statements; do not present a partial or underpowered result as a finding. A lane that finishes early reports early; it does not invent extra scope.
+
+## Process control (added 20:55 by the PM after the Lane I incident)
+
+Before stopping any process, print its full command line (`Get-CimInstance Win32_Process -Filter "ProcessId=<pid>" | Select CommandLine`). Stop it only if that line names a script you launched in this lane. "It was python and I assumed it was mine" is the incident this rule prevents: Lane I stopped Lane H's replay diagnostic at about 19:00.

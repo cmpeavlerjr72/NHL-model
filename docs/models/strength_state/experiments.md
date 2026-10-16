@@ -219,3 +219,39 @@ This is the same as SS-R2, for the selected arm and the next simpler arm that pa
   - per-game over-dispersion, P(0 PP opps) 4.2% vs 2.6%;
   - the (a') goalie-pull state the sim cannot visit, which waits for stage 8.
 - **Process note.** Lane H4's projected two-arm run was about 17 min, so it should have gone to the box queue, but it ran locally. The cost was nil. From now on, lanes file the box request before launching, not after.
+
+---
+
+## SS-R4: team-rating response (INV-29; pre-registered 2026-10-15 by the PM, before any run)
+
+This is NOT the January follow-up that D14 ruled out. It addresses the separate defect D15 opened: the closed-loop quintile spread is 1.5-1.8x the actual one.
+
+### Diagnosis first (reported before any arm is fit)
+
+- Offline spread ratio for H3'' (predicted Q5-Q1 / actual Q5-Q1, penalties taken per 60), on fold 1 and fold 2, overall and by season phase (Oct-Nov, Dec-Jan, Feb-Apr). The PM's hypothesis is that full carry-over (w = 1.0) over-trusts last season and inflates the early-season response. Phase splits test that.
+- The same ratio for H2'' (GLM), which separates a rating-construction cause from a tree-interaction cause.
+- **Stop condition:** if the fold-1 spread ratio of the incumbent is already inside [0.8, 1.2], no fold-1-tuned arm can be expected to fix it. Report that and stop before step "Arms".
+
+### Arms (H3'' model structure, T1, offsets and features unchanged; only the rating construction varies)
+
+| Arm | Rating construction |
+|---|---|
+| R0 | incumbent (w = 1.0, prior strength 1,800) |
+| R1 | grid w in {0.3, 0.5, 0.7, 1.0} x prior strength in {1800, 5400, 16200, 48600}, tuned on fold 1 to **maximise likelihood subject to the fold-1 offline spread ratio in [0.8, 1.2] for both ratings** |
+| R2 | R1's selected cell, used in H2'' (GLM) instead of H3'' |
+
+- If no R1 grid cell meets the constraint on fold 1, report that, and R1 is NOT RUN.
+
+### Decision rule (fold 2)
+
+- R1 replaces R0 only if ALL of the following hold:
+  - (a) fold-2 log-likelihood is not worse than R0's by more than 2 SE (game-block bootstrap);
+  - (b) the fold-2 offline spread ratio is in [0.8, 1.2] for both ratings;
+  - (c) the SS-R3 bias checks pass as before (January 2025 stays a listed bias, not a gate);
+  - (d) the closed-loop G1 regular-season cells pass, with a CLEAN decomposition and a closed-loop spread ratio in [0.8, 1.2].
+- R2 replaces R1 only if it meets the same conditions and R1 does not. The simpler arm wins ties.
+- **If nothing passes:** INV-29 stays open, the team-PP block (D15) stands, and the PM rules again.
+
+### Results
+
+(append below this line)
