@@ -197,3 +197,16 @@ Listed:
 - The EN pair (-1.69 / +0.97) is re-checked at stage 8.
 
 Reason: `docs/tests/shot_attempt_g2_inv36_2026-10-16.md`. Status: ADOPTED.
+
+## D21 (2026-10-16): INV-24 close-out; DRatings puck-line sign is flagged, not repaired
+
+- **INV-24 closes.** `lines_dratings_v1.parquet` validates: 5,598 games, all of them NHL game_ids; nothing on or after 2025-07-01; the UTA->ARI remap covers 246 games. One game is missing: 2024020984. Raw is on HF (45d2b04, cbc164c).
+- **Puck-line sign.** Of the 38 SBRO-vs-DRatings sign mismatches, SBRO's puck-line sign matches its own moneyline favourite in 34 cases and DRatings' in 6. The two sources' moneylines agree on the favourite in 36 of 38. So the DRatings puck-line sign field (the mode across books) is the suspect field.
+- **Ruling:**
+  - A v2 table flags every DRatings game whose puck-line favourite differs from its own no-vig ML favourite (`pl_sign_suspect`), over all 5,598 games, not just the SBRO overlap.
+  - Flagged games are excluded from puck-line grading and CLV.
+  - The sign is not inferred or rewritten. Settling at a line we reconstructed would grade against a price nobody posted.
+  - ML and totals are unaffected.
+- The flag is built by Lane O3 as INV-38.
+
+Status: ADOPTED.
