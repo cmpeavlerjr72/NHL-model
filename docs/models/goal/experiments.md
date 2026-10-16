@@ -107,3 +107,10 @@ Everything is frozen from G-R1 except the level: the cell table, rating construc
 ### Results
 
 (append below this line)
+
+### G-R2 results (Lane G2, 2026-10-16; report `docs/tests/goal_g_r2_2026-10-16.md`)
+
+- Level re-selected from training parity (b66843e): **M1 K500** (0.240 pp; E excluded D35). Ratings, cells and C2 capacity frozen from G-R1.
+- C2 in-sample stratum check FAILS on PK (fold 1 +0.239 pp, fold 2 +0.215 pp); C2 fitted and graded anyway, marked ineligible (disclosed deviation: the trainer was to stop).
+- Fold 2: bias clean for every arm (C1 save% +0.05 pp, PP +0.55, goals +0.30%). **No arm eligible**: C1 goalie R 0.70 (CI 0.42-2.36, UNDERPOWERED, FAIL), team R 1.00. C1 vs C0 +0.0058 (SE 0.0039); C2 +0.0019 (0.0048); floor 0.00249. None selected.
+- Fold 1: C1 R 1.03 / 1.05 in band, bias clean; C2 R goalie 1.21.
