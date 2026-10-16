@@ -366,3 +366,16 @@ The user chose both recommended options.
    They are not adoptable, because they are flat (D24). They exist so stage 5 can be built and closed-loop tested. No downstream stage may be fit on stand-in output: every offline fit uses recorded data. Team-level gates downstream are reported against the stand-in and labelled as such.
 
 Status: ADOPTED.
+
+## D33 (2026-10-16): Incumbents re-checked under the D32 slope gate; both keep their status, with watch items
+
+`docs/tests/responsiveness_slope_recheck_2026-10-16.md` (22d8f59). All 8 cells pass on the point estimate (D18 rule).
+
+- **Stage 1 H3''-LC2 + T2.** R is 1.18 to 1.19, UNDERPOWERED (CI up to 1.7-3.0). It stays CONFIRMED-INCUMBENT (provisional), and the team-PP block stays lifted.
+  - Watch item: R sits 0.01-0.02 inside the line.
+  - The live season re-measures it with a growing sample.
+- **Stage 3 A3g-c.** R is 1.14 to 1.17, powered, with every CI lower bound above 1.0. The over-response is real (about 15%) but inside the band, so it stays CONFIRMED-INCUMBENT (provisional).
+  - Watch item: this is the same over-response signature as blocks and stage 4.
+  - Once SB-R4 / SL-R6 show whether arena-free ratings fix it, the same construction is a candidate for stage 3, pre-registered then.
+
+Status: ADOPTED.
