@@ -164,3 +164,13 @@ Reason: `docs/tests/shot_attempt_sa_r1_2026-10-15.md`. Status: ADOPTED.
 - **SS-R3c.** It stopped at the LC-1 parity test on the penalty level (about +/-2%). The parity test binds on the level-only arm. LC-1 passes for attempts and fails for penalties, because penalty seasonality is strong. Stage 1 stays on its old level under D15, with the D16 defect listed. LC-2 for penalties is next.
 
 Reason: `docs/tests/shot_attempt_sa_r2_2026-10-15.md`, `docs/tests/strength_state_ss_r3c_2026-10-15.md`. Status: ADOPTED.
+
+## D18 (2026-10-16): LC-2 ruling; stage 1 re-levelled to H3''-LC2 + T2; INV-29 closed
+
+- **Parity.** No construction passes the 0.5% line on the genuine-prior seasons. The pre-registered fallback took L2b (14-day half-life discounted ratio estimator), max |parity| 0.93% (fold-2 train 2023-24), mean +0.13% / +0.29%. The pre-registration said a parity miss is listed, not blocking, and gave the reason before any number existed. That stands: the failure is listed, not waived after the fact.
+- **Adoption.** H3''-LC2 + T2 meets the SS-R3c rule as written: fold-2 bias checks pass (overall +1.56%; January 2025 +7.6%, down from +8.8%, still listed), LL vs H3'' -0.0015 (SE 0.0023), G1 RS PASS and CLEAN. It replaces H3'' + T2 as the stage-1 incumbent, CONFIRMED-INCUMBENT (provisional). The D16 level defect is closed for stage 1.
+- **INV-29 closes.** The closed-loop spread ratios are 1.10 / 1.11 (RS taken / drawn) and 1.13 / 1.19 (all games), all inside [0.8, 1.2]. The gate binds on the point estimate both ways: that is how 1.25 failed it (SS-R5 ruling), and it is how 1.19 passes. The team-PP block from D15 is lifted. 1.19 sits near the edge, so it is a live-season monitoring item.
+- **Profile defect is a separate item (INV-34), not a blocker.** With the oracle level, the fold-1 test months run -7.5% (October) and +7.8% (April), inside the +/-8% month line but near it. The 14-day memory partly absorbs that profile error. The level is causal and gates passed, so this is not a post-hoc compensation, but the bottom-up rule says the profile is the responsible sub-model. INV-34 is pre-registered later. It is not pre-authorised now.
+- **Stage 3.** SA-R3's G2 (Lane S3) runs on the old-level H3'' + T2, the incumbent at its launch, and rules on that. A G2 confirmation on H3''-LC2 + T2 rides with the next stage-3 step. No mid-task change to Lane S3.
+
+Reason: `docs/tests/strength_state_lc2_2026-10-16.md` (3a17280). Status: ADOPTED.
