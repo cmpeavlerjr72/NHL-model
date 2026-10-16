@@ -37,3 +37,16 @@ Explain it from the data before any of the above is read. The working hypothesis
 ### Results
 
 (append below this line)
+
+### LT-R1 results (Lane T, run 2026-10-16 10:19; `scripts/exp_totals_agreement_v1.py`; full report `docs/tests/lines_totals_lt_r1_2026-10-16.md`)
+
+Choices fixed before reading results: ESPN vig band 1.00-1.10; pmf conditioned on the DRatings line L_D; lookup cell needs n >= 30. '-68': mean of mixed-sign American prices (equal-line bucket n = 1,617: mean -69.6, 78% minus at -117.7, 22% plus at +104.3, median -115); mean implied probability 0.5288 (about -112).
+
+| Season | Bucket | n | median abs diff | mean signed (SE) | Pass |
+|---|---|---|---|---|---|
+| 2023-24 | equal | 789 | 0.0059 | +0.0018 (0.0004) | yes |
+| 2023-24 | converted | 550 | 0.0089 | -0.0022 (0.0010) | yes |
+| 2024-25 | equal | 814 | 0.0061 | -0.0006 (0.0004) | yes |
+| 2024-25 | converted | 577 | 0.0077 | +0.0006 (0.0006) | yes |
+
+Outcome: **PASS** (both seasons, both buckets). Consequence per spec: DRatings is the consensus totals CLV source; ESPN BET confirmed as a consistent single book at its own line. Exclusions: 60 ESPN games without a total price (2023-24), 0 vig outliers, 7 converted games with no lookup. Underpowered: conversions into L_D = 7.0 (n = 42, mean -0.06).
