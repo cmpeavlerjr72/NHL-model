@@ -107,3 +107,9 @@ There is no booster arm (D31).
 ### Results
 
 (append below this line)
+
+### SM-R2 results (Lane M2, 2026-10-16; report `docs/tests/miss_sm_r2_2026-10-16.md`)
+
+- Tier level: no as-of construction passes the 0.5 pp parity (best M2_H30 0.696; E 1.16 not selectable; oracle 0.43). Fallback selects M2_H30. Fold-1 s re-selection (372436c, before any fold-2 fit): s = 0.75, c = 0.7156, R 0.94.
+- Fold 2: S1t +0.0214 nats/game vs S0t (SE 0.0064; floor 0, no seed-dependent arm). Every bias check passes for both arms, tiers high / medium / low -0.87 / -0.24 / -1.00 pp for S1t (the SM-R1 low-tier failure is cleared). S1t ES R 1.04 (0.79-1.50, UNDERPOWERED), arena slope -7.1 (SE 6.5) PASS: **eligible**. S0t R 0.40.
+- D13 guard (fold 1): S1t R 0.94, LL -0.0048 (SE 0.0083), bias clean, but arena slope +13.5 (SE 6.3) FAILS (limit 12.6). **Guard fails; no arm selected; S0t replaces S0 as the stand-in.**
