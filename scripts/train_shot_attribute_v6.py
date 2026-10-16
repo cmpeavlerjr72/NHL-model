@@ -43,13 +43,14 @@ from nhl_sim.shot_attribute import models_x as MX  # noqa: E402
 from nhl_sim.shot_attribute.tables import (GROUP_NAMES, N_CELL, N_CLASS, N_TYPE, OPP_RATING_GROUP,  # noqa: E402
                                            RATING_GROUP, TIER_NAMES, TIER_OF_CELL)
 
-RES = Path("results/shot_attribute_r6")
+LEVEL = "M1_K500"          # D35 (PM correction): level E cannot be selected; SL-R2 fallback among non-E = M1 K500
+RES = Path("results/shot_attribute_r6_d35")
 RES2 = Path("results/shot_attribute_r2")
-FROZEN = Path("docs/models/shot_attribute/sl_r6_frozen_params.json")
-GRIDCSV = Path("docs/models/shot_attribute/sl_r6_grid_fold1.csv")
+FROZEN = Path("docs/models/shot_attribute/sl_r6_d35_frozen_params.json")
+GRIDCSV = Path("docs/models/shot_attribute/sl_r6_d35_grid_fold1.csv")
 STEP0 = Path("docs/models/shot_attribute/sl_r6_step0.json")
 LEVELS = M.SA / "mix_level_v2.parquet"
-SALT = "SL-R6-2026-10-16"
+SALT = "SL-R6-D35-2026-10-16"
 F = {1: ([20212022, 20222023], 20232024), 2: ([20212022, 20222023, 20232024], 20242025)}
 ARMS = ("L0s", "L1x", "L1xs2")
 MULTS = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0)
@@ -101,11 +102,11 @@ def frames(fold):
 
 
 def offsets(fold, tr, te):
-    if json.loads((RES2 / "step0.json").read_text())["selected"] != "E":
-        raise ValueError("SL-R6 inherits level E")
     s_train = ML.share_table(tr)
     L = pd.read_parquet(LEVELS)
-    L = L[L.construction == f"E_f{fold}"]
+    L = L[L.construction == LEVEL]          # D35: M1 K500 (as-of, both folds); E (E_f{fold}) no longer used
+    if L.empty:
+        raise ValueError(f"level {LEVEL} missing")
     return ML.row_offset(tr, L, s_train), ML.row_offset(te, L, s_train), s_train
 
 
@@ -265,7 +266,7 @@ def cmd_grid():
         Cc = C[C.construction == con]
         per_con[con] = (None if Cc.empty else dict(cell=Cc.sort_values("crit").iloc[0].cell,
                                                    crit=float(Cc.crit.min())))
-    fz = dict(spec="docs/models/shot_attribute/experiments.md SL-R6", level="E", w=0.7, prior_strength_attempts=1000,
+    fz = dict(spec="docs/models/shot_attribute/experiments.md SL-R6 (D35: level M1 K500)", level=LEVEL, w=0.7, prior_strength_attempts=1000,
               tuned_on="fold 1 only: free fit on fold-1 training (2021-22 + 2022-23), grid cells refit W at fixed s and "
                        "predict 2023-24 (fold-1 test); LL per game paired game-block bootstrap (1,000) SE vs the best cell; "
                        "R = D32 slope ratio on ES rows, deciles of the row's as-of rating (200 boots for the grid CI)",
@@ -296,6 +297,11 @@ def outdir(fold):
     return RES if fold == 2 else RES / "fold1"
 
 
+def _fit_fixed(tr, l0s, otr, xg, oc, pc, s, seed):
+    fzr, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc)
+    return fzr.fit(s_fixed=s, seed=seed)
+
+
 def fit_fold(fold):
     fzp = frozen()
     out = outdir(fold)
@@ -306,10 +312,12 @@ def fit_fold(fold):
     oc, pc = cols()
     l0s = MS.fit_l0s(tr)
     (out / "models" / "L0s.json").write_text(json.dumps(l0s))
-    fzr, _ = MX.fitter_for(tr, l0s, otr, xg, oc, pc)
-    for arm, seed in (("L1x", None), ("L1xs2", 2)):
-        t1 = time.time()
-        m = fzr.fit(s_fixed=(fzp["s_f"], fzp["s_a"]), seed=seed)
+    from joblib import Parallel, delayed
+    t1 = time.time()
+    arms = (("L1x", None), ("L1xs2", 2))
+    fits = Parallel(n_jobs=2, backend="loky")(delayed(_fit_fixed)(tr, l0s, otr, xg, oc, pc, (fzp["s_f"], fzp["s_a"]), seed)
+                                              for _, seed in arms)
+    for (arm, seed), m in zip(arms, fits):
         m.update(arm=arm, construction=fzp["construction"], start="zeros" if seed is None else f"normal(0, 0.05) seed {seed}")
         (out / "models" / f"{arm}.json").write_text(json.dumps(m))
         print(now(), f"fold {fold} {arm} fit: loss {m['loss']:.7f} nit {m['nit']} conv {m['converged']} "
@@ -442,7 +450,7 @@ def cmd_guard():
     At = np.eye(3)[CLASS_TIER[te.cls.to_numpy()]]
     oc, pc = cols()
     ora = []
-    for lev, off in (("E (as graded)", oE), ("O oracle (diagnostic)", oO)):
+    for lev, off in (("M1_K500 (as graded, D35)", oE), ("O oracle (diagnostic)", oO)):
         for arm in ("L0s", "L1x"):
             Pa = predict(arm, l0s, ms, te, off, xg)
             pred = (Pa * xc).sum(1)
