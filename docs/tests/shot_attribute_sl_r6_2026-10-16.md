@@ -1,7 +1,16 @@
 # SL-R6: arena-free shot-quality ratings, L1x fixed-scale quality tilt on L0s (cascade stage 4, Lane A6, 2026-10-16)
 
 - Spec (binding): `docs/models/shot_attribute/experiments.md` SL-R6 (inherits SL-R4 / R3 / R2 / R1); D28, D32. Brief: `docs/briefs/lane_A6_shot_attribute_r6_2026-10-16.md`.
-- Code: `scripts/build_shot_attribute_tables_v2.py` (Qr / Qa ratings), `src/nhl_sim/shot_attribute/models_x.py` (L1x), `scripts/train_shot_attribute_v6.py` (step 0, fold-1 grid, fits, checks, predictions).
+- Code: `scripts/build_shot_attribute_tables_v2.py` (Qr / Qa ratings), `src/nhl_sim/shot_attribute/models_x.py` (L1x), `scripts/train_shot_attribute_v6.py` (step 0, fold-1 grid, fits, checks, predictions), `scripts/diag_shot_attribute_r6_insample_l33.py` (OT diagnostic).
+
+**Outcome: STOPPED before fold 2. Under both levels (E, then M1 K500 per D35), the inherited in-sample stratum check fails at 3v3 by about 0.005 pp over the 0.5% line. Nothing on 2024-25 was predicted or read.**
+- **Step 0** (3f1aa27). Qr and Qa remove the arena contamination of the ratings: corr with the arena factor goes from -0.13 / -0.20 to +0.02 / +0.02 (Qr) and +0.01 / -0.05 (Qa). The per-season response is still not flat for Qa (p 0.03 / 0.008). Qr is closest to flat (p 0.24 / 0.08).
+- **Fold-1 grid.** Under E (005dd23) and again under D35's M1 K500 (13e43e3), the pick is the same: Qa x0.75. Under M1 K500, s_f is 1.195 and s_a 0.972; it is the best-LL cell (+0.033 nats per game vs L0s), with fold-1 R 0.969 / 0.944. No Qr cell lies within 2 SE.
+- **In-sample check** (fold-2 training rows, SL-R4 rule): **FAIL**. 3v3 is -0.503% vs L0s (n 3,752; limit 0.5%); under E it was -0.508%. Every other gated stratum is within 0.07%. Cause: L33. All 3v3 rows are OT and tied, and the pooled "tied" score coefficient learned on regulation rows is applied on top of an OT baseline that already conditions on the state.
+- **D28 guard** (fold 1, L1x minus L0s): **PASS** under both levels. xG is within 0.07% in every gated cell, tiers and types within 0.09 pp.
+- **Diagnostic** (training rows only, not an arm): with the fitted terms switched off on OT rows, 3v3 is -0.02% and every stratum passes, under both levels.
+- **No engine change and no closed loop.** sim.py was not touched.
+- **PM ruling needed** (section 6).
 
 ## Clock (date, EDT)
 
@@ -11,6 +20,13 @@
 | Qr / Qa ratings build (both folds) | 12:21:22 | 12:21:40 |
 | step 0, first attempt (serial, untuned optimiser; killed by my own 590 s timeout, discarded) | 12:24:02 | 12:33:52 |
 | step 0 (15 fits, 5 parallel workers) | 12:36:01 | 12:42:10 |
+| fold-1 grid under E (2 free fits + 14 cells, 7 workers); commit 005dd23 | 12:43:10 | 12:49:42 |
+| fits, in-sample check (FAIL), D28 guard (PASS), OT diagnostic, all under E | 12:50:24 | 12:57:04 |
+| D35 received; fold-1 grid re-run under M1 K500; commit 13e43e3 | 12:58:08 | 13:04:54 |
+| fold-2 fits + fold-1 fits / predictions under M1 K500 | 13:05:08 | 13:07:42 |
+| in-sample check (FAIL, exit 3), D28 guard (PASS), OT diagnostic, under M1 K500 | 13:07:42 | 13:09:44 |
+
+Every step ran in minutes, so no box request was filed.
 
 ## Constructions (labelled readings)
 
@@ -85,3 +101,79 @@ Rating spread and arena contamination (ES, team-game level, fold-2 training seas
 - Qr cannot be put in band with one multiplier. Its fitted "against" response is weaker relative to "for": at m 1.0, R is 1.12 / 0.63, and its best cell (x1.25, 1.40 / 0.77) misses both ends.
 - Fold-1 xG overall sits at +2.5% for every cell. That is level E being 0 on fold 1 (the D28 caveat), not the tilt; the D28 guard reads L1x minus L0s.
 - The LL gain over L0s on fold 1 is small: +0.048 nats per game. L1x has no clock or period terms (not in the spec).
+
+## D35: level E replaced by M1 K500
+
+- **When.** The PM correction D35 arrived after the fold-1 grid, fits, in-sample check and guard under E, and before anything on fold 2 was predicted or read. So it was applied as instructed:
+  - the L0s level was switched to M1_K500 (`mix_level_v2.parquet`; as-of, non-zero on fold 1, unlike E);
+  - every step that depends on L0s was re-run;
+  - the new outputs are versioned files (`sl_r6_d35_frozen_params.json`, `sl_r6_d35_grid_fold1.csv`, `results/shot_attribute_r6_d35`, salt `SL-R6-D35-2026-10-16`).
+- **The E-run artefacts are kept as the record** (`sl_r6_frozen_params.json`, `sl_r6_grid_fold1.csv`, commit 005dd23). Step 0 used unlevelled per-season L0s, so it is unaffected.
+- **Grid under M1 K500** (13e43e3): the same pick, **Qa x0.75 (s_f 1.1947, s_a 0.9715)**.
+  - It is the best-LL cell, +0.0329 nats per game vs L0s.
+  - Fold-1 R is 0.969 (CI 0.82-1.19) / 0.944. Only Qa x1.0 is also within 2 SE (-0.0039, SE 0.0034; R 1.28 / 1.22).
+  - Every Qr cell is at least 2.3 SE below. Fold-1 xG overall is now +1.1% for every cell (M1 K500 is live on fold 1), against +2.5% under E.
+
+  The section 2 table above is the E run. The D35 table is in the csv; its R and LL pattern is the same within 0.02.
+
+## 3. Fits (frozen s; only the home / score / rest terms are refit per fold)
+
+- **L1x** starts from W = 0. **L1xs2** is the same fit from a seeded random start (normal(0, 0.05), seed 2).
+- **Floor.** Under M1 K500, the largest |L1x - L1xs2| probability difference is 9.2e-7 (fold 2) and 1.2e-6 (fold 1); under E it was 6.3e-7. Fold 2 converges in 203-207 iterations to the same loss (3.1848134 per row under M1 K500). The floor is effectively 0 (convex fit).
+- **EN rows** are served L0s levelled, bit-identical.
+
+## 4. In-sample stratum check (fold-2 training rows, SL-R4 rule: L1x within +/-0.5% xG_ref of L0s in every stratum with n >= 2,000): FAIL
+
+`train_shot_attribute_v6.py insample` exited 3 under both levels, so `pred2` refuses to run. Data: `results/shot_attribute_r6_d35/insample.json`. The level only changes the "L0s vs actual" column.
+
+| stratum | n | L0s vs actual (M1 K500) | **L1x vs L0s (M1 K500)** | L1x vs L0s (E) | high / medium / low pp (M1 K500) | gated |
+|---|---|---|---|---|---|---|
+| 5v5 | 287,840 | -0.06% | +0.019% | +0.019% | +0.016 / -0.040 / +0.024 | yes |
+| PP | 53,097 | -1.21% | +0.071% | +0.068% | +0.033 / -0.014 / -0.020 | yes |
+| PK | 9,170 | +0.71% | +0.028% | +0.037% | +0.038 / -0.091 / +0.054 | yes |
+| 4v4 | 4,334 | -4.66% | +0.065% | +0.068% | +0.024 / -0.037 / +0.013 | yes |
+| **3v3** | 3,752 | -4.91% | **-0.503%** | -0.508% | -0.234 / +0.006 / +0.228 | yes: **FAIL** |
+| 5v5 OT | 857 | +8.06% | -1.86% | -1.83% | -0.405 / -0.418 / +0.823 | no |
+| 4v4 OT | 197 | -14.79% | -0.59% | -0.59% | | no |
+| ENF / ENA | 5,721 / 2,145 | -0.32% / +0.35% | 0 (bit-identical) | 0 | 0 | reported |
+
+Every regulation stratum is within 0.1%. The miss is confined to OT rows, where it is about -0.5% to -1.9% xG, with the high tier moving to the low tier.
+
+**Cause: L33.** The fitted score dummies are per class and pooled over the non-EN states. They are centred on the training means, so a mean row is served L0s. Every OT row is tied, so it gets the full "tied vs average" deviation that was learned on regulation 5v5. But the OT baselines already condition on the state. L33 forbids exactly this ("strata whose state is defined by score and clock (empty net, OT) get their own model or the baseline only, never shared score / clock splits"). My construction kept EN on the baseline, as SL-R4 requires, but not OT. That is my construction defect, and the check caught it.
+
+**Diagnostic** (`scripts/diag_shot_attribute_r6_insample_l33.py`, `results/shot_attribute_r6_d35/insample_ot0_diag.json`; training rows only; not an arm). L1x-ot0 is the same model with the fitted home / score / rest terms switched off on OT rows, in fit and serving; OT rows keep L0s plus the rating tilt. Every stratum then passes: 3v3 -0.023%, 4v4 +0.110%, 5v5 +0.022%, PP +0.075%, PK +0.048%, 5v5 OT -0.65% (n 857).
+
+## 5. D28 guard (fold 1, every SL-R1 bias check read on L1x minus L0s; EN reported): PASS
+
+`results/shot_attribute_r6_d35/fold1/guard.json`. Under M1 K500:
+- **xG L1x / L0s:** overall +0.011%, ES -0.004%, PP +0.068%, PK -0.021%.
+- **Tiers and types:** every tier and type cell within 0.09 pp, with no FAIL row.
+
+Under E it also passed.
+
+Level read on 2023-24 (reported):
+
+| level | arm | xG overall | ES | PP | PK | ENF | high pp | R for | R against |
+|---|---|---|---|---|---|---|---|---|---|
+| M1 K500 (as graded, D35) | L0s | +1.13% | +1.53% | +0.18% | +2.59% | -2.74% | +0.08 | 0.43 | 0.21 |
+| M1 K500 | L1x | +1.14% | +1.52% | +0.24% | +2.56% | -2.74% | +0.09 | 0.969 | 0.944 |
+| O oracle (diagnostic) | L0s | +0.39% | +0.35% | +1.09% | -0.39% | -3.46% | -0.01 | 0.11 | -0.46 |
+| O oracle | L1x | +0.40% | +0.34% | +1.16% | -0.40% | -3.46% | -0.00 | 0.966 | 0.950 |
+
+## 6. Stop, and what the PM must rule
+
+The SL-R6 spec says "Everything not listed is as in SL-R4". SL-R4's "Checks before fold 2 (stop if any fails)" include this in-sample check. The SL-R6 list names the D28 guard but not the in-sample check, and so does the brief's step 4. I read the check as inherited and stopped, because a stop keeps the holdout clean whichever way the PM rules. Reading fold 2 would have closed off a construction fix.
+
+Options (proposals; the PM decides):
+1. **Rule the check not inherited.** Then run `pred2` (it needs a one-line override of the insample gate), add `--round r6` to the grader with D32 R as the responsiveness gate, then grade, decide, and run step 5.
+2. **Accept L1x-ot0 as an L33 construction fix before any fold-2 read** (the D28 kind: a defect caught before the holdout, fixed by a standing learning). Fit it at the same frozen s, re-run insample and the D28 guard, then continue as in option 1.
+   - **Recommended.**
+   - The rating scale, the construction pick and the grid are unchanged in substance, because OT rows are about 1% of the rows. The fold-1 R would be re-reported under ot0.
+3. **Report the round as failed** (no SL-R7 without the user).
+
+**Not done:**
+- No fold-2 prediction, grade or decision.
+- The grader `--round r6` is not written.
+- No sim.py change and no closed loop.
+
+Resume: `scripts/train_shot_attribute_v6.py fit2 | insample | fold1 | guard | pred2` (level M1 K500), then `grade_shot_attribute.py --round r6 --fold 2` once it is written.

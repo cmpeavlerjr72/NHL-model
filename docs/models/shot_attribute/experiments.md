@@ -406,3 +406,19 @@ The per-season L1-style coefficient on each construction (the SL-R1 rating, Qr, 
 ### Results
 
 (append below this line)
+
+### SL-R6 results (Lane A6, 2026-10-16; report `docs/tests/shot_attribute_sl_r6_2026-10-16.md`)
+
+- **Step 0 (3f1aa27).** Qr and Qa remove the arena contamination: corr with the arena factor goes from -0.13 / -0.20 (SL-R1 rating) to +0.02 / +0.02 (Qr) and +0.01 / -0.05 (Qa). The per-season L1x-form coefficients:
+  - SL-R1 rating and Qa: "against" not flat (p 0.007 / 0.008);
+  - Qa "for" falling (z -2.5);
+  - Qr closest to flat (p 0.24 / 0.08).
+- **D35 applied before any fold-2 read.** The level is M1 K500 instead of E. Every L0s-dependent step was re-run; the E-run outputs are kept as the record.
+- **Fold-1 grid (13e43e3; E run 005dd23).** Qa x0.75 is picked under both levels: s_f 1.195, s_a 0.972. It is the best-LL cell (+0.033 nats per game vs L0s), with fold-1 R 0.969 / 0.944. No Qr cell lies within 2 SE; Qr's for / against cannot both be put in band by one multiplier.
+- **In-sample stratum check (inherited from SL-R4): FAIL.**
+  - 3v3 is -0.503% vs L0s (n 3,752; limit 0.5%). Every other gated stratum is within 0.07%.
+  - Cause: L33. The pooled tied-score terms are applied on OT rows, whose baseline already conditions on the state.
+  - Diagnostic only: with the fitted terms off on OT rows, every stratum passes (3v3 -0.02%).
+- **D28 guard (fold 1, L1x minus L0s): PASS.** Everything within 0.07% xG and 0.09 pp.
+- **Stopped before fold 2.** Nothing on 2024-25 was predicted or read; no engine change, no closed loop.
+- Status: BUILDING; the PM rules. Proposal: accept the L33 OT exclusion (L1x-ot0) as a pre-holdout construction fix, then predict fold 2.
