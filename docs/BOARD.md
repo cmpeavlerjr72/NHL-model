@@ -8,9 +8,9 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-2 | Data audit: coverage, event vocabulary, coordinates, shift coverage, verified finals | P0 | CLOSED | Sonnet | PROOF: `docs/tests/data_audit_nhl_api_2026-10-15.md` (2e0e420). Residuals split out to INV-14..16 |
 | INV-14 | Independent (non-NHL) finals check, ESPN | P0 | CLOSED | Sonnet | PROOF: ESPN scoreboard, 5,706/5,706 unsealed games match score + end state (202e4dc); `verified_finals_v2` |
 | INV-15 | 2025-26 seal enforced in code at read time | P0 | CLOSED | Sonnet | PROOF: `src/nhl_sim/data/seal.py` + single loader; 14 tests pass (67bc87c) |
-| INV-16 | Shift-chart gaps (57 games 2024-25 post 04-08; 48 early 2026-27) + weekly resumable pull | P0 | OPEN | | re-try is automatic; needs scheduling |
+| INV-16 | Shift-chart gaps (57 games 2024-25 post 04-08; 48 early 2026-27) + weekly resumable pull | P0 | ASSIGNED(D2) | Sonnet (Lane D2) | 2026-10-16 |
 | INV-17 | Gate reference builder + eval_gates + sim output schema | P1 | CLOSED | Sonnet | PROOF: schema doc, gate_targets for 5 seasons, eval_gates.py, 7 tests (dabdee1); G1-G4/G8 NEEDS-INSTRUMENTATION until the event engine |
-| INV-18 | 2021-22 shootout typing | P0 | OPEN | | audit open item |
+| INV-18 | 2021-22 shootout typing | P0 | ASSIGNED(D2) | Sonnet (Lane D2) | 2026-10-16 |
 | INV-3 | Lines-source audit: historical closes, Kalshi NHL, DKeX (HAR), goalie confirmations, third-party terms | P0 | CLOSED | Sonnet | PROOF: `docs/ops/lines_sources_audit_2026-10-15.md`, register `docs/ops/data_sources.md` (55dae7f); decisions D6-D8 |
 | INV-4 | GitHub remote + HF dataset for bulk data | P0 | CLOSED | PM | PROOF: remote `cmpeavlerjr72/NHL-model` push verified via ls-remote (eb3d750); HF dataset `mvpeav/nhl-sim-data` created private=True; AWS approved (D5) |
 | INV-9 | `scripts/hf_sync_data.py` (port from CBB) for data/raw + results | P0 | CLOSED | Sonnet->PM | PROOF: port 147e3cd (12 tests, live round-trip byte-identical); first raw + results push 2026-10-15, `status` = 0 files outstanding |
