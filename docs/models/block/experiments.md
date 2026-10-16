@@ -59,3 +59,8 @@ Deferred. The engine's block-first stub (SL-R1 / SL-R3) is replaced by the selec
 ### Results
 
 (append below this line)
+
+### SB-R1 results (Lane B, 2026-10-16; report `docs/tests/block_sb_r1_2026-10-16.md`)
+
+- Level: M1 K500 selected (simplest passer; M0 1.245 pp, E 0.817 pp fail parity; oracle 0.010). Ratings w 0.7, b 1000 (L24 in-band); B2 7 leaves / min_data 200 / 310 rounds. B2 stratum check passed.
+- Fold 2: B1 +0.071 and B2 +0.096 nats/game vs B0 (SE 0.013 / 0.014; floor 0.0006); all block-share bias checks pass for B0, B1, B2 (overall +0.33 to +0.36 pp). B1 / B2 ES responsiveness 1.59 / 1.49 and 1.38 / 1.43 FAIL the band; B0 flat. **No arm eligible; none selected.** Fold 1: B1 eligible (0.83 / 1.18), B2 fails arena gate.
