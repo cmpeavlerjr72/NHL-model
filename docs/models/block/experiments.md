@@ -95,3 +95,8 @@ The "for" spread is near 1 pp in actual terms, with a CI on its ratio of 0.90-6.
 ### Results
 
 (append below this line)
+
+### SB-R2 results (Lane B2, 2026-10-16; report `docs/tests/block_sb_r2_2026-10-16.md`)
+
+- Fold-1 selection (committed db8880f before any fold-2 fit): 6 of 12 cells within 2 SE of the best-LL cell (b 3000, w 0.5); minimum max|log spread ratio| 0.190 at b 1000, w 0.7 (no other cell within 0.02). Stronger shrinkage did not bring the against-ratio toward 1 (1.11 at b 1000 up to 1.79 at b 30000 w 0.85), because the B1 coefficient is refit on the standardised rating. Selected cell = SB-R1's cell, so fold-2 results are identical to SB-R1.
+- Fold 2: B1 +0.071 and B2 +0.096 nats/game vs B0 (SE 0.013 / 0.014; floor 0.0006); every block-share bias check passes. ES responsiveness B1 1.59 / 1.49, B2 1.38 / 1.43 FAIL the band (against CI 1.06-2.17 excludes it); B0 flat. **No arm eligible; none selected.** Fold 1: B1 eligible, B2 fails the arena gate.
