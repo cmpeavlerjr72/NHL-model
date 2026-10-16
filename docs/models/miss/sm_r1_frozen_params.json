@@ -1,0 +1,56 @@
+{
+ "spec": "docs/models/miss/experiments.md SM-R1",
+ "level": "M1_K500",
+ "tuned_on": "fold 1 only (train 2021-22 + 2022-23, test 2023-24)",
+ "s": 0.75,
+ "c": 0.7171540818288172,
+ "lgb": {
+  "num_leaves": 7,
+  "min_data_in_leaf": 200,
+  "learning_rate": 0.05,
+  "n_rounds": 19,
+  "inner_split": "last 20% of fold-1 training games by date",
+  "early_stopping_rounds": 50,
+  "init_score": "logit of S0 (fit on the inner-train part)",
+  "features": [
+   "grp",
+   "ptype",
+   "sc",
+   "is_home",
+   "b2b_own",
+   "b2b_opp",
+   "arena_f"
+  ],
+  "grid": [
+   {
+    "num_leaves": 7,
+    "min_data_in_leaf": 200,
+    "best_iter": 19,
+    "inner_logloss": 0.5802379093984538,
+    "secs": 0
+   },
+   {
+    "num_leaves": 7,
+    "min_data_in_leaf": 800,
+    "best_iter": 19,
+    "inner_logloss": 0.5802387587000724,
+    "secs": 0
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 200,
+    "best_iter": 14,
+    "inner_logloss": 0.5802553892255784,
+    "secs": 0
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 800,
+    "best_iter": 19,
+    "inner_logloss": 0.5802581690820413,
+    "secs": 0
+   }
+  ]
+ },
+ "elapsed_s": 7
+}

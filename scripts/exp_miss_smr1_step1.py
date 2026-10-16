@@ -96,11 +96,11 @@ def main():
     P["diff_pp"] = P.pred_pct - P.act_pct
     P.to_csv(RES / "step1_parity_long.csv", index=False)
     J = P[P.judged]
-    S = pd.DataFrame([dict(construction=n, family=FAMILY[n], max_abs_pp=J[J.construction == n].diff_pp.abs().max(),
+    S = pd.DataFrame([dict(construction=n + (" (not selectable, D35)" if n == "E" else ""), family=FAMILY[n], max_abs_pp=J[J.construction == n].diff_pp.abs().max(),
                            all_pass=bool(J[J.construction == n].diff_pp.abs().max() <= TOL)) for n in FAMILY])
-    cand = S[~S.construction.isin(["none", "O"])]
+    cand = S[~S.construction.isin(["none", "O", "E (not selectable, D35)"])]   # D35: E is not selectable (one era-2 training season, judged in sample); row still reported
     passers = cand[cand.all_pass]
-    order = ("M0", "E", "M1", "M2")
+    order = ("M0", "M1", "M2")
     if len(passers):
         fam = min(passers.family, key=order.index)
         sel = passers[passers.family == fam].sort_values("max_abs_pp").construction.iloc[0]

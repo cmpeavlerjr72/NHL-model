@@ -1,6 +1,6 @@
 # SM-R1 step 1: miss-share level constructions and parity (Lane M, 2026-10-16)
 
-Spec (binding): `docs/models/miss/experiments.md` SM-R1. Script: `scripts/exp_miss_smr1_step1.py`; library `src/nhl_sim/miss/`; level table `data/processed/miss/level_v1.parquet` (created_at < puck_drop asserted). Generated 2026-10-16 12:42:39.
+Spec (binding): `docs/models/miss/experiments.md` SM-R1. Script: `scripts/exp_miss_smr1_step1.py`; library `src/nhl_sim/miss/`; level table `data/processed/miss/level_v1.parquet` (created_at < puck_drop asserted). Generated 2026-10-16 12:58:53.
 
 S0 = recorded training-row miss rate per (cell x type x strength group), shrunk (K = 20 pseudo-attempts, a labelled construction choice, not tuned) + the level offset logit(s_asof) - logit(s_train) per level group (ES+EN, PP, PK) + ten (strength group x period type) intercepts fitted under the offset. Parity = S0 predicted minus actual miss share (pp) per training season, over graded rows (ES + PP + PK) and over ES; tolerance +/-0.3 pp. 2021-22 has no prior season and is shown, not judged. E: on fold 1 every training row is era 1, so E = no level there.
 
@@ -56,17 +56,17 @@ S0 = recorded training-row miss rate per (cell x type x strength group), shrunk 
 
 ## Summary over judged cells
 
-| construction   | family   |   max_abs_pp | all_pass   |
-|:---------------|:---------|-------------:|:-----------|
-| none           | none     |        2.469 | False      |
-| M0             | M0       |        1.481 | False      |
-| E              | E        |        0.843 | False      |
-| M1_K500        | M1       |        0.321 | False      |
-| M1_K2000       | M1       |        0.389 | False      |
-| M1_K8000       | M1       |        0.545 | False      |
-| M2_H30         | M2       |        0.431 | False      |
-| M2_H60         | M2       |        0.405 | False      |
-| O              | O        |        0.138 | True       |
+| construction            | family   |   max_abs_pp | all_pass   |
+|:------------------------|:---------|-------------:|:-----------|
+| none                    | none     |        2.469 | False      |
+| M0                      | M0       |        1.481 | False      |
+| E (not selectable, D35) | E        |        0.843 | False      |
+| M1_K500                 | M1       |        0.321 | False      |
+| M1_K2000                | M1       |        0.389 | False      |
+| M1_K8000                | M1       |        0.545 | False      |
+| M2_H30                  | M2       |        0.431 | False      |
+| M2_H60                  | M2       |        0.405 | False      |
+| O                       | O        |        0.138 | True       |
 
 ## Selection: **M1_K500** (fallback: smallest max |parity|, ties within 0.1 pp to the simpler construction (failure listed))
 

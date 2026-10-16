@@ -55,3 +55,10 @@ Deferred to a separate engine step. Stage 4 is still on its stand-in, so the clo
 ### Results
 
 (append below this line)
+
+### SM-R1 results (Lane M, 2026-10-16; report `docs/tests/miss_sm_r1_2026-10-16.md`)
+
+- Level M1 K500 by fallback (max parity 0.321 pp vs 0.3; E excluded from selection by D35; oracle 0.138). Fold-1 s-grid (committed dcdffd4 before any fold-2 fit): s = 0.75, c = 0.717, R 0.94.
+- Fold 2: S1 +0.0218 and S2 +0.0175 nats/game vs S0 (SE 0.0064 / 0.0037; floor 0.00106). Every bias check passes except the low-danger tier (S0 -1.72, S1 -1.74, S2 -1.75 pp; the 2024-25 drift is concentrated in low-danger cells). S1 ES R 1.03 (0.78-1.50, UNDERPOWERED) and arena slope PASS; S2 R 0.39 and arena slope FAIL. **No adoptable arm eligible; S0 stays the stand-in.**
+- Fold 1: S1 R 0.94 but arena gate FAIL (+13.7, SE 6.5) and no LL gain (-0.0049, SE 0.0082).
+- Post / crossbar share of misses 6.3 / 6.4 / 6.3 / 8.4% (2021-22 to 2024-25).
