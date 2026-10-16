@@ -297,3 +297,26 @@ The gradient was found on fold 2. Before any arm is fit, report the coincidental
 ### Results
 
 (append below this line)
+
+---
+
+## SS-R3c: stage-1 incumbent re-levelled with LC-1 (pre-registered 2026-10-15 by the PM, before any run; D16)
+
+The stage-1 incumbent (H3'' + T1, D15) uses the defective SS-R2 level construction. Penalties fell over the training seasons (2023-24 3.61 -> 2024-25 3.32), so the bias direction differs from attempts, and its +1.45% overall result may itself be partly that defect.
+
+### Change
+
+1. **Corrected league level LC-1 (D16).** The level is the log of the ABSOLUTE as-of de-seasonalised league rate. It is the season-to-date rate before this game date, divided by the profile, and gamma-shrunk toward the previous season's final de-seasonalised rate with strength k. It enters with coefficient 1 in training and in test alike, so cells and other terms are multipliers on the current league level. No ratio to the previous season is used anywhere. Its parity test asserts that, on fold-1 train, the mean predicted rate equals the actual rate within 0.5% in EACH training season separately.
+2. k re-tuned on fold 1 from {5, 15, 50}.
+
+Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-R5 type arm if it has been selected by then, ratings, profile, and the bias-check thresholds (January 2025 stays a listed bias).
+
+### Decision rule
+
+- **Acceptance.** H3''c replaces H3'' as the incumbent if it passes the SS-R3 bias checks (January listed), its fold-2 log-likelihood is not worse by > 2 SE, and the closed-loop G1 regular-season cells pass with a CLEAN decomposition.
+- **If H3''c fails** where H3'' passed, the defect was masking something. Stage 1 drops to TESTING and the PM rules.
+- **Reporting.** Report H2''c alongside.
+
+### Results
+
+(append below this line)

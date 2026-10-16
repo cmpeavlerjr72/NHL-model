@@ -147,3 +147,13 @@ Decision:
 - Monitoring items are listed in the strength_state experiments ruling.
 
 Reason: `docs/tests/strength_state_g1_ssr3_2026-10-15.md`. Status: ADOPTED.
+
+## D16 (2026-10-15): League-level construction defect (PM spec error); LC-1 replaces it in every stage
+
+SA-R1 (d379f58, c9542c8) found that the in-season league level the PM specified in SS-R2 is biased under any trend. It is a ratio to the previous season, entered as a fixed offset over cells pooled across training seasons. The cells absorb the mean of the earlier seasons' rates, so test predictions are off by the gap between that mean and last season's rate. This gave about -5% on attempts. Fold-1 evidence: a fixed reference moves A0 from -2.03% to +0.22%.
+
+- LC-1 (absolute as-of de-seasonalised level, coefficient 1, with a per-training-season parity test) replaces it everywhere.
+- SA-R2 re-runs stage 3 with LC-1 and adds strength-group level arms, for the fold-1 PK drift.
+- SS-R3c re-levels the stage-1 incumbent. D15 stays in force until SS-R3c rules. Any G1 result produced on the old level (incl. SS-R5) is re-checked under LC-1 before it lifts a block.
+
+Reason: `docs/tests/shot_attempt_sa_r1_2026-10-15.md`. Status: ADOPTED.

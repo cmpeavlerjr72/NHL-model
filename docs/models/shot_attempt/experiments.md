@@ -123,3 +123,30 @@ Thresholds are tighter than stage 1's because attempts are about 35x as frequent
   - G2 runner, decomposition and closed-loop responsiveness (`scripts/run_shot_attempt_g2.py`, `src/nhl_sim/eval/g2.py`);
   - G2 targets sibling `data/reference/gate_targets_g2_20242025.parquet`.
 - A 4-seed smoke run on A2 (plumbing only, not a gate) ran end to end.
+
+---
+
+## PM ruling on SA-R1 (2026-10-15, D16)
+
+- The result is accepted as reported: no arm is eligible, and G2 was correctly not run. A3 leads offline (+1.062 vs A0). The responsiveness band passes for A1-A3 (1.04-1.16). The arena factor adds nothing (A5 vs A2 -0.001).
+- **The root cause is a PM spec error**, the SS-R2 level definition reused here. The level is a ratio to the previous season, and cells pooled over training seasons absorb the mean of those seasons' rates. So under any trend the test-season prediction is biased by the gap between that mean and last season's rate. Attempts rose (+2.3%, +4.5%), which gives -5%. The level is replaced by LC-1 in every stage.
+
+## SA-R2: shot attempts with the corrected level (pre-registered 2026-10-15 by the PM, before any run)
+
+### Changes vs SA-R1 (everything else is identical, including features, folds, metric, noise floor, decision rule, bias-check thresholds, responsiveness band and the G2 spec)
+
+1. **Corrected league level LC-1 (D16).** The level is the log of the ABSOLUTE as-of de-seasonalised league rate. It is the season-to-date rate before this game date, divided by the profile, and gamma-shrunk toward the previous season's final de-seasonalised rate with strength k. It enters with coefficient 1 in training and in test alike, so cells and other terms are multipliers on the current league level. No ratio to the previous season is used anywhere. Its parity test asserts that, on fold-1 train, the mean predicted rate equals the actual rate within 0.5% in EACH training season separately.
+2. **Grid extended** (SA-R1 corners): k in {5, 15, 50}, prior strength b in {200, 600, 1800}, w in {0.7, 0.85, 1.0}. Tuned on fold 1 only.
+3. **Strength-group level arms**, for the fold-1 PK drift of +8-11%. A2g and A3g are A2 and A3 with three separate LC-1 levels, one each for ES, PP-for and PK, each with its own profile. The g arm is preferred over its twin only if it passes a bias check the twin fails, or beats it by > 2 SE, and is not worse on any other check.
+
+### Arms
+
+A0, A1, A2, A5, A4, A3 (all refit with LC-1), plus A2g and A3g. The complexity order is A0 < A1 < A2 < A2g < A5 < A4 < A3 < A3g.
+
+### Fold-1 diagnostic (reported first)
+
+Overall, by-month and by-state bias on fold 1 for every arm. The fold-2 checks gate.
+
+### Results
+
+(append below this line)
