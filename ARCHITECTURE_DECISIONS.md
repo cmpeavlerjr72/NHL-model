@@ -210,3 +210,17 @@ Reason: `docs/tests/shot_attempt_g2_inv36_2026-10-16.md`. Status: ADOPTED.
 - The flag is built by Lane O3 as INV-38.
 
 Status: ADOPTED.
+
+## D22 (2026-10-16): LT-R1 / INV-25 PASS; DRatings is the consensus totals CLV source
+
+- **Agreement.** The price-adjusted totals test passes in both seasons. Median |P_E - P_D| is 0.006-0.009, and every mean signed difference is within +/-0.0022 (thresholds 0.02 / 0.01). Under the pre-set consequence:
+  - DRatings no-vig close is the consensus totals CLV source for 2021-25.
+  - ESPN BET is a consistent single book at its own line.
+  - D11's "never as the consensus line" stands for ESPN BET.
+- **The '-68'** was an arithmetic mean of mixed-sign American prices, not a price. The correct summary is a mean implied probability of 0.529, about -112.
+- **Listed.**
+  - Converting into a DRatings line of 7.0 is underpowered: lookup n = 92, and the 2023-24 0.5-below sub-bucket mean is -0.014. Totals CLV in games at a 7.0 line is reported separately until a larger lookup exists.
+  - The worker fixed three open choices before reading results, and disclosed them: vig band 1.00-1.10, lookup conditioned on the DRatings line, minimum cell 30. They are accepted.
+  - Both sources run 0.01-0.016 above the observed over rate. That is not significant (z 0.75-1.19), and it is a monitoring item for the market scorecard.
+
+Reason: `docs/tests/lines_totals_lt_r1_2026-10-16.md` (470a1a4). Status: ADOPTED.
