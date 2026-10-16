@@ -184,3 +184,16 @@ Reason: `docs/tests/strength_state_lc2_2026-10-16.md` (3a17280). Status: ADOPTED
 - **T2 merge** (`sim.py` `per_team_types`, default off, bit-identical both ways) is accepted; `sim_ss_r5.py` is superseded.
 
 Reason: `docs/tests/shot_attempt_sa_r3_2026-10-16.md` (3b68b8f). Status: ADOPTED.
+
+## D20 (2026-10-16): stage 3 incumbent A3g-c (INV-36)
+
+The D19 condition is met. G2 for A3g-c on H3''-LC2 + T2 (200 seeds, b7fb015) passes every non-3v3 cell in the regular season: 5v5 +0.35%, PP -0.49%, PK -2.14%, 4v4 +2.82%, attempts per team-game -0.94%, score buckets. The decompositions are CLEAN, responsiveness passes (1.135 / 1.122), and every status is the same at 100 and 200 seeds. The stage-1 path is bit-identical to Lane L2's G1. shot_attempt becomes **CONFIRMED-INCUMBENT (provisional): A3g-c**.
+
+Listed:
+- 3v3 +5.25% (INV-35, gates at stage 8).
+- 4v4 sits 0.18 pt inside its line. The components share a sign, so there is no compensation; it is a live-season monitoring item.
+- b_c = 50 is a grid corner.
+- Playoff PK per-state decomposition 14.63 vs 13.32 per 60 (UNDERPOWERED).
+- The EN pair (-1.69 / +0.97) is re-checked at stage 8.
+
+Reason: `docs/tests/shot_attempt_g2_inv36_2026-10-16.md`. Status: ADOPTED.

@@ -257,3 +257,9 @@ Complexity order: A2g-c < A3g < A3g-c < A3g-s. 3v3 in the regular season is OT o
 - 3v3: +5.25% RS, **listed, gates at stage 8 (D19)**.
 - Responsiveness own 1.135 (0.996..1.313) / opp 1.122 (0.973..1.329) PASS. 100 vs 200 seeds: every status identical. EN watch item unchanged (-1.69 attempts per team-game unreachable).
 - D19 condition: **met**. The PM rules. Report: `docs/tests/shot_attempt_g2_inv36_2026-10-16.md`.
+
+---
+
+## PM ruling on INV-36 (2026-10-16, D20)
+
+The D19 condition is met. A3g-c is CONFIRMED-INCUMBENT (provisional). The listed items are as in D20.
