@@ -36,7 +36,10 @@ def match_games(idx):
     by = {k: v for k, v in g.groupby(["home", "away"])}
     out = {}
     for u, r in idx.items():
-        c = by.get((r["home"], r["away"]))
+        h, a = r["home"], r["away"]
+        if r["start_utc"][:10] < "2024-07-01":  # DRatings labels pre-2024 Arizona games "Utah Mammoth" (current name)
+            h, a = ("ARI" if h == "UTA" else h), ("ARI" if a == "UTA" else a)
+        c = by.get((h, a))
         if c is None:
             continue
         st = pd.Timestamp(r["start_utc"])
@@ -89,7 +92,8 @@ def build_df():
                 stat["no_game_match"] = stat.get("no_game_match", 0) + 1
             continue
         for x in rows:
-            x.update(uuid=u, game_id=gid[u], start_utc=r["start_utc"], home=r["home"], away=r["away"])
+            x.update(uuid=u, game_id=gid[u], start_utc=r["start_utc"], home=r["home"], away=r["away"],
+                     dr_team_label_remapped=bool(r["start_utc"][:10] < "2024-07-01" and "UTA" in (r["home"], r["away"])))
         recs += rows
     df = pd.DataFrame(recs)
     assert df.empty or df.start_utc.str[:10].lt(WIN_HI).all()

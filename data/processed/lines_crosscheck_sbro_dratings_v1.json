@@ -1,0 +1,70 @@
+{
+ "n_games_both": 1743,
+ "by_season": {
+  "20212022": 1401,
+  "20222023": 342
+ },
+ "sbro_games_total": {
+  "20212022": 1401,
+  "20222023": 342
+ },
+ "dr_ml_home_bookmed_vs_sbro_ml_home_nv": {
+  "n": 1743,
+  "mean": 0.0036719405470137705,
+  "median": 0.0023667167161705027,
+  "p95": 0.010667354262636874,
+  "max": 0.16693134773752882,
+  "mean_signed": -0.00021012173961267825,
+  "argmax_game": 2021021045,
+  "pct_within_0_02": 99.48364888123923
+ },
+ "dr_ml_home_open_offshore_vs_sbro_ml_home_open_nv": {
+  "n": 1743,
+  "mean": 0.014206012467593945,
+  "median": 0.007070707070707061,
+  "p95": 0.04347826086956519,
+  "max": 0.43307658085405365,
+  "mean_signed": 0.0002775826493867577,
+  "argmax_game": 2021020810,
+  "pct_within_0_02": 78.65748709122204
+ },
+ "dr_ml_home_open_vegas_vs_sbro_ml_home_open_nv": {
+  "n": 1743,
+  "mean": 0.01361722800268799,
+  "median": 0.006487440890264984,
+  "p95": 0.03682970836742867,
+  "max": 0.5340859105540323,
+  "mean_signed": -0.0016712076772915398,
+  "argmax_game": 2021020829,
+  "pct_within_0_02": 83.07515777395295
+ },
+ "dr_total_close_mode==sbro_total_close": {
+  "n": 1743,
+  "pct_identical": 95.98393574297188,
+  "diff_counts": {
+   "-0.5": 30,
+   "0.0": 1673,
+   "0.5": 40
+  }
+ },
+ "dr_total_open_offshore==sbro_total_open": {
+  "n": 1743,
+  "pct_identical": 88.92713711990821,
+  "diff_counts": {
+   "-1.0": 3,
+   "-0.5": 137,
+   "0.0": 1550,
+   "0.5": 51,
+   "3.5": 2
+  }
+ },
+ "dr_pl_away_close_mode==sbro_pl_away": {
+  "n": 1743,
+  "pct_identical": 97.81985083189902,
+  "diff_counts": {
+   "-3.0": 15,
+   "0.0": 1705,
+   "3.0": 23
+  }
+ }
+}
