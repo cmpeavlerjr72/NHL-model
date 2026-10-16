@@ -338,3 +338,13 @@ Reason: `docs/tests/block_sb_r2_2026-10-16.md`. Status: ADOPTED.
   There is no SL-R6 without the user.
 
 Reason: `docs/tests/shot_attribute_sl_r4_2026-10-16.md`. Status: ADOPTED.
+
+## D31 (2026-10-16): SL-R5 ruling; the D30 stop rule triggers
+
+SL-R5 (399c1c7, a56e89b): L3d is not eligible.
+
+- ES responsiveness is 0.517 / 0.413, below the band.
+- PK xG is +3.21%.
+- Early stopping on likelihood caps the booster at 2-40 rounds, and no capacity cell exceeds 0.58 responsiveness on fold 1. Tree capacity is not a usable response scale.
+
+Stage-4 respecs stop here, and the options go to the user (D30). Status: ADOPTED; the user decision is pending.
