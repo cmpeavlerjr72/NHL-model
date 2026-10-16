@@ -261,3 +261,17 @@ Reason: `docs/tests/shot_attribute_sl_r2_2026-10-16.md` (9b86012). Status: ADOPT
 - **Sign-flip rule.** A puck-line result that flips sign between the two versions is not reported as an edge.
 
 Status: ADOPTED.
+
+## D26 (2026-10-16): SL-R3 ruling; EN rows get the baseline only; 4v4 / 3v3 get their own location baseline; stage-3 4v4 reopened
+
+- **Era flag accepted.** GameState carries the recording era (boundary 2023-24, D24). With the stage-4 option off, output is bit-identical to HEAD; 162 tests pass.
+- **L3b stopped correctly** at the in-sample check. EN-for is -0.87% against the 0.5% limit, while ES / PP / PK are within 0.42%. Cause: score and clock deviations learned on ES (late, trailing shots run 7-9% lower xG) leak onto EN-for rows, which are all late and trailing. Nothing on fold 2 was read.
+- **SL-R4 is pre-registered as two construction fixes, nothing else:**
+  - EN-for and EN-against rows are served the L0m baseline with no tree deviations. EN-for cannot be reached in the sim before the stage-8 goalie pull, and its mix is flat on L0m.
+  - 4v4 and 3v3 get their own baseline strata. The L0m plumbing loop showed that pooling them with 5v5 gives 4v4 / 3v3 xG -11% / -6%.
+
+  This is the fourth stage-4 respec, so the D13 forking-paths guard applies: the fold-1 bias checks must pass as well as fold 2.
+- **Noise floor.** The baseline-started booster is deterministic: its seed-2 retrain is bit-identical. The floor is 0, labelled, as for the SS-R5 convex fits, and the 2 SE bootstrap criterion carries the decision.
+- **Stage-3 4v4 reopened (INV-42).** Under the L0m plumbing loop's goal stub, regular-season G2 4v4 attempts per 60 moved from +2.82% to +3.08%, a marginal FAIL at 200 seeds (PASS at 100). The shift comes through score states, from the stub goal model, not from the location model. But the cell sat 0.18 pt from its line (D20), so it now fails. The fix belongs to stage 3, the 4v4 hazard's own level (as A3g-s did offline at -0.5%). It is pre-registered separately. Until then, the stage-4 gate's G2 re-check reports 4v4 as listed under INV-42 and 3v3 under INV-35, and gates every other cell.
+
+Reason: `docs/tests/shot_attribute_sl_r3_2026-10-16.md` (9d92d31). Status: ADOPTED.

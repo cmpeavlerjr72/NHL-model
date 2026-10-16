@@ -222,3 +222,49 @@ L3b is eligible if it passes every SL-R1 / SL-R2 bias check and the ES responsiv
   - Cause: the shared trees carry the ES late-trailing score / clock deviation onto the all-late-trailing EN-for rows, where the actual is flat.
 - **Stop per spec:** nothing on fold 2 was predicted or read; no grade, no decision, no L3b closed loop.
 - Status: BUILDING; the PM rules.
+
+---
+
+## PM ruling on SL-R3 (2026-10-16, D26)
+
+- The era flag is accepted.
+- L3b stopped correctly at the in-sample check (EN-for -0.87%, from score / clock leakage).
+- The floor is 0 (deterministic, labelled).
+- Stage-3 4v4 is reopened as INV-42.
+- Next is SL-R4 (below).
+
+---
+
+## SL-R4: L3c, EN on baseline, 4v4 / 3v3 baseline strata (pre-registered 2026-10-16 by the PM, before any run; D26)
+
+Everything not listed is as in SL-R3: level E, the L3b booster and its fold-1 tuning, features, Fenwick target, xG_ref, bias checks, responsiveness, grading, and the closed loop. The noise floor follows D26.
+
+### Changes
+
+1. **Baseline strata.** 5v5, 4v4, 3v3 (the three ES states, split), PP-for, PK, EN-for, EN-against, each x period type.
+   - The 4v4 and 3v3 cell shares are shrunk to the 5v5 cell shares with K = 500 unblocked attempts.
+   - Type-given-cell comes from pooled ES.
+   - Level E is applied per state as the ES era ratio.
+
+   The same baseline replaces L0m in every row: this is L0s, the comparator.
+2. **L3c.** It is L3b started from L0s, and EN-for / EN-against rows get L0s only (no tree output). In training, EN rows are excluded from the booster.
+
+### Checks before fold 2 (stop if any fails)
+
+- In-sample on fold-2 training rows: L3c within +/-0.5% xG_ref of L0s in every stratum with n >= 2,000.
+- D13 guard: fold-1 bias checks (all SL-R1 checks) pass for L3c.
+
+### Decision
+
+L3c is eligible if it passes every fold-2 bias check and the ES responsiveness band. It is selected if eligible and not worse than L0s by > 2 SE. L0s is flat and not adoptable (D24).
+
+### Closed loop
+
+- **If L3c is selected:** G3 + the G2 re-check, 200 seeds, stage 1 = H3''-LC2 + T2, stage 3 = A3g-c, block-first stub.
+- **G3 gates** overall, 5v5, PP and PK; 4v4 and 3v3 are reported with their n.
+- **G2 re-check:** 4v4 is listed (INV-42), 3v3 is listed (INV-35), and every other cell gates.
+- **On selection,** shot_attribute becomes CONFIRMED-INCUMBENT (provisional).
+
+### Results
+
+(append below this line)
