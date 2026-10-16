@@ -235,3 +235,19 @@ Reason: `docs/tests/lines_totals_lt_r1_2026-10-16.md` (470a1a4). Status: ADOPTED
 - **Next: SL-R2,** pre-registered in `docs/models/shot_attribute/experiments.md`.
 
 Reason: `docs/tests/shot_attribute_sl_r1_2026-10-16.md` (436da19). Status: ADOPTED.
+
+## D24 (2026-10-16): SL-R2 ruling; era level E kept with a GameState flag; L0m is not adoptable; SL-R3 = baseline-started booster
+
+- **The level works.** It is worth +0.87 nats/game over L0 (z 24), 92% of the oracle's gain. No as-of construction passes parity; the oracle passes. The fallback took E, the recording-era intercept. Kept, with two caveats listed:
+  - for fold 2, E's judged parity is in-sample, because era 2 is only 2023-24;
+  - fold 1 cannot test it.
+
+  The era flag goes into GameState (CLAUDE.md: rule-era flags live in GameState). The era boundary 2023-24 is fixed now. Any later boundary needs its own evidence, and is not fitted.
+- **No arm is eligible.**
+  - L0m passes every bias check (xG +1.97%), but it is flat by construction. The matchup-specific rule forbids a flat incumbent, so L0m cannot be adopted.
+  - L1m fails PK (+3.2%) and over-responds (1.69), the same over-response as SL-R1. The GLM rating terms stay unproven.
+  - L3m fails PP tier shares and EN-for, and it is already off on its own training rows. The diagnosis is a construction defect: a booster started from the pooled, ES-dominated mix and stopped at 35 rounds. That is not a data finding.
+- **SL-R3** is pre-registered as a single construction fix: L3b, a booster started from the levelled L0m distribution. It is not a new search.
+- **L0m as a plumbing run.** SL-R3 also runs L0m through the closed loop as a labelled plumbing check of the Fenwick order and the block-first stub, not as a gate. That way the engine path is proven whatever L3b does.
+
+Reason: `docs/tests/shot_attribute_sl_r2_2026-10-16.md` (9b86012). Status: ADOPTED.

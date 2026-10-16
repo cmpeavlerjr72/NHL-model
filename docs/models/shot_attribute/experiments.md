@@ -167,3 +167,42 @@ Residual mean distance by arena is reported, labelled UNDERPOWERED below 1,500 a
 - **Step 4 skipped** (no eligible arm). `scripts/run_shot_attribute_g3_v2.py` is ready and has not been run.
 - Status: BUILDING; the PM rules. Proposal: SL-R3 with L3b, a booster started from log L0m (levelled). Also a ruling on the responsiveness requirement given that L0m is the only bias-clean arm, and a GameState recording-era flag if E stays.
 
+
+---
+
+## PM ruling on SL-R2 (2026-10-16, D24)
+
+- E (the recording-era level) is kept, with its caveats listed. The era flag goes into GameState, with the boundary fixed at 2023-24.
+- No arm is eligible. L0m is flat and cannot be an incumbent. L1m over-responds. L3m has a construction defect: it starts from the pooled mix.
+- Next is SL-R3 (below). It runs a plumbing-only closed loop on L0m.
+
+---
+
+## SL-R3: baseline-started booster (pre-registered 2026-10-16 by the PM, before any run; D24)
+
+Everything not listed is as in SL-R2: level E, Fenwick target, xG_ref fixed per fold, bias checks, responsiveness, grading, and the closed loop.
+
+### Arm
+
+**L3b** is LightGBM multiclass on the joint (cell x type). Its init_score is the log of the L0m (levelled) class probabilities for each row's (strength group x period type), so the trees model only deviations: ratings, score, home, rest, clock, period.
+- Same feature set as L3m.
+- Rating cell w = 0.7, b = 1,000 (SL-R2 tuning, kept).
+- The booster is re-tuned on fold 1 over num_leaves {15, 31} x min_data_in_leaf {200, 800} x lr {0.05, 0.02}, with early stopping on the time-ordered fold-1 inner split.
+- A seed-2 retrain sets the floor.
+
+### In-sample check first (L32)
+
+On fold-2 training rows, L3b's xG_ref per attempt by strength group must be within +/-0.5% of L0m's. If it is not, stop and report; nothing on fold 2 is read.
+
+### Decision
+
+L3b is eligible if it passes every SL-R1 / SL-R2 bias check and the ES responsiveness band. It is selected if eligible and not worse than L0m by > 2 SE in LL (L0m itself is not eligible, D24).
+
+### Closed loop
+
+- **L0m: always (plumbing, not a gate).** G3 and the G2 re-check, 200 seeds, on stage 1 = H3''-LC2 + T2, stage 3 = A3g-c, block-first stub, and the era flag in GameState.
+- **L3b: if selected,** the same, as the gate.
+
+### Results
+
+(append below this line)
