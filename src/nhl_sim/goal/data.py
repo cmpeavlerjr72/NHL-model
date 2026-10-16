@@ -275,11 +275,13 @@ def asof_oe_ratings(rows: pd.DataFrame, p_c0: np.ndarray, key: str, b: float, w:
         def snap():
             ebar = E.sum() / Nn.sum() if Nn.sum() > 0 else prev_ebar
             lr = np.log((Y + b * ebar * np.exp(w * pri)) / (E + b * ebar))
-            if weighted_centre:
-                wt = Nn + prev_N
+            wt = Nn + prev_N
+            if weighted_centre and wt.sum() > 0:
                 c = (wt * lr).sum() / wt.sum()
-            else:
+            elif seen.any():
                 c = lr[seen].mean()
+            else:                       # the first snapshot of the first data season: every entity sits at its prior
+                c = lr.mean()
             return lr, lr - c
 
         for d in np.sort(S.date.unique()):
