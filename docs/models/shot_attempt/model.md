@@ -1,6 +1,6 @@
 # Shot-attempt generation (cascade stage 3)
 
-Status: TESTING (SA-R1 run 2026-10-15; no arm selected). Numbers: `experiments.md` SA-R1 Results, `docs/tests/shot_attempt_sa_r1_2026-10-15.md`, `docs/tests/shot_attempt_sa_r1_grade_2026-10-15.md`. Features: `features.md`.
+Status: TESTING. SA-R1 (2026-10-15) selected no arm (level defect, D16). **SA-R2 (LC-1 level) selected A3g** (LightGBM on ES / PP-for / PK group LC-1 levels); in G2 its core cells pass CLEAN and 4v4 / 3v3 per 60 fail (`docs/tests/shot_attempt_sa_r2_2026-10-15.md`). The PM rules on status. Numbers: `experiments.md` SA-R1 Results, `docs/tests/shot_attempt_sa_r1_2026-10-15.md`, `docs/tests/shot_attempt_sa_r1_grade_2026-10-15.md`. Features: `features.md`.
 
 ## 1. Purpose
 
@@ -61,3 +61,13 @@ G2: `scripts/run_shot_attempt_g2.py sim --arm <A> --seed0 <s> --nseeds 50` (four
 | `data/processed/shot_attempt/exclusions_v1.json` | tallies |
 | `docs/models/shot_attempt/sa_r1_frozen_params.json` | fold-1 choices: k = 15, w = 0.85, b = 600; A3 7 leaves / 800 min-data / 765 rounds; A4 v = 0.00115 |
 | `results/shot_attempt_r1/` (gitignored) | fold-2 / fold-1 fits, hashed predictions, decision.json |
+
+## SA-R2 update (2026-10-15)
+
+- The level is LC-1 (`src/nhl_sim/league_level_lc1.py`, D16). Tables: `league_level_v2_f{1,2}` (all-state + ES / PP-for / PK, k {5, 15, 50}), `profile_v2_f{1,2}.json`, `ratings_grid_v2`, `arena_v2`. Frozen (`sa_r2_frozen_params.json`): k = 5, w = 0.85, b = 200.
+- Selected arm A3g: `results/shot_attempt_r2/models/A3g.txt`. Serve it with `attempt_table("A3g", booster, games, fz, fold=2, tv="v2", level="lc1g")`.
+- G2: `scripts/run_shot_attempt_g2.py sim --round SA-R2 --arm A3g --seed0 <s> --nseeds <n>`, then `grade --round SA-R2 --arm A3g`.
+- Open items:
+  - 3v3 / 4v4 over-prediction (offline +6.8% / +3.1%; G2 fail);
+  - G2 on H3'' + T2 not run;
+  - k and b at grid corners.

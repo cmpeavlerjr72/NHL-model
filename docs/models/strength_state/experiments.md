@@ -337,3 +337,11 @@ Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-
 - **T2 replaces T1 in the stage-1 incumbent.** T2 beats T1 offline by 2.9 SE, and its regular-season G1 is a CLEAN PASS. On the type model, T2 is better than T1 on every measure that was taken. The incumbent is now H3'' + T2, still subject to SS-R3c (D16).
 - **INV-29 stays open, and the D15 team-PP block stands.** The closed-loop drawn-rating spread ratio is 1.25, outside the pre-registered [0.8, 1.2]. The gate is not relaxed, even though one-season sampling error (SE about 0.08 on the actual spread) cannot separate 1.25 from the band edge. The residual sits in the penalty-count response at the top taken-rating quintile.
 - **Next for INV-29.** It is re-measured under LC-1 (SS-R3c), because the level defect may contribute. The regular-season-only spread ratio, which Lane P2 did not compute, is also reported. No new arm is pre-authorised until those two numbers exist.
+
+#### SS-R3c run, 2026-10-15 (Lane S2, INV-31)
+
+- LC-1 level tables `league_level_v4_f{1,2}` (SS-R3 profile kept). Frozen k = 5 (corner). Type arm: T2 (SS-R5 ruling).
+- **STOPPED at the spec's parity assertion.** Fold-1 train in-sample predicted / actual by season: H0''c -2.07% / +2.01%, and H1''c-H3''c alike, against a 0.5% limit. Fold-2 train: -3.2% / +0.9% / +2.2%.
+- Cause: with a strongly seasonal target, the season-to-date de-seasonalised level carries each season's early-month profile error for weeks. Its time average misses the season rate by a few percent.
+- Fold 2 was fitted but not graded. No bias checks, no G1. D15 is unchanged.
+- Resume commands are in `docs/tests/strength_state_ss_r3c_2026-10-15.md`.

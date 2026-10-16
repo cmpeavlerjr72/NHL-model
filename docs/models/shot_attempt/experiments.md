@@ -150,3 +150,22 @@ Overall, by-month and by-state bias on fold 1 for every arm. The fold-2 checks g
 ### Results
 
 (append below this line)
+
+#### SA-R2 run, 2026-10-15 (Lane S2, INV-31)
+
+- LC-1 (`src/nhl_sim/league_level_lc1.py`, tables `_v2`).
+- Parity, level arm A0 on fold-1 train: -0.48% / +0.46%, PASS. This is a labelled reading. A1, A2 and A5 exceed the limit at about 0.6%, and fold-2 train A0 2021-22 is -0.66%. Both are reported.
+- Frozen: k = 5, w = 0.85, b = 200 (k and b are corners). A3 / A3g: 15 leaves, 800 min-data, 459 rounds. v = 0.00119.
+- Fold-1 diagnostic: level +0.4% to +0.6% in every arm. PK runs +10% to +11% except A2g (+4.1%) and A3g (pass).
+- Fold 2 vs A0 (nats/game, SE): A1 +0.401 (0.042), A2 +0.961 (0.054), A2g +0.973 (0.055), A5 +0.965, A4 +0.968, A3 +1.086 (0.055), A3g +1.099 (0.056). The seed floor is 0.0026.
+- Fold-2 bias: only A2g and A3g pass every check. The other arms fail PK (+9% to +11%), and A0-A5 also fail PP (+3.4% to +3.7%). Responsiveness passes for A1-A3g (1.07-1.17).
+- Twin rule: A2g and A3g are preferred.
+- **Selected: A3g; next simpler eligible arm: A2g.**
+- G2 (200 seeds, stage 1 = H3'' + T1, the D15 incumbent at launch) for A3g in the regular season:
+  - 5v5 +0.4%, PP -0.5%, PK -2.1%, attempts per team-game -0.9%: all PASS.
+  - **4v4 +4.2% and 3v3 +6.6%: FAIL.**
+  - Per-team-game decomposition: CLEAN (EN -1.69 against 5v5 time +0.97, both inside the 1.78 tolerance).
+  - Closed-loop responsiveness: 1.135 / 1.121, PASS.
+  - A2g: 3v3 +5.4% FAIL, 4v4 passes, otherwise the same.
+- Step 4 was not triggered: SS-R3c stopped at its parity assertion.
+- Report: `docs/tests/shot_attempt_sa_r2_2026-10-15.md`.

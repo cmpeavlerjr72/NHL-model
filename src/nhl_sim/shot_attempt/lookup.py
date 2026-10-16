@@ -31,8 +31,10 @@ def _grid():
     return b
 
 
-def attempt_table(arm: str, model, games: pd.DataFrame, fz: dict, fold: int, chunk: int = 48) -> np.ndarray:
-    """games: game_id, season (sorted by game_id). fz: frozen params (k, w, prior_strength_min)."""
+def attempt_table(arm: str, model, games: pd.DataFrame, fz: dict, fold: int, chunk: int = 48, tv: str = "v1",
+                  level: str = "r3") -> np.ndarray:
+    """games: game_id, season (sorted by game_id). fz: frozen params (k, w, prior_strength_min). tv / level: as
+    `models.attach_features` (SA-R1 defaults; SA-R2 tv="v2", level "lc1" or "lc1g" for the g arms)."""
     games = games.sort_values("game_id").reset_index(drop=True)
     base = _grid()
     B = len(base)
@@ -45,7 +47,7 @@ def attempt_table(arm: str, model, games: pd.DataFrame, fz: dict, fold: int, chu
         big["season"] = np.repeat(np.repeat(part.season.to_numpy(), 2), B)
         big["team"] = np.tile(np.repeat(np.array([0, 1], np.int8), B), len(part))
         big["is_home"] = (1 - big.team).astype(np.int8)
-        r = S.attach_features(big, fz["w"], fz["prior_strength_min"], fz["k"], fold)
+        r = S.attach_features(big, fz["w"], fz["prior_strength_min"], fz["k"], fold, tv=tv, level=level)
         if len(r) != len(big):
             raise ValueError("feature attach changed the row count")
         mu = S.predict_lgb(model, r) if arm.startswith("A3") else S.predict_glm(model, r)

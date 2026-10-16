@@ -1,0 +1,30 @@
+{
+ "tuned_on": "fold 1 only (train 2021-22 + 2022-23, test 2023-24), k on H1'' (SS-R3 practice)",
+ "grid_H1": [
+  {
+   "k": 5,
+   "fold1_H1_ll_per_game": -35.959907522658206,
+   "pred_over_actual": 1.0371961159307486
+  },
+  {
+   "k": 15,
+   "fold1_H1_ll_per_game": -35.96017201405825,
+   "pred_over_actual": 1.0364963036069186
+  },
+  {
+   "k": 50,
+   "fold1_H1_ll_per_game": -35.96074433511123,
+   "pred_over_actual": 1.0346278717767892
+  }
+ ],
+ "k": 5,
+ "w": 1.0,
+ "prior_strength_min": 1800,
+ "lgb": {
+  "num_leaves": 7,
+  "min_data_in_leaf": 200,
+  "learning_rate": 0.05,
+  "n_rounds": 378,
+  "inner_split": "last 20% of fold-1 training games by date"
+ }
+}

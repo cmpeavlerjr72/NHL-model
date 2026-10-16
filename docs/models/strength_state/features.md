@@ -89,3 +89,7 @@ Ratings writer: `created_at` = latest puck drop of the games used + 6 h; `assert
 | `p(b)` season-phase profile | new, every arm, fixed offset (coefficient 1) | `profile_v3_f{1,2}.json`: mean over TRAINING seasons of log(bin rate / same-season full rate); bins Oct..Apr (RS by game-date month; the one May RS game in Apr) and PO | fold 1 trains 2021-23, fold 2 trains 2021-24. Full rate = all games of the season |
 | `level` | now de-seasonalised | `league_level_v3_f{1,2}.parquet` `level_k{15,50,150}`: SS-R2 formula with events divided by exp(p(bin)) for the season-to-date count and for r_prev | arm offset = level_k + p. `created_at < puck_drop` asserted. 2021-22 = 0. Frozen k = 15 |
 | everything else | unchanged from SS-R2 | w = 1.0, prior strength 1,800, v2 rows and ratings, T1 carried over | H3'' LightGBM: num_leaves 7, min_data_in_leaf 200, 378 rounds (`ss_r3_frozen_params.json`) |
+
+## 6. SS-R3c (LC-1 level; STOPPED at the parity assertion)
+
+`league_level_v4_f{1,2}.parquet`: the LC-1 absolute as-of de-seasonalised penalty rate (`src/nhl_sim/league_level_lc1.py`) with the SS-R3 profile, k {5, 15, 50}. It is not used by any incumbent: fold-1 train parity fails (H0''c -2.1% / +2.0%), see `docs/tests/strength_state_ss_r3c_2026-10-15.md`.

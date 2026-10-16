@@ -62,3 +62,12 @@ The SS-R3 level is log(season-to-date rate / previous season's final rate). As a
 
 - Cutting rows at whistles (Lane H's penalty rows): not needed for attempts; rows are cut on state changes and the minute grid only.
 - Rest days beyond the b2b flag: not built (b2b is the pre-registered candidate's literal content; labelled).
+
+## 5. SA-R2 changes (`_v2` tables; rows and team-game unchanged at `_v1`)
+
+| Feature | Change | Notes |
+|---|---|---|
+| `level` | LC-1 (D16): log of the absolute as-of de-seasonalised attempt rate per team-hour, (E + 2k r_prev) / (H + 2k), plus the all-state profile `p_level` | `league_level_v2_f{1,2}`; 2021-22 uses its own final rate as prior (labelled) |
+| `level` (A2g / A3g) | the LC-1 level and profile of the row's group (ES, PP-for, PK; EN uses ES): group attempts / group team-hours, prior K = 2k x group share of team-hours | `level_{es,pp,pk}_k*`, `p_level_{es,pp,pk}` |
+| ratings | grid w {0.7, 0.85, 1.0} x b {200, 600, 1800} | `ratings_grid_v2`; frozen w 0.85, b 200 |
+| `arena_f` | rebuilt at w 0.85, b 200 | `arena_v2` |

@@ -38,7 +38,11 @@ def load_rows(seasons) -> pd.DataFrame:
     return pd.concat([pd.read_parquet(SA / f"attempt_rows_{V}_{s}.parquet") for s in seasons], ignore_index=True)
 
 
-def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, arena: bool = True) -> pd.DataFrame:
+def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, arena: bool = True, tv: str = V,
+                    level: str = "r3") -> pd.DataFrame:
+    """tv: version of the ratings / level / arena tables ("v1" SA-R1, "v2" SA-R2). level: "r3" (SA-R1, SS-R3
+    method), "lc1" (SA-R2, D16 all-state LC-1 level + its profile), "lc1g" (SA-R2 A2g / A3g: the LC-1 level and
+    profile of the row's strength group ES / PP-for / PK; EN rows use ES, labelled)."""
     g = load_games(sorted(rows.season.unique()), columns=["game_id", "home_id", "away_id"])
     r = rows.merge(g.drop(columns="season"), on="game_id", how="left", validate="many_to_one")
     if r.home_id.isna().any():
@@ -47,7 +51,7 @@ def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, are
     r["opp_id"] = np.where(r.team == 0, r.away_id, r.home_id)
     key = wkey(w, b)
     cols = [f"{p}_{gg}_{key}" for p in ("rf", "ra") for gg in ("es", "pp", "pk")]
-    rt = pd.read_parquet(SA / f"ratings_grid_{V}.parquet", columns=["game_id", "team_id", *cols])
+    rt = pd.read_parquet(SA / f"ratings_grid_{tv}.parquet", columns=["game_id", "team_id", *cols])
     rt = rt.rename(columns={f"{p}_{gg}_{key}": f"{p}{i}" for p in ("rf", "ra")
                             for i, gg in enumerate(("es", "pp", "pk"))})
     tg = pd.read_parquet(SS / "team_game_v2.parquet", columns=["game_id", "team_id", "b2b"])
@@ -64,12 +68,26 @@ def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, are
     r["own_r"] = RF[ix, grp]
     r["opp_r"] = OA[ix, og]
     r["own_rf_es"], r["opp_ra_es"] = r.rf0, r.o_ra0
-    lv = pd.read_parquet(SA / f"league_level_{V}_f{fold}.parquet", columns=["game_id", f"level_k{k}", "p"])
-    lv["level"] = lv[f"level_k{k}"] + lv["p"]
-    r = r.merge(lv[["game_id", "level"]], on="game_id", how="left", validate="many_to_one")
+    if level == "r3":
+        lv = pd.read_parquet(SA / f"league_level_{tv}_f{fold}.parquet", columns=["game_id", f"level_k{k}", "p"])
+        lv["level"] = lv[f"level_k{k}"] + lv["p"]
+        r = r.merge(lv[["game_id", "level"]], on="game_id", how="left", validate="many_to_one")
+    elif level == "lc1":
+        lv = pd.read_parquet(SA / f"league_level_{tv}_f{fold}.parquet", columns=["game_id", f"level_k{k}", "p_level"])
+        lv["level"] = lv[f"level_k{k}"] + lv["p_level"]
+        r = r.merge(lv[["game_id", "level"]], on="game_id", how="left", validate="many_to_one")
+    elif level == "lc1g":
+        gc = [f"level_{g}_k{k}" for g in ("es", "pp", "pk")] + [f"p_level_{g}" for g in ("es", "pp", "pk")]
+        lv = pd.read_parquet(SA / f"league_level_{tv}_f{fold}.parquet", columns=["game_id", *gc])
+        r = r.merge(lv, on="game_id", how="left", validate="many_to_one")
+        LV = np.stack([r[f"level_{g}_k{k}"].to_numpy() + r[f"p_level_{g}"].to_numpy() for g in ("es", "pp", "pk")], 1)
+        r["level"] = LV[np.arange(len(r)), grp]
+        r = r.drop(columns=gc)
+    else:
+        raise ValueError(level)
     need = ["own_r", "opp_r", "b2b_own", "b2b_opp", "level"]
     if arena:
-        af = pd.read_parquet(SA / f"arena_{V}.parquet", columns=["game_id", "arena_f", "w", "b"])
+        af = pd.read_parquet(SA / f"arena_{tv}.parquet", columns=["game_id", "arena_f", "w", "b"])
         if not (np.allclose(af.w, w) and (af.b == b).all()):
             raise ValueError("arena table was built at another ratings grid point")
         r = r.merge(af[["game_id", "arena_f"]], on="game_id", how="left", validate="many_to_one")
@@ -92,7 +110,7 @@ def design(r: pd.DataFrame, arm: str):
     cols = [r.own_r.to_numpy(float), r.opp_r.to_numpy(float), r.is_home.to_numpy(float), r.b2b_own.to_numpy(float),
             r.b2b_opp.to_numpy(float)]
     names = ["own_r", "opp_r", "is_home", "b2b_own", "b2b_opp"]
-    if arm in ("A2", "A5", "A4"):
+    if arm in ("A2", "A2g", "A5", "A4"):
         sc, per, l5 = r.sc.to_numpy(), r.period.to_numpy(), r.last5.to_numpy()
         for p in (1, 2, 3, 4):
             for s in range(N_SC):
