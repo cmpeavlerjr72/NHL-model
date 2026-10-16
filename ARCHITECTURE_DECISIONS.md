@@ -348,3 +348,21 @@ SL-R5 (399c1c7, a56e89b): L3d is not eligible.
 - Early stopping on likelihood caps the booster at 2-40 rounds, and no capacity cell exceeds 0.58 responsiveness on fold 1. Tree capacity is not a usable response scale.
 
 Stage-4 respecs stop here, and the options go to the user (D30). Status: ADOPTED; the user decision is pending.
+
+## D32 (2026-10-16, user decision): slope-based responsiveness gate for every stage; rebuilt ratings for stage 4 and blocks; flat stand-ins in the engine meanwhile
+
+The user chose both recommended options.
+
+1. **Responsiveness gate, every stage, from now on.**
+   - Bucket the gated rows by decile of the as-of rating (for and against separately). Take the n-weighted least-squares slope b of the actual bucket means on the predicted bucket means. The responsiveness ratio is R = 1 / b, the predicted spread per unit of actual. The band stays [0.8, 1.2] on R.
+   - The CI is from a 1,000-resample game-block bootstrap. A CI wider than the band is labelled UNDERPOWERED, and the point estimate still gates (D18).
+   - The Q5-Q1 endpoint ratio is still reported, but no longer gates. Reason: it rests on two noisy buckets (SB-R3 found Q4 above Q5). The new measure is the same requirement, measured better; the band is unchanged.
+   - **Incumbents are re-checked under R:** stage 1 H3''-LC2 + T2 (the closed-loop PP-opps conferred ratios, INV-29) and stage 3 A3g-c (closed-loop 5v5 own / opp). An incumbent that fails R drops to TESTING and its block (e.g. team PP use) is re-imposed.
+2. **Rebuilt team ratings** for the block decision (SB-R4) and stage 4 (SL-R6). SB-R3 found that the ratings carry home-arena scorer recording (corr +0.19 / +0.14 with the arena factor). The per-season rating response falls with the arena coefficient, so a pooled response over-responds on the next season. Both rounds are pre-registered below in their experiments files.
+3. **Stand-ins.** Until those rounds pass, the engine uses the flat baselines, labelled STAND-IN:
+   - stage-4 L0s (D30);
+   - block B0 with the M1 K500 level (D27).
+
+   They are not adoptable, because they are flat (D24). They exist so stage 5 can be built and closed-loop tested. No downstream stage may be fit on stand-in output: every offline fit uses recorded data. Team-level gates downstream are reported against the stand-in and labelled as such.
+
+Status: ADOPTED.

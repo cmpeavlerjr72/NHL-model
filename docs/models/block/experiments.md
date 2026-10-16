@@ -158,3 +158,49 @@ As SB-R1: eligibility = every fold-2 bias check + the ES responsiveness band; > 
   - Floor 0.0025. B2p beats B1 by +0.024 (SE 0.008).
 - Fold 1: B1 and B1m are in band (0.83 / 1.18); B1p and B2p fail on "against" (1.24 / 1.23); B2p also fails the arena gate.
 - Post-hoc, after the blind grade and never used to select: the 2024-25 ES row-level slope on the rating is 0.43 (SE 0.14) for "for" and 0.80 (SE 0.10) for "against", against B1's 0.64 / 0.98. The slope ratios are 1.50 / 1.22. The Q5-Q1 endpoint metric magnifies "against" (1.49), because actual Q4 is above Q5.
+
+---
+
+## PM ruling on SB-R3 and the user decision (2026-10-16, D32)
+
+- The cause is diagnosed: the ratings carry arena scorer recording, and the pooled rating response over-responds on the next season.
+- Responsiveness now gates on the decile slope ratio R (D32).
+- B0 is the engine stand-in.
+- Next is SB-R4 (below).
+
+---
+
+## SB-R4: arena-free block ratings at a fixed, spread-tuned scale (pre-registered 2026-10-16 by the PM, before any run; D32)
+
+Everything not listed is as in SB-R1: level M1 (K = 500), bias checks, grading, the floor, and the arena factor (it stays a feature in every arm, so arena recording is modelled once, there). Responsiveness gates on R (D32).
+
+### Rating constructions (as-of, b 1,000, w 0.7, log-odds relative to the snapshot league mean)
+
+| id | construction |
+|---|---|
+| Rr | road games only, for both ratings |
+| Ra | all games, each game's counts adjusted by the as-of arena factor of the game's arena before accumulating |
+
+### Step 0 (training seasons only; committed before step 1)
+
+For B1-style fits on each training season alone, the rating coefficients per construction (incumbent SB-R1 ratings, Rr, Ra), with SEs. The question is whether the per-season response is flat across seasons for Rr / Ra. Report it; there is no decision here.
+
+### Arms
+
+The rating enters as a fixed-scale offset: s x (standardised rating). The scale s is not refit. It is chosen on fold 1 over s in {0.25, 0.5, 0.75, 1.0, 1.25} x the fold-1-fitted coefficient: the s whose fold-1 R (for and against) is closest to 1, among values with fold-1 LL within 2 SE of the best.
+
+| Arm | Model |
+|---|---|
+| B1r | B0 + home + score + rest + arena factor + Rr at its fixed scale |
+| B1a | the same with Ra |
+| B2x | the booster from SB-R1, init_score = logit of the better of B1r / B1a on fold 1 by the s-rule criterion; no rating features in the trees |
+
+Complexity: B0 < B1r = B1a < B2x. B1r and B1a are equal in complexity, so if both are eligible the one with higher fold-2 LL wins; a tie within 2 SE goes to Rr (fewer inputs).
+
+### Decision
+
+As SB-R1, with R for responsiveness. The D13 guard: the selected arm is also in band (R) on fold 1. On selection, the arm replaces the B0 stand-in in the engine (separate closed-loop step).
+
+### Results
+
+(append below this line)

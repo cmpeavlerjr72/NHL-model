@@ -362,3 +362,47 @@ If L3d is not eligible, stage-4 work stops and the PM takes the options to the u
 - **No arm selected.** Step 4 was not run: no engine change, no closed loop.
 - **D30 stop rule applies:** stage-4 work stops, and the PM takes the options to the user.
 - Status: BUILDING (stopped; user decision).
+
+---
+
+## User decision after the D30 stop (2026-10-16, D32)
+
+- Responsiveness now gates on the decile slope ratio R.
+- L0s is the engine stand-in (labelled, not adoptable).
+- Stage 4 gets one more round with rebuilt ratings: SL-R6 (below).
+
+---
+
+## SL-R6: arena-free shot-quality ratings at a fixed, spread-tuned scale (pre-registered 2026-10-16 by the PM, before any run; D32)
+
+Everything not listed is as in SL-R4: the L0s baseline and strata, EN served L0s only, level E, xG_ref, bias checks (EN reported only), the D28 guard, grading, and floor 0. Responsiveness gates on R (D32).
+
+### Rating constructions (as-of, the SL-R1 shot-quality rating per strength group, w 0.7, b 1,000)
+
+| id | construction |
+|---|---|
+| Qr | road games only |
+| Qa | all games, with each attempt's xG_ref computed from its distance adjusted by the as-of arena distance factor of its arena before accumulating |
+
+### Step 0 (training seasons only; committed before step 1)
+
+The per-season L1-style coefficient on each construction (the SL-R1 rating, Qr, Qa), with SEs, to check whether it is flat across seasons.
+
+### Arm
+
+**L1x** is a multinomial-logit deviation layer on top of L0s. Ratings enter as fixed-scale offsets on a single "quality" direction: s x rating x (log xG_ref of the class, centred), so a higher rating tilts the class distribution toward higher-xG classes.
+- s is chosen on fold 1 over {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0} x the fold-1-fitted s: the s whose fold-1 R is closest to 1, among values within 2 SE of the best LL.
+- The better of Qr / Qa is picked on fold 1 by the same criterion and reported.
+- Home, score and rest enter as fitted terms (no ratings).
+
+**Comparator:** L0s. There is no booster arm in this round (D31: tree capacity is not a usable response scale).
+
+### Decision
+
+- L1x is eligible if every fold-2 bias check passes and R is in band; it is selected if eligible and not worse than L0s by > 2 SE.
+- On selection, run the closed loop as in SL-R4 (G3 gates overall / 5v5 / PP / PK; G2 re-check lists 4v4 under INV-42 and 3v3 under INV-35). L1x replaces the L0s stand-in.
+- This round was granted by the user (D32). If it fails, the PM reports; no SL-R7 without the user.
+
+### Results
+
+(append below this line)
