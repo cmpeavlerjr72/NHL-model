@@ -1,0 +1,443 @@
+{
+ "tuned_on": "fold 1 only: train 2021-22 + 2022-23, test 2023-24 (fold-1 profile)",
+ "grid_A1": [
+  {
+   "k": 15,
+   "w": 0.5,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.1587661082442,
+   "spread_ratio_own_es": 1.1523567292677148,
+   "spread_ratio_opp_es": 1.1237767937681806,
+   "beta_own_r": 1.147785450540802,
+   "beta_opp_r": 1.1347642145842436,
+   "pred_over_actual": 0.9797232086881218
+  },
+  {
+   "k": 15,
+   "w": 0.5,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.20565154722607,
+   "spread_ratio_own_es": 1.2556532264699405,
+   "spread_ratio_opp_es": 1.2302562805404906,
+   "beta_own_r": 1.4889981613204923,
+   "beta_opp_r": 1.5216116705882743,
+   "pred_over_actual": 0.980269410686969
+  },
+  {
+   "k": 15,
+   "w": 0.5,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.2678828358411,
+   "spread_ratio_own_es": 1.3459601570374844,
+   "spread_ratio_opp_es": 1.342850508676681,
+   "beta_own_r": 2.3306848141949645,
+   "beta_opp_r": 2.4614684459187286,
+   "pred_over_actual": 0.9811300218402288
+  },
+  {
+   "k": 15,
+   "w": 0.7,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.1490860858481,
+   "spread_ratio_own_es": 1.1857005817163975,
+   "spread_ratio_opp_es": 1.1368687729019715,
+   "beta_own_r": 1.115938799197773,
+   "beta_opp_r": 1.1090833881544016,
+   "pred_over_actual": 0.9801090324853576
+  },
+  {
+   "k": 15,
+   "w": 0.7,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.20629674184178,
+   "spread_ratio_own_es": 1.3351147638525165,
+   "spread_ratio_opp_es": 1.2851457511195314,
+   "beta_own_r": 1.4031076771034046,
+   "beta_opp_r": 1.4527607768014068,
+   "pred_over_actual": 0.9809687005412087
+  },
+  {
+   "k": 15,
+   "w": 0.7,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.29704912614343,
+   "spread_ratio_own_es": 1.4514347566143402,
+   "spread_ratio_opp_es": 1.4304611884761589,
+   "beta_own_r": 2.1004766382001865,
+   "beta_opp_r": 2.266220587675486,
+   "pred_over_actual": 0.9823589757051423
+  },
+  {
+   "k": 15,
+   "w": 0.85,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.14750063054714,
+   "spread_ratio_own_es": 1.2081794862556412,
+   "spread_ratio_opp_es": 1.1613562418525292,
+   "beta_own_r": 1.089265371994407,
+   "beta_opp_r": 1.0870678126853255,
+   "pred_over_actual": 0.98044012403731
+  },
+  {
+   "k": 15,
+   "w": 0.85,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.21494897269017,
+   "spread_ratio_own_es": 1.3624313753497448,
+   "spread_ratio_opp_es": 1.326624703310957,
+   "beta_own_r": 1.3365008742973574,
+   "beta_opp_r": 1.3983364491519021,
+   "pred_over_actual": 0.9815453186944311
+  },
+  {
+   "k": 15,
+   "w": 0.85,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.33189024965,
+   "spread_ratio_own_es": 1.5456370912126471,
+   "spread_ratio_opp_es": 1.5185012131925488,
+   "beta_own_r": 1.938009136810406,
+   "beta_opp_r": 2.124209538749356,
+   "pred_over_actual": 0.9833573247933338
+  },
+  {
+   "k": 15,
+   "w": 1.0,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.15080361006855,
+   "spread_ratio_own_es": 1.2306418240583,
+   "spread_ratio_opp_es": 1.1720036090780008,
+   "beta_own_r": 1.0608554709739806,
+   "beta_opp_r": 1.0632936147095962,
+   "pred_over_actual": 0.980805228827985
+  },
+  {
+   "k": 15,
+   "w": 1.0,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.2297797276163,
+   "spread_ratio_own_es": 1.412586518849278,
+   "spread_ratio_opp_es": 1.3622503938667538,
+   "beta_own_r": 1.2701402189285702,
+   "beta_opp_r": 1.3431613167630392,
+   "pred_over_actual": 0.9821569509847815
+  },
+  {
+   "k": 15,
+   "w": 1.0,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.37600175930697,
+   "spread_ratio_own_es": 1.6096624208430144,
+   "spread_ratio_opp_es": 1.595590570738072,
+   "beta_own_r": 1.7881426472385993,
+   "beta_opp_r": 1.989629872722255,
+   "pred_over_actual": 0.984403778174848
+  },
+  {
+   "k": 50,
+   "w": 0.5,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.16902515536907,
+   "spread_ratio_own_es": 1.1491862702220952,
+   "spread_ratio_opp_es": 1.1222379316799913,
+   "beta_own_r": 1.147285232003805,
+   "beta_opp_r": 1.1354384762010883,
+   "pred_over_actual": 0.9772015797748672
+  },
+  {
+   "k": 50,
+   "w": 0.5,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.21594224995954,
+   "spread_ratio_own_es": 1.252549950537895,
+   "spread_ratio_opp_es": 1.2288122909096708,
+   "beta_own_r": 1.4881800029876764,
+   "beta_opp_r": 1.5224496289794291,
+   "pred_over_actual": 0.9777473306506019
+  },
+  {
+   "k": 50,
+   "w": 0.5,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.2780619992609,
+   "spread_ratio_own_es": 1.3446984698192554,
+   "spread_ratio_opp_es": 1.340262620708764,
+   "beta_own_r": 2.3292850696321707,
+   "beta_opp_r": 2.462893544738417,
+   "pred_over_actual": 0.9786064985611218
+  },
+  {
+   "k": 50,
+   "w": 0.7,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.15913971150613,
+   "spread_ratio_own_es": 1.1823345489727646,
+   "spread_ratio_opp_es": 1.1355761006922134,
+   "beta_own_r": 1.1156353112620934,
+   "beta_opp_r": 1.1098248570175588,
+   "pred_over_actual": 0.9775862690886327
+  },
+  {
+   "k": 50,
+   "w": 0.7,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.2162840398297,
+   "spread_ratio_own_es": 1.3317376497553364,
+   "spread_ratio_opp_es": 1.2832992610932792,
+   "beta_own_r": 1.4026293651701256,
+   "beta_opp_r": 1.4537032016116809,
+   "pred_over_actual": 0.978444844176966
+  },
+  {
+   "k": 50,
+   "w": 0.7,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.30682332247247,
+   "spread_ratio_own_es": 1.4496317649342132,
+   "spread_ratio_opp_es": 1.427742210231439,
+   "beta_own_r": 2.0996942184664023,
+   "beta_opp_r": 2.2677802382108836,
+   "pred_over_actual": 0.9798329461747592
+  },
+  {
+   "k": 50,
+   "w": 0.85,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.15737191441684,
+   "spread_ratio_own_es": 1.2050561594063334,
+   "spread_ratio_opp_es": 1.1592929638924427,
+   "beta_own_r": 1.0891108250711878,
+   "beta_opp_r": 1.0878643108171435,
+   "pred_over_actual": 0.977916396945892
+  },
+  {
+   "k": 50,
+   "w": 0.85,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.22468264798954,
+   "spread_ratio_own_es": 1.3598202646091717,
+   "spread_ratio_opp_es": 1.3246489827850605,
+   "beta_own_r": 1.3362541927273912,
+   "beta_opp_r": 1.39935440001246,
+   "pred_over_actual": 0.979020084006878
+  },
+  {
+   "k": 50,
+   "w": 0.85,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.3413462215716,
+   "spread_ratio_own_es": 1.5430570584573269,
+   "spread_ratio_opp_es": 1.5146656097580102,
+   "beta_own_r": 1.9375917738178186,
+   "beta_opp_r": 2.1258431710099406,
+   "pred_over_actual": 0.9808294820646976
+  },
+  {
+   "k": 50,
+   "w": 1.0,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.160474158819,
+   "spread_ratio_own_es": 1.2277820557502,
+   "spread_ratio_opp_es": 1.1704613719964685,
+   "beta_own_r": 1.0608470339622826,
+   "beta_opp_r": 1.0641464453269383,
+   "pred_over_actual": 0.9782804832413786
+  },
+  {
+   "k": 50,
+   "w": 1.0,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.23924896609694,
+   "spread_ratio_own_es": 1.4098549875081836,
+   "spread_ratio_opp_es": 1.3601796944212674,
+   "beta_own_r": 1.2700995409421965,
+   "beta_opp_r": 1.344248060347328,
+   "pred_over_actual": 0.9796303686708212
+  },
+  {
+   "k": 50,
+   "w": 1.0,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.38514069790764,
+   "spread_ratio_own_es": 1.6061113567748277,
+   "spread_ratio_opp_es": 1.590881908639527,
+   "beta_own_r": 1.7880134134664132,
+   "beta_opp_r": 1.991313016023666,
+   "pred_over_actual": 0.9818742415081115
+  },
+  {
+   "k": 150,
+   "w": 0.5,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.18733784716068,
+   "spread_ratio_own_es": 1.143484920068288,
+   "spread_ratio_opp_es": 1.1186365622899146,
+   "beta_own_r": 1.146786856456599,
+   "beta_opp_r": 1.1367829504562557,
+   "pred_over_actual": 0.9727774555655959
+  },
+  {
+   "k": 150,
+   "w": 0.5,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.234211919648,
+   "spread_ratio_own_es": 1.247409376923782,
+   "spread_ratio_opp_es": 1.2251237748085404,
+   "beta_own_r": 1.4873594692253118,
+   "beta_opp_r": 1.5242121936867694,
+   "pred_over_actual": 0.9733220710697489
+  },
+  {
+   "k": 150,
+   "w": 0.5,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.29611049976467,
+   "spread_ratio_own_es": 1.3416882671025026,
+   "spread_ratio_opp_es": 1.334635407369369,
+   "beta_own_r": 2.3279512663428483,
+   "beta_opp_r": 2.465864901126056,
+   "pred_over_actual": 0.9741789222139017
+  },
+  {
+   "k": 150,
+   "w": 0.7,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.17718499018926,
+   "spread_ratio_own_es": 1.176429515888701,
+   "spread_ratio_opp_es": 1.1320203087643266,
+   "beta_own_r": 1.11535226944877,
+   "beta_opp_r": 1.1112411608212664,
+   "pred_over_actual": 0.9731606759882997
+  },
+  {
+   "k": 150,
+   "w": 0.7,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.2341148274776,
+   "spread_ratio_own_es": 1.3263887107330228,
+   "spread_ratio_opp_es": 1.2791981074935255,
+   "beta_own_r": 1.4022281648041492,
+   "beta_opp_r": 1.4555854879936694,
+   "pred_over_actual": 0.9740170924811556
+  },
+  {
+   "k": 150,
+   "w": 0.7,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.32424108235233,
+   "spread_ratio_own_es": 1.44541702959864,
+   "spread_ratio_opp_es": 1.4217560775637867,
+   "beta_own_r": 2.0991647352041714,
+   "beta_opp_r": 2.2708937674653673,
+   "pred_over_actual": 0.9754016764935668
+  },
+  {
+   "k": 150,
+   "w": 0.85,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.17519089905682,
+   "spread_ratio_own_es": 1.1993415201765536,
+   "spread_ratio_opp_es": 1.1553654049007993,
+   "beta_own_r": 1.0889858250320688,
+   "beta_opp_r": 1.0893328821159087,
+   "pred_over_actual": 0.9734895991765342
+  },
+  {
+   "k": 150,
+   "w": 0.85,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.24216119876144,
+   "spread_ratio_own_es": 1.3551111738458965,
+   "spread_ratio_opp_es": 1.3204421134583395,
+   "beta_own_r": 1.3361300371933706,
+   "beta_opp_r": 1.401311674681608,
+   "pred_over_actual": 0.9745904514133941
+  },
+  {
+   "k": 150,
+   "w": 0.85,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.35828257680987,
+   "spread_ratio_own_es": 1.5380014096766266,
+   "spread_ratio_opp_es": 1.5080873768610032,
+   "beta_own_r": 1.9375193652078928,
+   "beta_opp_r": 2.129009514041122,
+   "pred_over_actual": 0.9763955859878867
+  },
+  {
+   "k": 150,
+   "w": 1.0,
+   "b": 600,
+   "fold1_A1_ll_per_game": -180.17805020826526,
+   "spread_ratio_own_es": 1.2222638252193747,
+   "spread_ratio_opp_es": 1.1667736349954028,
+   "beta_own_r": 1.0608736517522648,
+   "beta_opp_r": 1.0656641360202805,
+   "pred_over_actual": 0.9738524288538132
+  },
+  {
+   "k": 150,
+   "w": 1.0,
+   "b": 1800,
+   "fold1_A1_ll_per_game": -180.25636814305048,
+   "spread_ratio_own_es": 1.4051017544993425,
+   "spread_ratio_opp_es": 1.3558185511436065,
+   "beta_own_r": 1.270216060932629,
+   "beta_opp_r": 1.346265540080029,
+   "pred_over_actual": 0.9751989168371497
+  },
+  {
+   "k": 150,
+   "w": 1.0,
+   "b": 5400,
+   "fold1_A1_ll_per_game": -180.4016039559757,
+   "spread_ratio_own_es": 1.60051533144692,
+   "spread_ratio_opp_es": 1.5837482237671558,
+   "beta_own_r": 1.788289715417305,
+   "beta_opp_r": 1.9944922434046113,
+   "pred_over_actual": 0.9774379012912414
+  }
+ ],
+ "lgb_grid": [
+  {
+   "num_leaves": 7,
+   "min_data_in_leaf": 200,
+   "best_iter_inner": 627,
+   "fold1_A3_ll_per_game": -179.54758017559425
+  },
+  {
+   "num_leaves": 7,
+   "min_data_in_leaf": 800,
+   "best_iter_inner": 765,
+   "fold1_A3_ll_per_game": -179.52501825056618
+  },
+  {
+   "num_leaves": 15,
+   "min_data_in_leaf": 200,
+   "best_iter_inner": 308,
+   "fold1_A3_ll_per_game": -179.62974996778627
+  },
+  {
+   "num_leaves": 15,
+   "min_data_in_leaf": 800,
+   "best_iter_inner": 484,
+   "fold1_A3_ll_per_game": -179.60018991034312
+  }
+ ],
+ "k": 15,
+ "w": 0.85,
+ "prior_strength_min": 600,
+ "lgb": {
+  "num_leaves": 7,
+  "min_data_in_leaf": 800,
+  "learning_rate": 0.05,
+  "n_rounds": 765,
+  "inner_split": "last 20% of fold-1 training games by date"
+ },
+ "latent": {
+  "latent_v": 0.0011464772909972865,
+  "ll_gain_per_game": 0.004101180876979057,
+  "fitted_on": "fold-1 train, A2 in-sample mean (A2 coefficients from the Poisson fit)"
+ },
+ "elapsed_s": 54.00585961341858
+}

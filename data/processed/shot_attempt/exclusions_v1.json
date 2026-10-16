@@ -1,0 +1,42 @@
+{
+ "20212022": {
+  "shootout_attempts": 747,
+  "penalty_shot_attempts": 36,
+  "penalty_shot_goals": 9,
+  "failed_shot_attempt_events": 0,
+  "target_attempts": 159791,
+  "delayed_changed_s": 5491,
+  "n_games": 1401,
+  "both_pulled_s": 0
+ },
+ "20222023": {
+  "shootout_attempts": 645,
+  "penalty_shot_attempts": 57,
+  "penalty_shot_goals": 17,
+  "failed_shot_attempt_events": 27,
+  "target_attempts": 163714,
+  "delayed_changed_s": 5765,
+  "n_games": 1400,
+  "both_pulled_s": 0
+ },
+ "20232024": {
+  "shootout_attempts": 607,
+  "penalty_shot_attempts": 47,
+  "penalty_shot_goals": 17,
+  "failed_shot_attempt_events": 13,
+  "target_attempts": 170602,
+  "delayed_changed_s": 5804,
+  "n_games": 1400,
+  "both_pulled_s": 0
+ },
+ "20242025": {
+  "shootout_attempts": 508,
+  "penalty_shot_attempts": 30,
+  "penalty_shot_goals": 7,
+  "failed_shot_attempt_events": 7,
+  "target_attempts": 167020,
+  "delayed_changed_s": 4588,
+  "n_games": 1398,
+  "both_pulled_s": 0
+ }
+}

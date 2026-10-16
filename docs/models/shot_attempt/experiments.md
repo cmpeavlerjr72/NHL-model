@@ -96,3 +96,24 @@ Thresholds are tighter than stage 1's because attempts are about 35x as frequent
 ### Results
 
 (append below this line)
+
+#### SA-R1 run, 2026-10-15 (Lane S, INV-30)
+
+- Tables `data/processed/shot_attempt/*_v1*`. Fold-2 test: 1,398 games, 213,898 rows, 167,020 attempts. Exclusions are tallied: 30 penalty-shot and 508 shootout attempts in 2024-25. Tests `tests/test_shot_attempt_tables.py` (unmapped type raises; L20 delayed state).
+- Frozen on fold 1: k = 15, w = 0.85, prior strength 600 (k and b are grid corners). A3: 7 leaves, min_data 800, 765 rounds. A4 latent v = 0.00115. The fold-1 spread ratio is reported for all 36 cells (1.14-1.61; over-responsive everywhere, least at b = 600).
+- Fold-2 primary metric vs A0 (nats/game, SE): A1 +0.402 (0.044), A2 +0.965 (0.056), A5 +0.964 (0.056), A4 +0.989 (0.056), A3 +1.062 (0.058). The seed floor is 0.0013.
+  - A5 does not beat A2 (-0.001, SE 0.002).
+  - A4 beats A2 (+0.024, SE 0.004).
+  - A3 beats A4 (+0.074, SE 0.022).
+- Bias checks, fold 2: **FAIL for every arm.**
+  - The overall level is -4.99% to -5.07% (+/-2%).
+  - Five of seven powered months fail.
+  - 5v5 is -5.5%.
+  - PK is +3.2% to +3.4%, failing in A0-A4; it passes in A3.
+  - Score buckets -1 and 0 fail in every arm, and +1 also fails in A3.
+  - Home and away fail.
+- Offline responsiveness, fold 2 (5v5): A1 1.04 / 1.13, A2 1.07 / 1.15, A5 1.08 / 1.14, A3 1.09 / 1.09 pass; A0 0.03 / -0.04 fails.
+- **Decision rule: no eligible arm, so NO arm is selected.** G2 was not run (step 3 blocked by the rule).
+- Diagnosis (fold 1 only): the SS-R3-method level is a ratio to the previous season's final rate. Pooled as a fixed offset, it mis-anchors the cells, and the test season inherits the earlier season-to-season ratios (attempts +2.3%, +4.5%). An anchored level (a ratio to a fixed reference season) moves fold-1 A0 from -2.03% to +0.22%.
+- A separate fold-1 drift is not carried by any all-state level: PK +8% to +11%, PP -1% to -4.5%.
+- Report: `docs/tests/shot_attempt_sa_r1_2026-10-15.md`; grade: `docs/tests/shot_attempt_sa_r1_grade_2026-10-15.md`.

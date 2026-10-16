@@ -19,3 +19,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | shot_attempt | - | OPEN | SA-R1 pre-registered in shot_attempt/experiments.md | (this commit) |
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R4 (INV-29 rating response) pre-registered | (this commit) |
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R4 (INV-29): stop condition met (offline fold-1 spread ratio 0.81/0.85); arms not run; lead: T1 has no rating features; replay regression confirmed; see docs/tests/strength_state_ss_r4_2026-10-15.md | (this commit) |
+| 2026-10-15 | shot_attempt | OPEN | TESTING | SA-R1 run: no arm eligible (every arm fails the fold-2 level, -5%; root cause the SS-R3 level anchoring, fold-1 diagnostic), offline A3 > A4 > A2; G2 not run by rule; see docs/tests/shot_attempt_sa_r1_2026-10-15.md | (this commit) |
