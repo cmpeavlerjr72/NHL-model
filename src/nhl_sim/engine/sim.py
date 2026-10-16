@@ -30,6 +30,14 @@ lookup), and is a goal with probability attr["xg"][class, rating group] (xG_ref,
 p_goal; stage 5 / 6 do not exist yet, so SOG / miss / goal is one draw). Records unblocked attempts, summed xG_ref,
 goals, and cell / type counts by (team, team-view state). Parity test `tests/engine/test_sim_attr_flag.py`: with the
 variant off the engine is bit-identical to the pre-change file (b024504).
+
+Levelled stage-4 lookup (SL-R3, D24; on when attr holds "pdf" and "era_mult" instead of "cdf"): the arm's UNLEVELLED
+joint probabilities pdf[g, team, interval, rating group, sc7] are multiplied by era_mult[rec_era, rating group, class]
+= exp(log(s_E[era, level group, cell] / s_train[level group, cell])) (the SL-R2 level E as a per-cell factor), the
+row is renormalised (cumsum / last) and the class drawn as before. rec_era is read from GameState (`season=` passed to
+simulate; rules.recording_era, boundary 2023-24 fixed, not fitted). Exact for L0m and for an init_score booster (L3b),
+whose levelled softmax is the unlevelled one times exp(offset), renormalised. With a unit era_mult and pdf = the
+increments of a float64 cdf it reproduces the cdf path bit for bit (tests/engine/test_sim_era_flag.py).
 """
 from __future__ import annotations
 
@@ -37,7 +45,7 @@ import numpy as np
 
 from nhl_sim.engine import rng
 from nhl_sim.engine.box import DOUBLE, MAJOR, MINOR
-from nhl_sim.engine.rules import RuleEra
+from nhl_sim.engine.rules import RECORDING_ERAS, RuleEra
 from nhl_sim.engine.state import GameState
 
 TOI_COLS = ("toi_5v5_s", "toi_pp_home_s", "toi_pp_away_s", "toi_4v4_s", "toi_3v3_s", "toi_5v3_s")
@@ -78,16 +86,17 @@ class Recorder:
 
 
 def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds: int, era: RuleEra,
-             seed0: int = 0, max_t: int = 3600 + 6 * 1200, per_team_types: bool = False) -> dict:
+             seed0: int = 0, max_t: int = 3600 + 6 * 1200, per_team_types: bool = False, seasons=None) -> dict:
     """tables: lam (G, 2, M, 5, 5, 5) per hour (games in game_ids order), types (6, 5, 4, 4) or, with
     per_team_types=True, (G, 2, 6, 5, 4, 4), coinc_smp / coinc_pim arrays, goal_rate (3, 3) per hour, stop_rate_ot per
-    second."""
+    second. seasons: optional (G,) season ids; sets GameState.rec_era (needed by the levelled stage-4 lookup only)."""
     G, S = len(game_ids), n_seeds
     N = G * S
     gi = np.repeat(np.arange(G), S)
     seeds = np.tile(np.arange(seed0, seed0 + S), G)
     gid = np.asarray(game_ids, np.int64)[gi]
-    gs = GameState(np.asarray(game_types)[gi], era, auto_end=True)
+    gs = GameState(np.asarray(game_types)[gi], era, auto_end=True,
+                   season=None if seasons is None else np.asarray(seasons, np.int64)[gi])
     K = {f: rng.stream_keys(seeds, gid, f) for f in ("goal", "penalty", "penalty_type", "coincidental",
                                                      "stoppage", "shootout_stub")}
     att = tables.get("att_lam")
@@ -105,15 +114,23 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     if attr is not None:
         if att is None:
             raise ValueError("the shot-attribute variant needs the stage-3 attempt table (att_lam)")
-        cdf = attr["cdf"]
+        levelled = "era_mult" in attr
+        cdf = attr["pdf"] if levelled else attr["cdf"]
         if cdf.ndim != 6 or cdf.shape[:2] != (G, 2) or cdf.shape[3:] != (3, 7, cdf.shape[5]):
-            raise ValueError(f"attr cdf must be (G, 2, NI, 3, 7, C), got {cdf.shape}")
+            raise ValueError(f"attr cdf / pdf must be (G, 2, NI, 3, 7, C), got {cdf.shape}")
         K["attempt_block"] = rng.stream_keys(seeds, gid, "attempt_block")
         K["attempt_attr"] = rng.stream_keys(seeds, gid, "attempt_attr")
         nc = cdf.shape[5]
         AS = dict(cdf=cdf, imap=np.asarray(attr["interval_of_minute"], np.int64), p_block=np.asarray(attr["p_block"], float),
                   xg=np.asarray(attr["xg"], float), n_type=int(attr["n_type"]), n_cell=nc // int(attr["n_type"]),
                   fen=np.zeros((N, 2, 5), np.int32), xg_sum=np.zeros((N, 2, 5)), goals=np.zeros((N, 2, 5), np.int32))
+        if levelled:
+            em = np.asarray(attr["era_mult"], np.float64)
+            if gs.rec_era is None:
+                raise ValueError("the levelled stage-4 lookup reads GameState.rec_era: pass seasons= to simulate")
+            if em.shape != (max(RECORDING_ERAS) + 1, 3, nc) or not np.isfinite(em[list(RECORDING_ERAS)]).all():
+                raise ValueError(f"era_mult must be ({max(RECORDING_ERAS) + 1}, 3, {nc}) finite on eras {RECORDING_ERAS}")
+            AS.update(era_mult=em, rec_era=gs.rec_era.astype(np.int64))
         AS["cell"] = np.zeros((N, 2, 5, AS["n_cell"]), np.int32)
         AS["type"] = np.zeros((N, 2, 5, AS["n_type"]), np.int32)
     lam = tables["lam"]
@@ -266,6 +283,9 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     ai, gi, st, sc = ai[unb], gi[unb], st[unb], sc[unb]
     rg = ST_RGRP[st]
     row = AS["cdf"][gi, team, AS["imap"][m], rg, sc]
+    if "era_mult" in AS:
+        row = np.cumsum(row.astype(np.float64) * AS["era_mult"][AS["rec_era"][ai], rg], 1)
+        row /= row[:, -1:]
     u = rng.uniform(K["attempt_attr"][ai], t, kk)
     cls = np.minimum((row <= u[:, None]).sum(1), row.shape[1] - 1)
     x = AS["xg"][cls, rg]

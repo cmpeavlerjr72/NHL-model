@@ -19,12 +19,14 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from nhl_sim.engine.rules import recording_era
 from nhl_sim.shot_attribute.tables import N_CELL, N_TYPE
 
 LEVEL_GROUP = np.array([0, 1, 2, 0, 0], np.int8)        # strength group (ES, PP, PK, ENF, ENA) -> level group
 LG_NAMES = ("ES+EN", "PP", "PK")
 N_LG = 3
-ERA_OF_SEASON = {20212022: 1, 20222023: 1, 20232024: 2, 20242025: 2, 20252026: 2, 20262027: 2}
+# recording era: from the GameState flag's single definition (engine.rules.recording_era, D24; boundary fixed)
+ERA_OF_SEASON = {s: recording_era(s) for s in (20212022, 20222023, 20232024, 20242025, 20252026, 20262027)}
 SIMPLICITY = ("M0", "E", "M1", "M2")                     # selection order (simplest first)
 
 

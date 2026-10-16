@@ -6,23 +6,33 @@ Clock convention: `t` is elapsed game seconds (periods 1-3 = 0..3599, RS OT = 36
 
 Team index 0 = home, 1 = away. Skater counts here are penalty-derived (goalie pulls are not modelled at this
 stage; a replay passes the real goalie state separately).
+
+Recording era (`rec_era`, D24): per sim, 1 before 2023-24 and 2 from 2023-24 on (`rules.recording_era`; boundary fixed,
+not fitted). It is None unless the caller passes the games' seasons; only the levelled stage-4 lookup reads it.
 """
 from __future__ import annotations
 
 import numpy as np
 
 from nhl_sim.engine.box import COINC_MINOR, DOUBLE, MAJOR, MINOR, PenaltyBox
-from nhl_sim.engine.rules import RuleEra
+from nhl_sim.engine.rules import RuleEra, recording_era
 
 END_NONE, END_REG, END_OT, END_SO = 0, 1, 2, 3
 END_NAMES = {END_REG: "REG", END_OT: "OT", END_SO: "SO"}
 
 
 class GameState:
-    def __init__(self, game_type: np.ndarray, era: RuleEra, auto_end: bool = True, k_slots: int = 8):
+    def __init__(self, game_type: np.ndarray, era: RuleEra, auto_end: bool = True, k_slots: int = 8,
+                 season: np.ndarray | None = None):
         self.gt = np.asarray(game_type, np.int8)
         self.n = len(self.gt)
         self.era = era
+        self.rec_era = None
+        if season is not None:
+            season = np.asarray(season, np.int64)
+            if season.shape != self.gt.shape:
+                raise ValueError(f"season must be one per sim, got {season.shape} for {self.gt.shape}")
+            self.rec_era = recording_era(season)
         self.auto_end = auto_end
         self.t = 0
         self.box = PenaltyBox(self.n, era, k_slots)

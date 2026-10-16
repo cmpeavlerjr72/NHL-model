@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import numpy as np
+
 
 @dataclass(frozen=True)
 class RuleEra:
@@ -32,3 +34,19 @@ def era_for_season(season: int) -> RuleEra:
     if int(season) < 20152016:
         raise ValueError(f"no rule era defined for season {season}")
     return ERA_2015
+
+
+# Recording era (D24, SL-R2 / SL-R3): the NHL's recorded shot-location mix steps at the 2023-24 boundary (L31). It is a
+# property of the data-recording regime, not of play, so it lives here beside the rule era and is carried in GameState
+# (`GameState.rec_era`), never inside a sub-model. The boundary is FIXED by the PM ruling (D24), not fitted.
+RECORDING_ERA_BOUNDARY = 20232024
+RECORDING_ERAS = (1, 2)
+
+
+def recording_era(season) -> np.ndarray | int:
+    """Season id(s) (e.g. 20232024) -> recording era: 1 before 2023-24, 2 from 2023-24 on (scalar in, int out)."""
+    s = np.asarray(season, np.int64)
+    if (s < 20152016).any():
+        raise ValueError(f"no recording era defined for season {season}")
+    e = np.where(s >= RECORDING_ERA_BOUNDARY, 2, 1).astype(np.int8)
+    return int(e) if e.ndim == 0 else e

@@ -206,3 +206,19 @@ L3b is eligible if it passes every SL-R1 / SL-R2 bias check and the ES responsiv
 ### Results
 
 (append below this line)
+
+### SL-R3 results (Lane A3, 2026-10-16; report `docs/tests/shot_attribute_sl_r3_2026-10-16.md`)
+
+- **Era flag:** `GameState.rec_era` (`rules.recording_era`, boundary 2023-24 fixed). The engine's levelled stage-4 path reads it: unlevelled pdf x era_mult[rec_era], renormalised.
+  - Unlevelled paths are sha256-identical to 27cffc0 (7 cases x with / without seasons).
+  - Served vs trained for L0m: max |dP| 4e-9. 162 tests pass.
+- **L0m closed loop (plumbing, not a gate; 200 seeds):**
+  - G3 overall xG +1.76% CLEAN, 5v5 +2.92%, PP -0.52%, PK +2.83%. Tiers PASS overall and at 5v5.
+  - 4v4 -11.1% and 3v3 -5.6% (medium -14.5 / -10.4 pp) FAIL. This follows from pooling 4v4 / 3v3 into the ES group.
+  - Playoffs 5v5 +7.0% FAIL. Responsiveness 0.01 / -0.02 (no team terms).
+  - G2 re-check: 5v5 / PP / PK unchanged PASS CLEAN. Regular-season 4v4 moves from +2.82% to **+3.08% FAIL** (PASS at 100 seeds); overall 4v4 PASS.
+- **L3b tune (fold 1):** 15 leaves, 800 min-data, lr 0.02, 31 rounds; inner log loss 3.234040 vs L0m start 3.236166. L3bs2 is bit-identical (deterministic config; seed floor 0).
+- **L32 in-sample check: FAIL** on fold-2 training rows. ENF L3b vs L0m is -0.87% (limit 0.5%); ES +0.04%, PP -0.08%, PK +0.42%, ENA +0.03%. Fold 1 shows the same (ENF -0.58%).
+  - Cause: the shared trees carry the ES late-trailing score / clock deviation onto the all-late-trailing EN-for rows, where the actual is flat.
+- **Stop per spec:** nothing on fold 2 was predicted or read; no grade, no decision, no L3b closed loop.
+- Status: BUILDING; the PM rules.

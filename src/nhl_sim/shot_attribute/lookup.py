@@ -46,9 +46,12 @@ def clock_intervals(arm: str, model) -> tuple[np.ndarray, np.ndarray]:
     return iv.astype(np.int64), minutes[rep_idx]
 
 
-def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int, chunk: int = 64, predict=None):
+def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int, chunk: int = 64, predict=None,
+               as_pdf: bool = False):
     """games: game_id, season (sorted by game_id). Returns (cdf, interval_of_minute). predict: optional callable(rows)
-    -> P (n, 78) replacing models.predict_arm (SL-R2 levelled arms; default None keeps SL-R1 behaviour)."""
+    -> P (n, 78) replacing models.predict_arm (SL-R2 levelled arms; default None keeps SL-R1 behaviour).
+    as_pdf: return the normalised joint probabilities (float32) instead of the cdf, for the engine's levelled path
+    (SL-R3: the level is applied in the engine from GameState.rec_era; default False keeps the cdf)."""
     games = games.sort_values("game_id").reset_index(drop=True)
     iv, rep = clock_intervals(arm, model)
     NI = len(rep)
@@ -75,6 +78,9 @@ def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int
             raise ValueError("feature attach changed the rows")
         P = predict(r) if predict is not None else M.predict_arm("L3" if arm.startswith("L3") else arm, model, r)
         out[a0:a0 + len(part)] = P.reshape(len(part), 2, B, N_CLASS).astype(np.float32)
+    if as_pdf:
+        pdf = out.reshape(len(games), 2, NI, 3, 7, N_CLASS).astype(np.float64)
+        return (pdf / pdf.sum(-1, keepdims=True)).astype(np.float32), iv
     cdf = np.cumsum(out.reshape(len(games), 2, NI, 3, 7, N_CLASS).astype(np.float64), -1)
     cdf /= cdf[..., -1:]
     return cdf.astype(np.float32), iv

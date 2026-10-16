@@ -1,0 +1,84 @@
+{
+ "spec": "docs/models/shot_attribute/experiments.md SL-R3",
+ "level": "E",
+ "w": 0.7,
+ "prior_strength_attempts": 1000,
+ "tuned_on": "fold 1 only (train 2021-22 + 2022-23, test 2023-24); inner split = last 20% of fold-1 training games by date",
+ "init_score": "log L0m(row): L0 (Dirichlet ALPHA0 = 10) fit on the inner-training rows (tune) / the fold's training rows (fits) x exp(level-E cell offset), renormalised",
+ "l0m_baseline_inner_logloss": 3.2361656066309656,
+ "lgb": {
+  "num_leaves": 15,
+  "min_data_in_leaf": 800,
+  "learning_rate": 0.02,
+  "n_rounds": 31,
+  "early_stopping_rounds": 50,
+  "grid": [
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 200,
+    "learning_rate": 0.05,
+    "best_iter": 2,
+    "inner_logloss": 3.245479272537486,
+    "secs": 10
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 200,
+    "learning_rate": 0.02,
+    "best_iter": 40,
+    "inner_logloss": 3.2360124315745984,
+    "secs": 18
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 800,
+    "learning_rate": 0.05,
+    "best_iter": 13,
+    "inner_logloss": 3.2343088404286515,
+    "secs": 13
+   },
+   {
+    "num_leaves": 15,
+    "min_data_in_leaf": 800,
+    "learning_rate": 0.02,
+    "best_iter": 31,
+    "inner_logloss": 3.234040012945047,
+    "secs": 17
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 200,
+    "learning_rate": 0.05,
+    "best_iter": 2,
+    "inner_logloss": 3.244562233869849,
+    "secs": 13
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 200,
+    "learning_rate": 0.02,
+    "best_iter": 35,
+    "inner_logloss": 3.2371826021595296,
+    "secs": 20
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 800,
+    "learning_rate": 0.05,
+    "best_iter": 7,
+    "inner_logloss": 3.2350043524056433,
+    "secs": 16
+   },
+   {
+    "num_leaves": 31,
+    "min_data_in_leaf": 800,
+    "learning_rate": 0.02,
+    "best_iter": 20,
+    "inner_logloss": 3.234345252993799,
+    "secs": 20
+   }
+  ]
+ },
+ "alpha0_l0": 10.0,
+ "elapsed_s": 128
+}
