@@ -1,0 +1,30 @@
+{
+ "spec": "docs/models/shot_attribute/experiments.md SL-R5",
+ "level": "E",
+ "w": 0.7,
+ "prior_strength_attempts": 1000,
+ "tuned_on": "fold 1 only (train 2021-22 + 2022-23, test 2023-24); inner split = last 20% of fold-1 training games by date; inner L0s fit on the inner-training rows; EN rows excluded from the booster",
+ "selection": "D27 form (D29 / D30): among cells whose inner LL per game is within 2 SE (paired game-block bootstrap, 1,000) of the best cell, the smallest max(|log for|, |log against|) of the fold-1 ES spread ratios (cell refit on all fold-1 training rows at its rounds, predicting 2023-24); ties within 0.02 to the fewer num_leaves x rounds",
+ "l0s_inner_ll_game": -282.0557210505812,
+ "l0s_fold1_spread": {
+  "for": 0.008291803052821142,
+  "against": -0.017010350545577025
+ },
+ "best_ll_cell": "lr0.02_nl15_md800",
+ "n_within_2se": 2,
+ "tie_set": [
+  "lr0.02_nl15_md800"
+ ],
+ "lgb": {
+  "num_leaves": 15,
+  "min_data_in_leaf": 800,
+  "learning_rate": 0.02,
+  "n_rounds": 22,
+  "early_stopping_rounds": 50,
+  "max_rounds": 2000,
+  "spread_for": 0.2830428364747247,
+  "spread_against": 0.3824138665767726
+ },
+ "grid_csv": "docs/models/shot_attribute/sl_r5_grid_fold1.csv",
+ "elapsed_s": 242
+}
