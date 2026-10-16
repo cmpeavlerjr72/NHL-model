@@ -319,3 +319,22 @@ Reason: `docs/tests/shot_attribute_sl_r4_2026-10-16.md` (5b5052d). Status: ADOPT
 - **Shared signature.** In blocks, the fold-1 band holds (B1 0.83 / 1.18) and fold 2 over-responds. Before another arm is chosen, SB-R3 diagnoses why the fitted response does not transfer, then runs pre-registered response-side arms.
 
 Reason: `docs/tests/block_sb_r2_2026-10-16.md`. Status: ADOPTED.
+
+## D30 (2026-10-16): SL-R4 ruling; booster capacity re-tuned under the L0s start; SL-R5 is the last stage-4 respec before a user decision
+
+- **SL-R4 (5b5052d, 8c0e09b).** The restated guard passes: the trees add at most 0.21% to L0s on fold 1. On fold 2, L3c beats L0s by 8.8 SE, but it is not eligible:
+  - ES responsiveness is 0.675 / 0.529, an under-response; the against CI upper bound is 0.79.
+  - xG overall is +2.0007% against the 2% line. The thresholds bind as written, with no rounding.
+  - PK is +3.31%.
+
+  L0s carries most of the xG excess (+1.86% overall, +2.86% PK).
+- **Cause of the under-response.** The booster reuses the SL-R3 capacity (lr 0.02, 31 rounds), which was tuned from a different start. It leaves the ratings too little room. SL-R2's L3m reached 1.09 / 0.86 with a pooled start.
+- **D29 applies.** Tree capacity, like a refitted coefficient, sets the response scale. So SL-R5 re-tunes capacity under the L0s start, and chooses by the D27 selection form: among fold-1 cells within 2 SE of the best LL, the cell with ES spread ratios closest to 1. This is a fixed-scale analogue: capacity is the scale.
+- **Stop rule.** This is the fifth stage-4 respec. If SL-R5 yields no eligible arm, stage-4 work stops and the PM puts the options to the user. Those options are:
+  - accept L3c / SL-R5's best with its failures listed;
+  - change the gate, with a reason;
+  - park stage 4 and build stage 5 on L0s as a labelled stub.
+
+  There is no SL-R6 without the user.
+
+Reason: `docs/tests/shot_attribute_sl_r4_2026-10-16.md`. Status: ADOPTED.

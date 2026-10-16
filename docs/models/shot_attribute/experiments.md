@@ -301,3 +301,46 @@ L3c is eligible if it passes every fold-2 bias check and the ES responsiveness b
   - Per state (reported): 4v4 -3.2% and 3v3 -3.1% xG, both UNDERPOWERED.
 - **No arm selected.** The closed loop was skipped and no engine change was made.
 - Status: BUILDING; the PM rules. Proposal: re-tune the booster's capacity under the L0s start, with the fold-1 spread reported per grid cell.
+
+---
+
+## PM ruling on SL-R4 (2026-10-16, D30)
+
+- The restated guard passes.
+- L3c is not eligible on fold 2: under-response 0.675 / 0.529, xG overall +2.0007%, PK +3.31%.
+- The cause is booster capacity carried over from SL-R3.
+- SL-R5 is the last respec before a user decision.
+
+---
+
+## SL-R5: booster capacity under the L0s start (pre-registered 2026-10-16 by the PM, before any run; D30)
+
+Everything not listed is as in SL-R4: L0s baseline and strata, EN served L0s only, level E, features, rating cell (w 0.7, b 1,000), bias checks (EN reported only, D28), the D28 guard (L3c minus L0s on fold 1), responsiveness band, grading, floor 0 (deterministic), and the closed loop.
+
+### Grid (fold 1, early stopping on the time-ordered fold-1 inner split; max rounds 2,000)
+
+- lr in {0.02, 0.05, 0.1}
+- num_leaves in {15, 31, 63}
+- min_data_in_leaf in {200, 800}
+
+### Selection (D27 form, D29 / D30)
+
+Among cells whose fold-1 inner LL is within 2 SE (game-block bootstrap) of the best cell, pick the one with the smallest max(|log for-ratio|, |log against-ratio|) of the fold-1 ES spread ratios. Ties within 0.02 go to the fewer total leaves x rounds. Report the full grid table (LL, both ratios, rounds used).
+
+### Arm
+
+L3d is the L3c structure at the selected capacity.
+
+### Checks and decision
+
+- In-sample stratum check (+/-0.5% vs L0s), then the D28 guard. Stop if either fails.
+- Eligible if every fold-2 bias check passes and the ES band holds. Selected if eligible and not worse than L0s by > 2 SE.
+- On selection, run the closed loop as in SL-R4 (G3 gates overall / 5v5 / PP / PK; the G2 re-check lists 4v4 under INV-42 and 3v3 under INV-35). shot_attribute then becomes CONFIRMED-INCUMBENT (provisional).
+
+### Stop rule (D30)
+
+If L3d is not eligible, stage-4 work stops and the PM takes the options to the user.
+
+### Results
+
+(append below this line)
