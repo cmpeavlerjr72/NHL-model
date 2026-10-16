@@ -167,3 +167,11 @@ If C1s is not selected, stage 6 stays on the C0 stand-in. The PM then reports th
 ### Results
 
 (append below this line)
+
+### G-R3 results (Lane G3, 2026-10-16; report `docs/tests/goal_g_r3_2026-10-16.md`)
+
+- Step 1 (252e539): s_t snapshots for the 6-cell grid, with a leakage test (`tests/test_goal_asof_scale.py`): s on a date is bit-identical when every later outcome is flipped. Unit z = g_r / SD of 2021-22; start s = 0 (2021-22 burn-in, labelled).
+- Step 2 (252e539, before any fold-2 prediction): **no cell passes** the [0.9, 1.1] parity analogue; every cell over-responds (max |log R| H365 0.50, H180 0.37, H90 0.16; P makes no difference). **Selected H90 P2000** by the fallback rule. Per-season C1s R: 1.15 / 1.13 / 1.18. G-R2's fixed C1: 0.70 / 0.69 / 1.13.
+- Fold 2 (blind): **C1s is eligible but not selected.** Bias is clean (save% +0.06 pp, PP +0.56, RS goals +0.23%). Goalie R is 0.98 (CI 0.57-2.67, UNDERPOWERED) and team R 0.99, both in band. Its LL vs C0 is +0.0052 (SE 0.0042), short of 2 SE. Floor 0.00249 (frozen). C1 reproduces G-R2 (goalie R 0.70).
+- Fold 1: C1s R 1.08 / 1.05, bias clean, +0.0079 (SE 0.0043). D13 guard: not applicable.
+- Stage 6 stays on the C0 stand-in, per the spec.
