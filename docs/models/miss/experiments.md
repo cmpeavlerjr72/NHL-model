@@ -62,3 +62,48 @@ Deferred to a separate engine step. Stage 4 is still on its stand-in, so the clo
 - Fold 2: S1 +0.0218 and S2 +0.0175 nats/game vs S0 (SE 0.0064 / 0.0037; floor 0.00106). Every bias check passes except the low-danger tier (S0 -1.72, S1 -1.74, S2 -1.75 pp; the 2024-25 drift is concentrated in low-danger cells). S1 ES R 1.03 (0.78-1.50, UNDERPOWERED) and arena slope PASS; S2 R 0.39 and arena slope FAIL. **No adoptable arm eligible; S0 stays the stand-in.**
 - Fold 1: S1 R 0.94 but arena gate FAIL (+13.7, SE 6.5) and no LL gain (-0.0049, SE 0.0082).
 - Post / crossbar share of misses 6.3 / 6.4 / 6.3 / 8.4% (2021-22 to 2024-25).
+
+---
+
+## PM ruling on SM-R1 (2026-10-16)
+
+- No arm is eligible. S1 fails only the low-danger tier (-1.74 pp, limit 1.5) and is otherwise clean (R 1.03, UNDERPOWERED).
+- **D35 check.** Lane M read fold 2 before the correction arrived. The selection was M1 K500, not E, and E failed parity anyway, so the corrected rule selects the same level. The fold-2 read stands as valid.
+- **Cause.** The 2024-25 miss-share drift is tier-specific: low-danger tier 31.6 -> 35.3%, high-danger 29.0 -> 30.9%. The single per-group level shifts every cell equally.
+- S1 shows no fold-1 LL gain over S0 and fails the fold-1 arena gate. It would fail the D13 guard, so SM-R2 requires the guard explicitly.
+- **Accepted as labelled:**
+  - S1 and S2 fit on gated rows only;
+  - S0 base-table K = 20;
+  - the rating and arena priors inherited from SB-R4.
+- The post / crossbar share rose 6.3% -> 8.4% in 2024-25, another sign of a recording change. Listed.
+
+---
+
+## SM-R2: tier-specific miss level (pre-registered 2026-10-16 by the PM, before any run)
+
+Everything not listed is as in SM-R1: cells, rating construction and the s-rule, arena factor, bias checks, R, grading and floor.
+
+### Level
+
+An as-of miss level per (strength group in {5v5, PP, PK}) x (danger tier in {high, medium, low}). Constructions M0 / M1 (K in {500, 2000, 8000}, scaled by the tier's share of attempts) / M2, plus the oracle. E is reported, not selectable (D35).
+- Parity per genuine-prior training season and per tier within +/-0.5 pp.
+- Selection uses the SB-R1 rule with the D35 exclusion.
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| S0t | tier level + cell x type x group table |
+| S1t | S0t offset + S1's features (home, score, rest, arena factor, road-only rating at a fixed scale, s re-selected on fold 1 by the D32 rule under the new level) |
+
+There is no booster arm (D31).
+
+### Decision
+
+- S1t is eligible if every fold-2 bias check passes and R is in band.
+- **D13 guard, binding:** on fold 1, S1t has R in band, passes the arena gate, and is not worse than S0t by > 2 SE.
+- It is selected if eligible, guarded, and not worse than S0t by > 2 SE on fold 2. S0t is flat; if nothing is selected, it replaces S0 as the stand-in.
+
+### Results
+
+(append below this line)
