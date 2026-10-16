@@ -111,7 +111,7 @@ Rating spread and arena contamination (ES, team-game level, fold-2 training seas
 - **The E-run artefacts are kept as the record** (`sl_r6_frozen_params.json`, `sl_r6_grid_fold1.csv`, commit 005dd23). Step 0 used unlevelled per-season L0s, so it is unaffected.
 - **Grid under M1 K500** (13e43e3): the same pick, **Qa x0.75 (s_f 1.1947, s_a 0.9715)**.
   - It is the best-LL cell, +0.0329 nats per game vs L0s.
-  - Fold-1 R is 0.969 (CI 0.82-1.19) / 0.944. Only Qa x1.0 is also within 2 SE (-0.0039, SE 0.0034; R 1.28 / 1.22).
+  - Fold-1 R is 0.969 (CI 0.82-1.19) / 0.944 (CI 0.77-1.40). Only Qa x1.0 is also within 2 SE (-0.0039, SE 0.0034; R 1.28 / 1.22).
   - Every Qr cell is at least 2.3 SE below. Fold-1 xG overall is now +1.1% for every cell (M1 K500 is live on fold 1), against +2.5% under E.
 
   The section 2 table above is the E run. The D35 table is in the csv; its R and LL pattern is the same within 0.02.
