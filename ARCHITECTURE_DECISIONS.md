@@ -157,3 +157,10 @@ SA-R1 (d379f58, c9542c8) found that the in-season league level the PM specified 
 - SS-R3c re-levels the stage-1 incumbent. D15 stays in force until SS-R3c rules. Any G1 result produced on the old level (incl. SS-R5) is re-checked under LC-1 before it lifts a block.
 
 Reason: `docs/tests/shot_attempt_sa_r1_2026-10-15.md`. Status: ADOPTED.
+
+## D17 (2026-10-15): SA-R2 and SS-R3c rulings
+
+- **SA-R2 (e1abf1e).** A3g (LightGBM with separate ES/PP/PK as-of levels) is the leading stage-3 arm. It passes every fold-2 bias check, the responsiveness band, and the core G2 cells, CLEAN. 4v4 (+4.2%) and 3v3 (+6.6%) attempts per 60 fail G2, and they gate as written. shot_attempt stays TESTING, with SA-R3 (4v4/3v3 fix, G2 on H3''+T2) next.
+- **SS-R3c.** It stopped at the LC-1 parity test on the penalty level (about +/-2%). The parity test binds on the level-only arm. LC-1 passes for attempts and fails for penalties, because penalty seasonality is strong. Stage 1 stays on its old level under D15, with the D16 defect listed. LC-2 for penalties is next.
+
+Reason: `docs/tests/shot_attempt_sa_r2_2026-10-15.md`, `docs/tests/strength_state_ss_r3c_2026-10-15.md`. Status: ADOPTED.

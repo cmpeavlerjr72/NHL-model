@@ -169,3 +169,15 @@ Overall, by-month and by-state bias on fold 1 for every arm. The fold-2 checks g
   - A2g: 3v3 +5.4% FAIL, 4v4 passes, otherwise the same.
 - Step 4 was not triggered: SS-R3c stopped at its parity assertion.
 - Report: `docs/tests/shot_attempt_sa_r2_2026-10-15.md`.
+
+---
+
+## PM ruling on SA-R2 (2026-10-15, D17)
+
+- **A3g is the offline-selected arm.** Only the group-level arms pass every fold-2 bias check: A3g's overall level is +0.32%, it beats A2g by +0.126 (7 SE), and its responsiveness ratio is 1.135 / 1.121. LC-1 fixed the level, and the fold-1 bias is now +0.4% to +0.6%.
+- **G2 fails.** The core regular-season cells pass and the run is CLEAN, but 4v4 (+4.2%) and 3v3 (+6.6%) attempts per 60 fail the tolerance.
+  - The spec gates "attempts per 60 by strength state" in G2. Offline, those states were report-only, but the closed-loop gate binds as written, so they gate.
+  - 3v3 drives regular-season OT, which decides G7.
+- **Status.** shot_attempt stays TESTING, with A3g as the leading arm. It is not yet the incumbent.
+- **Next (SA-R3, to be pre-registered next session).** A fix for the 4v4/3v3 hazard, with the over-prediction already visible offline. Candidates: separate 4v4 and 3v3 levels, and/or an OT-specific term. SA-R3 also re-runs G2 on H3'' + T2 (this G2 used T1, because T2 lived only in an engine sibling).
+- **Watch item for stage 8.** About -1.7 attempts per team-game come from empty-net time the engine cannot visit, offset by about +1.0 from extra 5v5 time. Each is inside tolerance and the literal verdict is CLEAN, but this pair is re-checked once the goalie-pull model lands.

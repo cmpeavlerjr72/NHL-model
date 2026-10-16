@@ -345,3 +345,12 @@ Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-
 - Cause: with a strongly seasonal target, the season-to-date de-seasonalised level carries each season's early-month profile error for weeks. Its time average misses the season rate by a few percent.
 - Fold 2 was fitted but not graded. No bias checks, no G1. D15 is unchanged.
 - Resume commands are in `docs/tests/strength_state_ss_r3c_2026-10-15.md`.
+
+---
+
+## PM ruling on SS-R3c (2026-10-15, D17)
+
+- **Reading of the parity test.** The LC-1 parity test is a property of the LEVEL construction, so it binds on the level-only arm. Under that reading, attempts pass (A0 within +/-0.48%) and penalties fail (H0''c -2.07% / +2.01%).
+- **Cause.** Penalties are strongly seasonal, so early-month de-seasonalisation error persists in the season-to-date level. LC-1 is adequate for attempts but not yet for penalties.
+- **Stage-1 status.** The incumbent stays at H3'' + T2 on the old level, under D15, CONFIRMED-INCUMBENT (provisional). Both the D16 level defect and INV-29 are now open on it.
+- **Next session.** Pre-register LC-2 for penalties. The candidate direction is to shrink the early-season level toward the prior in proportion to profile-weighted exposure, not game count. It passes the same per-training-season parity test before any arm is fit.

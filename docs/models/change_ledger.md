@@ -27,3 +27,5 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R5 (dff868d): type arm T1 -> T2; INV-29 open (drawn spread 1.25) | (this commit) |
 | 2026-10-15 | shot_attempt | TESTING | TESTING | SA-R2 run: A3g selected (A2g next); fold-2 bias and responsiveness pass; G2 RS core cells PASS and CLEAN, 4v4 / 3v3 per-60 FAIL; see docs/tests/shot_attempt_sa_r2_2026-10-15.md | (this commit) |
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R3c stopped at the LC-1 parity assertion (fold-1 train H0''c -2.1% / +2.0%); fold 2 not graded; D15 unchanged; see docs/tests/strength_state_ss_r3c_2026-10-15.md | (this commit) |
+| 2026-10-15 | shot_attempt | TESTING | TESTING (ruling) | D17: A3g leads; G2 4v4/3v3 fail; SA-R3 next | (this commit) |
+| 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | D17: SS-R3c stopped at LC-1 parity; LC-2 next; H3''+T2 on old level | (this commit) |
