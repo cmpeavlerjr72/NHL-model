@@ -219,3 +219,13 @@ As SB-R1, with R for responsiveness. The D13 guard: the selected arm is also in 
 
   - Floor 0.00055. "Against" R CIs exclude the band (powered); "for" R is UNDERPOWERED (CI 0.73-3.1).
 - Fold 1: B1a 0.807 / 1.201, B2x 0.786 / 1.153, B1r 0.749 / 1.292 (B1r also fails the arena gate).
+
+---
+
+## PM ruling on SB-R4 (2026-10-16, D34)
+
+- No arm is eligible. The per-season "against" response still declines after the arena content is removed.
+- Block team ratings are parked.
+- B0 stays the engine STAND-IN.
+- An as-of response scale is deferred (INV-53).
+- The 4v4 / 3v3 level groups go into the stand-in (INV-54).

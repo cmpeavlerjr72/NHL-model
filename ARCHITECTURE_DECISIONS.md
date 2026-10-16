@@ -379,3 +379,17 @@ Status: ADOPTED.
   - Once SB-R4 / SL-R6 show whether arena-free ratings fix it, the same construction is a candidate for stage 3, pre-registered then.
 
 Status: ADOPTED.
+
+## D34 (2026-10-16): SB-R4 ruling; block team ratings are parked; B0 stays the engine stand-in
+
+- **SB-R4 (f697689, cf2633d, 245c082).** The arena content is removed: correlation with the arena factor goes from 0.19 / 0.14 to about 0. But the per-season "against" response still falls (Ra 1.09 / 0.98 / 0.81, trend z -2.1). The fold-1-tuned scale gives against R 1.20 on fold 1 and 1.33 on fold 2 (CI 1.04-1.82). No arm is eligible. Every bias check passes.
+- **Reading.** How strongly realised blocks follow a team's blocking rating is itself declining season over season, beyond arena recording. A response scale fixed from past seasons over-responds on the next one. Fixing that would need an as-of response scale (an in-season slope estimate with its own parity test), which is a materially bigger construction.
+- **Decision.**
+  - Block team ratings are parked after four rounds.
+  - B0 (level M1 K500, no team terms) stays the labelled engine STAND-IN; block stays BUILDING.
+  - INV-53 holds the as-of response-scale idea, DEFERRED.
+  - This parks a feature; it is not an adoption, so no gate is relaxed and no flat model is promoted.
+  - The B0 4v4 / 3v3 over-block (pooled ES rate) is fixed inside the stand-in by giving 4v4 and 3v3 their own level groups, a construction fix with no tuning (INV-54).
+- **Cost of parking.** Team-level block tendencies are absent from the sim. SOG-per-team cells downstream are read with that labelled.
+
+Reason: `docs/tests/block_sb_r4_2026-10-16.md`. Status: ADOPTED.
