@@ -320,3 +320,11 @@ Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-
 ### Results
 
 (append below this line)
+
+#### SS-R5 results (Lane P2, 2026-10-15; full report `docs/tests/strength_state_ss_r5_2026-10-15.md`)
+
+- Fold-1 replication: the gradient replicates. 2023-24 coincidental share Q1 0.142 -> Q5 0.202, Q5-Q1 +0.060 (95% CI +0.036, +0.083); PP opps per penalty 0.823 -> 0.763. Stop condition NOT met. Single training seasons are individually UNDERPOWERED (CI touches 0); pooled training seasons +0.024 (+0.007, +0.040).
+- T3 prior strength tuned on fold 1: k = 50 (LL -0.55388 vs -0.55415 at 150, -0.55446 at 450).
+- Fold 2 multinomial LL per penalty: T1 -0.57728, T2 -0.57416, T3 -0.57323 (SE about 0.0098 each). Paired: T2-T1 +0.00312 (SE 0.00107, 2.9 SE), T3-T1 +0.00405 (SE 0.00118), T3-T2 +0.00093 (SE 0.00054, 1.7 SE). **Selected: T2** (T3 not > 2 SE over T2; ties to simpler). Noise floor: T1-T3 are deterministic convex fits, floor 0.
+- Closed-loop G1 (T2 + H3'', 200 seeds, engine sibling `sim_ss_r5.py`): RS cells PASS, RS decomposition CLEAN (PP opps +0.088), overall CLEAN (+0.078), playoffs COMPENSATED/UNDERPOWERED as under T1. PP-opps conferred spread ratio: own taken-rating 1.19 (T1 1.54), opponent drawn-rating 1.25 (T1 1.85). Drawn ratio is outside [0.8, 1.2].
+- **Outcome: T2 wins offline, fails the closed-loop gate on the drawn-rating spread ratio. INV-29 stays open, D15 team-PP block stands; the PM rules again.**
