@@ -279,3 +279,13 @@ L3c is eligible if it passes every fold-2 bias check and the ES responsiveness b
   - Separate warning: L3c's fold-1 ES responsiveness is 0.37 / 0.49 (L3m was 0.68 / 0.81 on fold 1).
 - **Not done:** nothing on fold 2 was predicted or read. No decision, no engine change, no closed loop.
 - Status: BUILDING; the PM rules (proposal: re-specify the guard as vs L0s or under the oracle; booster capacity).
+
+---
+
+## PM ruling on SL-R4 stop (2026-10-16, D28)
+
+- **PM spec error.** The fold-1 D13 guard could not be passed by any E-levelled arm, because E is 0 on fold 1 (D24).
+- **Guard restated before any fold-2 read.** It is read on L3c minus L0s on fold 1, with the oracle-level read reported alongside.
+- **EN strata** are reported, not gated, and gate at stage 8.
+- **Listed:** the fold-1 under-response (0.37 / 0.49) and pooled-ES type-given-cell for 4v4 / 3v3. The fold-2 band decides.
+- **Resume:** `docs/briefs/lane_A4b_shot_attribute_r4_resume_2026-10-16.md`.

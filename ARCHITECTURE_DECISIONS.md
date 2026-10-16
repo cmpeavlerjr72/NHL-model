@@ -290,3 +290,19 @@ Reason: `docs/tests/shot_attribute_sl_r3_2026-10-16.md` (9d92d31). Status: ADOPT
 - **SB-R2** applies this rule to B1 and B2. Nothing else changes.
 
 Reason: `docs/tests/block_sb_r1_2026-10-16.md`. Status: ADOPTED.
+
+## D28 (2026-10-16): PM spec error in SL-R4's D13 guard; restated; EN strata gate at stage 8
+
+- **The error.** SL-R4 required the fold-1 bias checks to pass for L3c. But level E is zero on fold 1 by construction, because era 2 has no fold-1 training rows. D24 already recorded this ("fold 1 cannot test it"). So no E-levelled arm could pass the guard as written. It is a PM error, the same kind as D16, and it was caught by Lane A4, who stopped as the spec said.
+- **What fold 1 can test.** It can test the arm's own modelling deviations, not the level. The level has its own parity test (D24). The forking-paths guard is restated:
+  - **Gate:** on fold 1, every SL-R1 bias check passes when read on L3c minus L0s, i.e. the deviation the trees add to the shared baseline. Lane A4 reports that every check passes on this reading.
+  - **Reported:** the oracle-level fold-1 read (L3c +0.52% xG, tiers within 0.02 pp).
+
+  The restatement is made before anything on fold 2 is predicted or read.
+- **EN strata.** EN-for and EN-against cannot be reached in the sim until the stage-8 goalie pull. Their stage-4 bias cells are reported with n, and they gate at stage 8 together with the EN watch item (D17, D20). ENF -3.46% under the oracle is the baseline's EN mix, and it is listed.
+- **Listed, not acted on now:**
+  - L3c's fold-1 ES responsiveness is 0.37 / 0.49, an under-response. The fold-2 band decides, as pre-registered.
+  - 4v4 / 3v3 type-given-cell uses pooled ES.
+  - Both of Lane A4's spec readings (same-period-type shrink target, pooled within period type) are accepted.
+
+Reason: `docs/tests/shot_attribute_sl_r4_2026-10-16.md` (5b5052d). Status: ADOPTED.
