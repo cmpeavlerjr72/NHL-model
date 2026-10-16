@@ -72,3 +72,12 @@ Deferred. Stages 4 / 5a are stand-ins (D32, D34), and stage 5b is in progress. O
 ### Results
 
 (append below this line)
+
+### G-R1 results (Lane G, 2026-10-16; report `docs/tests/goal_g_r1_2026-10-16.md`)
+
+- Step 1 (3a2105e): level **E** selected (simplest passer, 0.054 pp = oracle; D24 caveat: fold-2 parity in sample). M1 / M2 pass (0.22-0.30), M0 fails (0.57), none fails (0.44).
+- Step 0 (f82c103, before any arm fit): goalie per-season coefficient -1.82 / -1.49 / -0.55, trend z +2.35 (TREND listed); team 1.24 / 0.48 / 0.59, z -1.32. Both enter at the D32 fixed scale.
+- Fold-1 selection (48b1047): goalie b 3000, w 0.5, s 0.5 (R 1.02); team b 10000, w 0.7, s 1.0 (R 1.01). C2: 15 leaves, min_data 800, 97 rounds; stratum check PASS (<= 0.02 pp gated).
+- Fold 2: **no arm eligible; none selected.** Every arm fails save% overall (+0.60 pp), PP (+1.30 pp) and RS goals (-5.2%), all from level E. Fold-2 R for C1 / C2: goalie 0.67 / 0.68 (FAIL, UNDERPOWERED), team 0.95 / 1.02 (in band). C1 vs C0 +0.0050 nats/game (SE 0.0037); C2 vs C0 +0.0013 (SE 0.0047). Floor 0.00091 (fold 1 bit-identical: 0).
+- Fold 1: C1 R 1.02 / 1.01 in band; bias fails PK, high tier and goals -5.0%.
+- Post-hoc (labelled, not selectable): under M1 K500 the fold-2 C0 goals would be -1.4%, oracle -0.2%. The per-cell conversion keeps rising (D23 drift); E lags.
