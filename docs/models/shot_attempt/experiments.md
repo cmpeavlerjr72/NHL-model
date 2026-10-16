@@ -238,3 +238,12 @@ Complexity order: A2g-c < A3g < A3g-c < A3g-s. 3v3 in the regular season is OT o
   - responsiveness 1.135 / 1.122, PASS;
   - every 100 vs 200 seed status is identical.
 - Report: `docs/tests/shot_attempt_sa_r3_2026-10-16.md`.
+
+---
+
+## PM ruling on SA-R3 (2026-10-16, D19)
+
+- No arm passes as written: 3v3 fails in every arm. The cause is the shared ES level under diverging 5v5 / 3v3 trends.
+- The 3v3 attempt hazard is re-scoped to the stage-8 OT model (INV-35). It gates there and is reported and listed here, not dropped.
+- A3g-c (b_c = 50, a corner) leads stage 3. It becomes CONFIRMED-INCUMBENT (provisional) once G2 on H3''-LC2 + T2 passes every non-3v3 cell CLEAN, with 4v4 passing (INV-36).
+- The T2 engine merge is accepted.

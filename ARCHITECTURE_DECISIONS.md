@@ -174,3 +174,13 @@ Reason: `docs/tests/shot_attempt_sa_r2_2026-10-15.md`, `docs/tests/strength_stat
 - **Stage 3.** SA-R3's G2 (Lane S3) runs on the old-level H3'' + T2, the incumbent at its launch, and rules on that. A G2 confirmation on H3''-LC2 + T2 rides with the next stage-3 step. No mid-task change to Lane S3.
 
 Reason: `docs/tests/strength_state_lc2_2026-10-16.md` (3a17280). Status: ADOPTED.
+
+## D19 (2026-10-16): SA-R3 ruling; 3v3 attempts re-scoped to the stage-8 OT model; A3g-c leads stage 3
+
+- **Result.** No arm meets the SA-R3 rule. Every arm fails 3v3 on fold 2 (+4.2% to +6.8%, cell SE about 2.3%, tolerance 3%). The cause is diagnosed: A3g's 3v3 rate rides the shared even-strength level. 5v5 rose across seasons while 3v3 fell, so the test season inherits about +6%. In-sample cells (the c arms) cannot fix out-of-sample drift. A3g-s gives 3v3 its own level and halves the fold-1 miss, but it fails the D13 guard on 4v4, and its 3v3 level is noisy at about 25 team-hours a season.
+- **Re-scope, not relaxation.** Regular-season 3v3 is overtime only, and overtime belongs to stage 8 (clock and end-game: OT, shootout, goalie pull) in the bottom-up order. The 3v3 attempt hazard moves there as INV-35. It gates at stage 8 (G2 3v3 cell plus G7), and stage 8 cannot be accepted without it. The stage-3 G2 3v3 cell is reported and listed until then, never dropped. The reason is ownership, stated with the evidence above, not that the cell is close to its line.
+- **Stage-3 leader: A3g-c** (b_c = 50, a grid corner, listed). Among the arms that pass every check except 3v3, it is the simplest one that is not worse than A3g by > 2 SE (A2g-c is worse by 7 SE). LL vs A3g is +0.001, inside the 0.0015 floor; A3g itself fails 4v4 offline. It passes 4v4 (+1.5%) and the D13 guard.
+- **Condition for CONFIRMED-INCUMBENT (provisional).** G2 for A3g-c on the current stage-1 incumbent H3''-LC2 + T2 (D18), 200 seeds: every G2 cell except 3v3 PASS and CLEAN, and 4v4 passes closed-loop. INV-36.
+- **T2 merge** (`sim.py` `per_team_types`, default off, bit-identical both ways) is accepted; `sim_ss_r5.py` is superseded.
+
+Reason: `docs/tests/shot_attempt_sa_r3_2026-10-16.md` (3b68b8f). Status: ADOPTED.
