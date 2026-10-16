@@ -1,0 +1,362 @@
+{
+ "spec": "SL-R6 step 0",
+ "note": "training seasons only (2021-22..2023-24), fold-2 ratings and xG_ref; each season alone with its own L0s (unlevelled); free fit of (s_f, s_a) + the fitted home / score / rest terms; SEs conditional on W (model-based and game-cluster sandwich)",
+ "fits": [
+  {
+   "construction": "orig",
+   "scope": "20212022",
+   "n": 119056,
+   "s_f": 1.6447883393634695,
+   "s_a": 1.721568213051885,
+   "se_f_model": 0.1269894272547007,
+   "se_a_model": 0.14975693416969513,
+   "se_f_cluster": 0.16375514249397527,
+   "se_a_cluster": 0.17511619021874153,
+   "converged": true,
+   "nit": 216,
+   "secs": 68
+  },
+  {
+   "construction": "orig",
+   "scope": "20222023",
+   "n": 119486,
+   "s_f": 1.4256995275353421,
+   "s_a": 1.0179986694043002,
+   "se_f_model": 0.11745647067649753,
+   "se_a_model": 0.12087014401366021,
+   "se_f_cluster": 0.13545114487439336,
+   "se_a_cluster": 0.1427534196244206,
+   "converged": true,
+   "nit": 225,
+   "secs": 72
+  },
+  {
+   "construction": "orig",
+   "scope": "20232024",
+   "n": 119651,
+   "s_f": 1.3290271933439395,
+   "s_a": 1.199036102327115,
+   "se_f_model": 0.10569263882950948,
+   "se_a_model": 0.13357116566477442,
+   "se_f_cluster": 0.11292666263377735,
+   "se_a_cluster": 0.1389710566390957,
+   "converged": true,
+   "nit": 200,
+   "secs": 64
+  },
+  {
+   "construction": "orig",
+   "scope": "fold-1 train",
+   "n": 238542,
+   "s_f": 1.522558340981617,
+   "s_a": 1.3044788259148477,
+   "se_f_model": 0.08631388985269636,
+   "se_a_model": 0.09432799255226193,
+   "se_f_cluster": 0.10529073172527144,
+   "se_a_cluster": 0.11166751551769298,
+   "converged": true,
+   "nit": 221,
+   "secs": 138
+  },
+  {
+   "construction": "orig",
+   "scope": "fold-2 train",
+   "n": 358193,
+   "s_f": 1.4412024101965655,
+   "s_a": 1.2639872641282344,
+   "se_f_model": 0.06694324131335269,
+   "se_a_model": 0.0770299286669389,
+   "se_f_cluster": 0.08025281180590438,
+   "se_a_cluster": 0.08900811329026864,
+   "converged": true,
+   "nit": 198,
+   "secs": 180
+  },
+  {
+   "construction": "Qr",
+   "scope": "20212022",
+   "n": 119056,
+   "s_f": 1.7114179960507183,
+   "s_a": 0.8126881642871682,
+   "se_f_model": 0.18406532840748477,
+   "se_a_model": 0.2103061287022553,
+   "se_f_cluster": 0.23202309410375918,
+   "se_a_cluster": 0.26836585001411284,
+   "converged": true,
+   "nit": 217,
+   "secs": 67
+  },
+  {
+   "construction": "Qr",
+   "scope": "20222023",
+   "n": 119486,
+   "s_f": 1.2797489942331477,
+   "s_a": 0.7634325426547511,
+   "se_f_model": 0.12730651269875842,
+   "se_a_model": 0.17405439994014094,
+   "se_f_cluster": 0.14954378034045257,
+   "se_a_cluster": 0.20912799086854897,
+   "converged": true,
+   "nit": 223,
+   "secs": 68
+  },
+  {
+   "construction": "Qr",
+   "scope": "20232024",
+   "n": 119651,
+   "s_f": 1.2978768666789136,
+   "s_a": 1.356204034249904,
+   "se_f_model": 0.1170190973341898,
+   "se_a_model": 0.18110864405216082,
+   "se_f_cluster": 0.1268822992370326,
+   "se_a_cluster": 0.1942392536495058,
+   "converged": true,
+   "nit": 214,
+   "secs": 66
+  },
+  {
+   "construction": "Qr",
+   "scope": "fold-1 train",
+   "n": 238542,
+   "s_f": 1.4338230881105307,
+   "s_a": 0.7876814841597214,
+   "se_f_model": 0.10522277297637517,
+   "se_a_model": 0.1344934483930165,
+   "se_f_cluster": 0.12747464090393415,
+   "se_a_cluster": 0.16644563800680207,
+   "converged": true,
+   "nit": 217,
+   "secs": 140
+  },
+  {
+   "construction": "Qr",
+   "scope": "fold-2 train",
+   "n": 358193,
+   "s_f": 1.372388184319252,
+   "s_a": 0.977729870956969,
+   "se_f_model": 0.07840384519049837,
+   "se_a_model": 0.10798500045518682,
+   "se_f_cluster": 0.09332204385538617,
+   "se_a_cluster": 0.1303644161568733,
+   "converged": true,
+   "nit": 208,
+   "secs": 188
+  },
+  {
+   "construction": "Qa",
+   "scope": "20212022",
+   "n": 119056,
+   "s_f": 1.7530237043166923,
+   "s_a": 1.694652538042179,
+   "se_f_model": 0.14171969659769315,
+   "se_a_model": 0.1623204744296654,
+   "se_f_cluster": 0.18424856274699108,
+   "se_a_cluster": 0.1918710213373527,
+   "converged": true,
+   "nit": 210,
+   "secs": 66
+  },
+  {
+   "construction": "Qa",
+   "scope": "20222023",
+   "n": 119486,
+   "s_f": 1.4951524125751676,
+   "s_a": 0.9440570079805943,
+   "se_f_model": 0.11932361187671336,
+   "se_a_model": 0.13392502092528719,
+   "se_f_cluster": 0.13762654569669122,
+   "se_a_cluster": 0.15929945542851828,
+   "converged": true,
+   "nit": 214,
+   "secs": 66
+  },
+  {
+   "construction": "Qa",
+   "scope": "20232024",
+   "n": 119651,
+   "s_f": 1.2097084207131907,
+   "s_a": 1.1025270148627413,
+   "se_f_model": 0.1009578780018688,
+   "se_a_model": 0.13557684721254942,
+   "se_f_cluster": 0.10861291352419118,
+   "se_a_cluster": 0.14560734048406065,
+   "converged": true,
+   "nit": 206,
+   "secs": 69
+  },
+  {
+   "construction": "Qa",
+   "scope": "fold-1 train",
+   "n": 238542,
+   "s_f": 1.607190700003132,
+   "s_a": 1.2563354786682563,
+   "se_f_model": 0.09150327853452417,
+   "se_a_model": 0.10361089649628027,
+   "se_f_cluster": 0.1117088540810436,
+   "se_a_cluster": 0.12355093547156364,
+   "converged": true,
+   "nit": 205,
+   "secs": 118
+  },
+  {
+   "construction": "Qa",
+   "scope": "fold-2 train",
+   "n": 358193,
+   "s_f": 1.430730205351407,
+   "s_a": 1.1997444694336026,
+   "se_f_model": 0.0679615954408503,
+   "se_a_model": 0.08236872058991315,
+   "se_f_cluster": 0.081160370705844,
+   "se_a_cluster": 0.09661559577590714,
+   "converged": true,
+   "nit": 211,
+   "secs": 161
+  }
+ ],
+ "rating_stats": [
+  {
+   "construction": "orig",
+   "sd_own_es": 0.028238472529421327,
+   "sd_opp_es": 0.025084819313132726,
+   "corr_own_arena": -0.13257113486156194,
+   "corr_opp_arena": -0.20203035750195766
+  },
+  {
+   "construction": "Qr",
+   "sd_own_es": 0.024121473613648494,
+   "sd_opp_es": 0.01770698586636025,
+   "corr_own_arena": 0.018425572664966115,
+   "corr_opp_arena": 0.017634702820357565
+  },
+  {
+   "construction": "Qa",
+   "sd_own_es": 0.027720302034152166,
+   "sd_opp_es": 0.023341537355442348,
+   "corr_own_arena": 0.00782723895181725,
+   "corr_opp_arena": -0.05017660215858205
+  }
+ ],
+ "flatness": [
+  {
+   "construction": "orig",
+   "rating": "for",
+   "per_season": [
+    1.6448,
+    1.4257,
+    1.329
+   ],
+   "se": [
+    0.1638,
+    0.1355,
+    0.1129
+   ],
+   "weighted_mean": 1.4291625869497402,
+   "Q_het": 2.5207920759548568,
+   "p_het": 0.2835417109749006,
+   "trend_per_season": -0.1373567903994316,
+   "trend_se": 0.09296477345681077,
+   "trend_z": -1.4775143884284763
+  },
+  {
+   "construction": "orig",
+   "rating": "against",
+   "per_season": [
+    1.7216,
+    1.018,
+    1.199
+   ],
+   "se": [
+    0.1751,
+    0.1428,
+    0.139
+   ],
+   "weighted_mean": 1.2601475042602377,
+   "Q_het": 10.013627017218116,
+   "p_het": 0.006692193985478509,
+   "trend_per_season": -0.21580061093698072,
+   "trend_se": 0.10885752753405006,
+   "trend_z": -1.9824133050374437
+  },
+  {
+   "construction": "Qr",
+   "rating": "for",
+   "per_season": [
+    1.7114,
+    1.2797,
+    1.2979
+   ],
+   "se": [
+    0.232,
+    0.1495,
+    0.1269
+   ],
+   "weighted_mean": 1.35266723562173,
+   "Q_het": 2.8149169920567743,
+   "p_het": 0.24476456343595024,
+   "trend_per_season": -0.12476356908524806,
+   "trend_se": 0.1113239440868276,
+   "trend_z": -1.1207253759167766
+  },
+  {
+   "construction": "Qr",
+   "rating": "against",
+   "per_season": [
+    0.8127,
+    0.7634,
+    1.3562
+   ],
+   "se": [
+    0.2684,
+    0.2091,
+    0.1942
+   ],
+   "weighted_mean": 1.0226251362973415,
+   "Q_het": 5.097393681730553,
+   "p_het": 0.07818348516633526,
+   "trend_per_season": 0.29107402450585446,
+   "trend_se": 0.15734890804838705,
+   "trend_z": 1.8498636445341268
+  },
+  {
+   "construction": "Qa",
+   "rating": "for",
+   "per_season": [
+    1.753,
+    1.4952,
+    1.2097
+   ],
+   "se": [
+    0.1842,
+    0.1376,
+    0.1086
+   ],
+   "weighted_mean": 1.3957602720018956,
+   "Q_het": 7.215694298987647,
+   "p_het": 0.027110148183061487,
+   "trend_per_season": -0.23020473762627752,
+   "trend_se": 0.09356579016550366,
+   "trend_z": -2.46035155818254
+  },
+  {
+   "construction": "Qa",
+   "rating": "against",
+   "per_season": [
+    1.6947,
+    0.9441,
+    1.1025
+   ],
+   "se": [
+    0.1919,
+    0.1593,
+    0.1456
+   ],
+   "weighted_mean": 1.1890360397799864,
+   "Q_het": 9.662198323247438,
+   "p_het": 0.007977747610988696,
+   "trend_per_season": -0.23966863898136095,
+   "trend_se": 0.11598953743197771,
+   "trend_z": -2.066295325316864
+  }
+ ],
+ "elapsed_s": 368
+}
