@@ -247,3 +247,13 @@ Complexity order: A2g-c < A3g < A3g-c < A3g-s. 3v3 in the regular season is OT o
 - The 3v3 attempt hazard is re-scoped to the stage-8 OT model (INV-35). It gates there and is reported and listed here, not dropped.
 - A3g-c (b_c = 50, a corner) leads stage 3. It becomes CONFIRMED-INCUMBENT (provisional) once G2 on H3''-LC2 + T2 passes every non-3v3 cell CLEAN, with 4v4 passing (INV-36).
 - The T2 engine merge is accepted.
+
+---
+
+## Results under the D19 ruling: INV-36, G2 for A3g-c on H3''-LC2 + T2 (Lane S4, 2026-10-16)
+
+- Stage 1 = H3''-LC2 + T2 (D18, `per_team_types` on, Lane L2's cached LC-2 tables); stage 3 = A3g-c (b_c = 50); 200 seeds. Stage-1 wiring parity with Lane L2's G1 on seeds 0-7: bit-identical.
+- Regular season: 5v5 +0.35%, PP -0.49%, PK -2.14%, 4v4 +2.82% (PASS, 0.18 points inside the line), per team-game -0.94%: all PASS. Score buckets PASS. Decomposition CLEAN at team-game level and by state for 5v5, PP, PK, 4v4. Overall and PO (UNDERPOWERED) follow the same pattern.
+- 3v3: +5.25% RS, **listed, gates at stage 8 (D19)**.
+- Responsiveness own 1.135 (0.996..1.313) / opp 1.122 (0.973..1.329) PASS. 100 vs 200 seeds: every status identical. EN watch item unchanged (-1.69 attempts per team-game unreachable).
+- D19 condition: **met**. The PM rules. Report: `docs/tests/shot_attempt_g2_inv36_2026-10-16.md`.

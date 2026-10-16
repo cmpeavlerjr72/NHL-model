@@ -51,14 +51,14 @@ def md(df, fmt=".4f"):
 
 
 ROUND = dict(TV="v1", LEVEL=None)
-S1_LABEL = {"r3": "H3'' + T1 (D15)", "r3c": "H3''c + T1 (SS-R3c)", "r3t2": "H3'' + T2 (SS-R5 ruling; merged T2 flag)"}
+S1_LABEL = {"lc2t2": "H3''-LC2 + T2 (D18; LC-2 level tables v5)", "r3": "H3'' + T1 (D15)", "r3c": "H3''c + T1 (SS-R3c)", "r3t2": "H3'' + T2 (SS-R5 ruling; merged T2 flag)"}
 
 
-def stage1_tables_t2():
+def stage1_tables_t2(r5=Path("results/strength_state_r5")):
     """H3'' + T2 from the SS-R5 cache (lam_H3_fold2.npy, types_T2_fold2.npy), read-only; same game order and stub /
     coincidental tables as run_strength_state_g1_v5.build_tables."""
     from nhl_sim.strength_state import lookup as LK
-    r5, r1 = Path("results/strength_state_r5"), Path("results/strength_state_r1")
+    r1 = Path("results/strength_state_r1")
     rows = pd.read_parquet("results/strength_state_r3/fold2_rows.parquet", columns=["game_id"])
     games = np.sort(rows.game_id.unique())
     lam = np.load(r5 / "lam_H3_fold2.npy", mmap_mode="r")
@@ -74,6 +74,8 @@ def stage1_tables_t2():
 def stage1_tables(stage1="r3"):
     if stage1 == "r3t2":
         return stage1_tables_t2()
+    if stage1 == "lc2t2":      # SA-R3 follow-up (INV-36): Lane L2's cached LC-2 H3'' hazard + T2 type tables, read-only
+        return stage1_tables_t2(Path("results/strength_state_lc2/r5"))
     spec = importlib.util.spec_from_file_location("g1v3", ROOT / "scripts" / "run_strength_state_g1_v3.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -125,7 +127,7 @@ def cmd_sim(a):
         t1 = time.time()
         n = min(a.chunk, a.seed0 + a.nseeds - s0)
         o = simulate(tables, games, gt.game_type.to_numpy(), n, era_for_season(TEST), seed0=s0,
-                     per_team_types=(a.stage1 == "r3t2"))
+                     per_team_types=(a.stage1 in ("r3t2", "lc2t2")))
         es = np.array(["", "REG", "OT", "SO"])[o["end_state"]]
         if (es == "").any():
             raise RuntimeError("unfinished sims")
@@ -321,7 +323,7 @@ if __name__ == "__main__":
     ap.add_argument("--tag", default=None)
     ap.add_argument("--report", default=None)
     ap.add_argument("--round", default="SA-R1", choices=["SA-R1", "SA-R2", "SA-R3"])
-    ap.add_argument("--stage1", default="r3", choices=["r3", "r3c", "r3t2"])
+    ap.add_argument("--stage1", default="r3", choices=["r3", "r3c", "r3t2", "lc2t2"])
     a = ap.parse_args()
     if a.round == "SA-R2":
         RES = Path("results/shot_attempt_r2")
