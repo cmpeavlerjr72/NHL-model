@@ -437,3 +437,12 @@ Status: ADOPTED.
   - The D35 switch to M1 K500 was made before any fold-2 read.
 
 Status: ADOPTED.
+
+## D39 (2026-10-16): SL-R6 failed; stage 4 goes back to the user
+
+- **What passed.** L1x-ot0 passed the in-sample check and the D28 guard, then every fold-2 bias check (xG +0.46%, PK +2.45%). It beats L0s by +0.0467 nats/game (SE 0.0181). The ES "against" R is 0.966.
+- **What failed.** The ES "for" R is 1.291 (CI 0.99-1.82, UNDERPOWERED; the point estimate gates). Step 0 predicted it: the Qa "for" coefficient falls each season (1.75 / 1.50 / 1.21, z -2.5). This is L35 again.
+- **No arm is selected.** The L0s stand-in stays, with its level moving to M1 K500 (D35, INV-57).
+- **Next.** There is no SL-R7 without the user (D30, D32). The options go to the user once G-R3 (the as-of response scale, INV-53) reports, because G-R3 decides whether a tracking scale is a viable stage-4 fix.
+
+Status: ADOPTED; the user decision is pending.
