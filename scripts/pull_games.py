@@ -23,8 +23,9 @@ def main():
     ap.add_argument("--max-seconds", type=float, default=None)
     ap.add_argument("--max-games", type=int, default=None)
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--schedule", default="data/processed/schedule.parquet")
     a = ap.parse_args()
-    sch = pd.read_csv if False else pd.read_parquet("data/processed/schedule.parquet")
+    sch = pd.read_csv if False else pd.read_parquet(a.schedule)
     sch = sch[sch.game_state.isin(["OFF", "FINAL"])]
     ids = []
     for s in a.seasons:

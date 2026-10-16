@@ -14,7 +14,7 @@ Read-only. Anonymous GETs only: no logins, no orders, no account endpoints, no c
 
 Shared code: `src/nhl_sim/live/` (`common.py` helpers, one module per source). Tests: `tests/test_live_loggers.py` (offline, fixtures in `tests/fixtures/`).
 
-Notes: Kalshi includes futures series (`KXNHL*` such as conference winners) because the filter is by ticker prefix; filter downstream. ESPN returned 403 to a User-Agent that contained an email address; the loggers' UA does contain one and works on DF/Kalshi/DKeX, but if a source starts returning 403, try a plain UA first.
+Notes: Kalshi includes futures series (`KXNHL*` such as conference winners) because the filter is by ticker prefix; filter downstream. User-Agent (checked 2026-10-16, `src/nhl_sim/live/common.py` `UA`): `NHL-Model-research/0.1 (personal read-only research)`. It contains no email address (an earlier version of this doc said it did; that was wrong). ESPN returned 403 to a descriptive custom UA, so the ESPN scripts use a generic browser string; if any other source starts returning 403, try a plain UA first.
 
 ## Output layout
 
@@ -46,3 +46,16 @@ Inspect: `Get-ScheduledTask NHL-Model-live-log`, `Get-ScheduledTaskInfo NHL-Mode
 
 The task points at `.venv\Scripts\python.exe` (owned by Lane A). If that venv is rebuilt, re-run the registration script; to avoid the dependency, edit the script's `$py` to any Python 3.12 with `requests`.
 No other scheduled task is touched by this setup (CBB/CFB tasks are unrelated).
+
+## Weekly NHL API pull (D2, INV-16)
+
+`NHL-Model-weekly-pull`: Monday 06:00 local, hidden, `MultipleInstances = IgnoreNew`, `StartWhenAvailable`, 2 h execution limit, `LogonType Interactive` (runs only while the user is logged on; with `StartWhenAvailable` a missed run starts at the next opportunity). Runs `scripts/chain_weekly_pull.py`: (1) `pull_schedule.py --out data/processed/schedule_weekly.parquet` (a versioned sibling; the shared `schedule.parquet` is never rewritten), (2) `pull_games.py --schedule data/processed/schedule_weekly.parquet` (cache-first: only new finals and games whose shift chart was empty are requested, 4 workers, backoff). Log: `logs/weekly_pull_<YYYY-MM-DD>.log` (appended). Exit code non-zero if a step failed.
+
+Register / remove:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\devuser\NHL-Model\scripts\register_weekly_pull_task.ps1
+Unregister-ScheduledTask -TaskName NHL-Model-weekly-pull -Confirm:$false
+```
+
+Inspect: `Get-ScheduledTaskInfo NHL-Model-weekly-pull`. Empty shift charts are not cached, so each run re-requests them; the 105 known gaps (57 in 2024-25, 2025-04-08 to 04-15; 48 in 2026-27, 2026-09-30 to 10-07) were still empty on 2026-10-16. Rebuilding processed tables (`build_tables.py`) is a separate manual step.

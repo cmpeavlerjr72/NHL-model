@@ -14,6 +14,10 @@ SEASONS = [2021, 2022, 2023, 2024, 2025, 2026]  # start year
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default="data/processed/schedule.parquet")
+    a = ap.parse_args()
     cl = NHLApiClient()
     today = dt.date.today()
     dates = []
@@ -42,7 +46,7 @@ def main():
                     neutral_site=g.get("neutralSite"), venue=(g.get("venue") or {}).get("default"),
                 )
     df = pd.DataFrame(rows.values()).sort_values(["start_utc", "game_id"]).reset_index(drop=True)
-    out = Path("data/processed/schedule.parquet")
+    out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(out)
     print(f"network={cl.n_network} cached={cl.n_cached} games={len(df)}")
