@@ -114,3 +114,56 @@ Everything is frozen from G-R1 except the level: the cell table, rating construc
 - C2 in-sample stratum check FAILS on PK (fold 1 +0.239 pp, fold 2 +0.215 pp); C2 fitted and graded anyway, marked ineligible (disclosed deviation: the trainer was to stop).
 - Fold 2: bias clean for every arm (C1 save% +0.05 pp, PP +0.55, goals +0.30%). **No arm eligible**: C1 goalie R 0.70 (CI 0.42-2.36, UNDERPOWERED, FAIL), team R 1.00. C1 vs C0 +0.0058 (SE 0.0039); C2 +0.0019 (0.0048); floor 0.00249. None selected.
 - Fold 1: C1 R 1.03 / 1.05 in band, bias clean; C2 R goalie 1.21.
+
+---
+
+## PM ruling on G-R2 (2026-10-16, D36)
+
+- The D35 level (M1 K500) clears every bias check: save% +0.05 pp, goals +0.3%.
+- No arm is selected:
+  - C1's goalie R is 0.70, below the band. The point estimate gates (D18), even though it is UNDERPOWERED (CI 0.42-2.36).
+  - C1 vs C0 is +0.0058 (SE 0.0039), short of 2 SE.
+- C0 is the stage-6 stand-in. It is flat in goalie and team, and labelled.
+- Lane G2's deviation is accepted as disclosed: C2 was graded despite failing its in-sample PK stratum check (+0.24 pp), and marked ineligible.
+- The goalie response trend (step-0 z +2.35) and the blocks result (D34) point to the same missing construction: an as-of response scale. INV-53 is promoted, and G-R3 tests it on the goalie.
+
+---
+
+## G-R3: as-of goalie response scale (pre-registered 2026-10-16 by the PM, before any run; INV-53)
+
+Everything not listed is frozen from G-R2: level M1 K500, cell table, rating constructions and (b, w) cells, team finishing at its fixed scale, bias checks, R, grading, floor. Only C1-type arms; no booster (D31).
+
+### Construction
+
+The goalie rating enters as s_t x (standardised as-of goalie rating), where s_t is an as-of estimate of the goalie-rating logistic coefficient:
+- **Estimation window:** all shots on goal before the game date (across seasons), weighted by 0.5^(age in days / H).
+- **Fit:** a one-parameter logistic slope with the C0 + team offsets fixed, shrunk toward the previous day's s with a prior of strength P shots.
+- **Snapshot:** s_t is computed per game date, with `created_at < puck_drop`.
+- **Grid:** H in {90, 180, 365} days x P in {2000, 10000}.
+
+### Parity analogue (training seasons only; out of sample by construction, since s_t is as-of)
+
+Per genuine-prior training season (both folds), the goalie R of the arm C1s must lie in [0.9, 1.1].
+- Selection: the simplest passer (larger H, then larger P, counts as simpler).
+- Otherwise: the smallest max |log R|, listed, then proceed.
+- Also report the per-season fixed-scale R from G-R2's C1 for comparison.
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| C0 | stand-in comparator |
+| C1 | G-R2's C1 (reference) |
+| C1s | C1 with the as-of goalie scale |
+
+### Decision
+
+- **Eligible:** every fold-2 bias check passes and both R values are in band.
+- **Selected:** eligible and beats C0 by > 2 SE and > the floor.
+- **D13 guard:** in band on fold 1.
+
+If C1s is not selected, stage 6 stays on the C0 stand-in. The PM then reports the goalie gap to the user, because goalie-saves props depend on it.
+
+### Results
+
+(append below this line)

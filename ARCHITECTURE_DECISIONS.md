@@ -406,3 +406,11 @@ Reason: `docs/tests/block_sb_r4_2026-10-16.md`. Status: ADOPTED.
 - Lane G's incident (fold-2 save% and oracle printed in a step-1 doc, fixed within a minute, no choice depended on it) is accepted as disclosed.
 
 Status: ADOPTED.
+
+## D36 (2026-10-16): G-R2 ruling; stage 6 on the C0 stand-in; the as-of response scale (INV-53) is promoted
+
+- G-R2 (ba05b9a): the D35 level fixes every bias check (sv% +0.05 pp, regular-season goals +0.3%, against -5.2% under E). No arm is selected: C1's goalie R is 0.70 (UNDERPOWERED; the point estimate gates, D18), and its LL gain is 1.5 SE.
+- Stage 6 runs on the C0 stand-in (flat in goalie and team, labelled, D32 rules) until an arm is selected.
+- Rating responses that drift across seasons now block three stages: blocks (D34), the goalie (step-0 z +2.35), and the stage-3 over-response watch item (D33). The as-of response scale (INV-53) is promoted, and G-R3 applies it to the goalie first. If it fails, the PM reports the goalie gap to the user, because the goalie-saves props depend on it.
+
+Status: ADOPTED.
