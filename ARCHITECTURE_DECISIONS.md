@@ -251,3 +251,13 @@ Reason: `docs/tests/shot_attribute_sl_r1_2026-10-16.md` (436da19). Status: ADOPT
 - **L0m as a plumbing run.** SL-R3 also runs L0m through the closed loop as a labelled plumbing check of the Fenwick order and the block-first stub, not as a gate. That way the engine path is proven whatever L3b does.
 
 Reason: `docs/tests/shot_attribute_sl_r2_2026-10-16.md` (9b86012). Status: ADOPTED.
+
+## D25 (2026-10-16): INV-38 closed; puck-line grading excludes suspect games, with an ambiguous-excluded sensitivity
+
+`lines_dratings_v2.parquet` (2e5e4e4) flags 91 close-suspect and 182 close-ambiguous games out of 5,598, with separate open-line flags. The close and open sets overlap in only 8 games, so each graded line uses its own flag.
+
+- **Primary.** Exclude suspect games (D21).
+- **Pick'em games.** An ambiguous game (no-vig ML within 0.5 pp of 50%) can legitimately have either side at -1.5, so its flag is not evidence of an error. But 9 of the 38 known mismatches sit there, so every puck-line scorecard also reports a sensitivity with ambiguous games excluded too (273 games, 4.9%).
+- **Sign-flip rule.** A puck-line result that flips sign between the two versions is not reported as an edge.
+
+Status: ADOPTED.
