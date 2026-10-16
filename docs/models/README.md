@@ -12,7 +12,8 @@ Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION 
 | shot_attempt | 3 | CONFIRMED-INCUMBENT (provisional, A3g-c, D20; 3v3 to stage 8, INV-35) | [experiments](shot_attempt/experiments.md) |
 | shot_attribute | 4 | BUILDING (SL-R6 running; L0s engine STAND-IN, D32) | [experiments](shot_attribute/experiments.md) |
 | block | 5a | BUILDING (SB-R4 running; B0 engine STAND-IN, D32) | [experiments](block/experiments.md) |
-| miss | 5b | BUILDING (SM-R1 pre-registered) | [experiments](miss/experiments.md) |
+| miss | 5b | BUILDING (SM-R1 running) | [experiments](miss/experiments.md) |
+| goal | 6 | BUILDING (G-R1 pre-registered) | [experiments](goal/experiments.md) |
 | shot_attributes | 4 | OPEN | - |
 | attempt_outcome | 5 | OPEN | - |
 | goal_given_sog | 6 | OPEN | - |
