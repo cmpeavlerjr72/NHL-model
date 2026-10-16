@@ -10,7 +10,8 @@ Status vocabulary: SHIPPED / TESTING / BUILDING / VALIDATED-PENDING-SHIP-ACTION 
 | strength_state | 1 | CONFIRMED-INCUMBENT (provisional, H3''-LC2+T2, D18; INV-34 open) | [model](strength_state/model.md) |
 | deployment | 2 | OPEN | - |
 | shot_attempt | 3 | CONFIRMED-INCUMBENT (provisional, A3g-c, D20; 3v3 to stage 8, INV-35) | [experiments](shot_attempt/experiments.md) |
-| shot_attribute | 4 | BUILDING (SL-R1 pre-registered) | [experiments](shot_attribute/experiments.md) |
+| shot_attribute | 4 | BUILDING (SL-R3 running; D23, D24) | [experiments](shot_attribute/experiments.md) |
+| block | 5a | BUILDING (SB-R1 pre-registered) | [experiments](block/experiments.md) |
 | shot_attributes | 4 | OPEN | - |
 | attempt_outcome | 5 | OPEN | - |
 | goal_given_sog | 6 | OPEN | - |
