@@ -354,3 +354,43 @@ Nothing else changes: H2'' and H3'' structure and hyperparameters, T1 or the SS-
 - **Cause.** Penalties are strongly seasonal, so early-month de-seasonalisation error persists in the season-to-date level. LC-1 is adequate for attempts but not yet for penalties.
 - **Stage-1 status.** The incumbent stays at H3'' + T2 on the old level, under D15, CONFIRMED-INCUMBENT (provisional). Both the D16 level defect and INV-29 are now open on it.
 - **Next session.** Pre-register LC-2 for penalties. The candidate direction is to shrink the early-season level toward the prior in proportion to profile-weighted exposure, not game count. It passes the same per-training-season parity test before any arm is fit.
+
+---
+
+## LC-2: penalty league level that passes per-season parity (pre-registered 2026-10-16 by the PM, before any run; D17, INV-33)
+
+LC-1 fails its per-training-season parity test for penalties by about 4x the 0.5% limit (H0''c -2.07% / +2.01% on fold-1 train). The cause is path error: under a seasonal target, the season-to-date de-seasonalised rate carries early-month profile error for weeks. Note that an oracle constant level equal to the season's own final de-seasonalised rate ΣE / Σ(h e^p) passes parity exactly by construction, so the failure is entirely the in-season path of the as-of estimate, not the profile.
+
+### Step 0: level constructions (training rows only; no arm beyond the level-only H0'' is fit)
+
+All use the SS-R3 profile `profile_v3_f{fold}` unchanged and assert `created_at < puck_drop`.
+
+| id | construction | grid |
+|---|---|---|
+| L1 | LC-1 as built (reference; reproduces SS-R3c) | k = 5 |
+| L2c | prior only: r_prev (previous season's final de-seasonalised rate), constant all season, no in-season update | none |
+| L2a | ratio estimator on profile-weighted exposure: (E_raw + K r_prev) / (Σ h e^p + K), K = 2k profile-weighted team-hours | k in {50, 200, 800} |
+| L2b | L2a with events and profile-weighted exposure discounted by 0.5^(age in days / half-life); prior K = 2k, k = 5, not discounted | half-life in {14, 30, 60} days |
+| O | oracle: the season's own final de-seasonalised rate. Diagnostic ceiling and code check (parity must be 0 to rounding); never selectable | none |
+
+2021-22 has no previous season; its r_prev is its own final rate (look-ahead, labelled, as in LC-1). Under L2c and heavy-k L2a that makes 2021-22 parity uninformative, so **parity is judged on the seasons with a genuine prior: 2022-23 (both folds) and 2023-24 (fold-2 train).** 2021-22 is reported, labelled.
+
+Report per construction and grid point: per-season parity of H0'', both folds' training seasons; the fold-1 test (2023-24) level-only bias overall and by month (diagnostic).
+
+### Selection (training-only; nothing on fold-2 test is read)
+
+1. The pass line stays 0.5% per genuine-prior season.
+2. If one or more constructions pass, take the simplest passer (L2c < L2a < L2b; within a family, the grid point with the smallest max |parity|).
+3. If none passes, take the construction with the smallest max |parity| over the genuine-prior seasons (ties within 0.3 pp go to the simpler), and LIST the parity failure with its numbers. Do not stop: proceed to step 1. The reason, stated before any number exists: a causal level cannot know a season's rate, so per-season path error is irreducible forecast error, and what the cells could absorb in-sample is its mean across training seasons, which is reported as well (exposure-weighted mean parity across genuine-prior seasons).
+
+### Step 1: refit and grade (the SS-R3c decision rule, unchanged)
+
+Refit H0''-H3'' (H3'' seed 2 for the floor) with the selected construction, type arm T2, frozen SS-R3 LightGBM parameters. Then, in order: bias checks (fold 2 gates, fold 1 diagnostic, January 2025 stays listed), fold-2 grade against H3'' on the old level, closed-loop G1 + decomposition for H3''-LC2 and H2''-LC2 (200 seeds). Acceptance is SS-R3c's: bias checks pass, fold-2 LL not worse than H3'' by > 2 SE, G1 RS cells PASS and CLEAN. If it fails where H3'' passed, stage 1 drops to TESTING and the PM rules.
+
+### Step 2: INV-29 re-measure
+
+From the G1 decomposition: PP-opportunities-conferred spread ratios (own taken-rating, opponent drawn-rating), regular season only AND all games, with bootstrap 95% CIs over teams. The band stays [0.8, 1.2]. No new INV-29 arm is fit in this round.
+
+### Results
+
+(append below this line)

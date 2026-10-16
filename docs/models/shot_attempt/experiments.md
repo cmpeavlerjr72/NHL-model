@@ -181,3 +181,36 @@ Overall, by-month and by-state bias on fold 1 for every arm. The fold-2 checks g
 - **Status.** shot_attempt stays TESTING, with A3g as the leading arm. It is not yet the incumbent.
 - **Next (SA-R3, to be pre-registered next session).** A fix for the 4v4/3v3 hazard, with the over-prediction already visible offline. Candidates: separate 4v4 and 3v3 levels, and/or an OT-specific term. SA-R3 also re-runs G2 on H3'' + T2 (this G2 used T1, because T2 lived only in an engine sibling).
 - **Watch item for stage 8.** About -1.7 attempts per team-game come from empty-net time the engine cannot visit, offset by about +1.0 from extra 5v5 time. Each is inside tolerance and the literal verdict is CLEAN, but this pair is re-checked once the goalie-pull model lands.
+
+---
+
+## SA-R3: thin-state (4v4 / 3v3) attempt hazard, then G2 on H3''+T2 (pre-registered 2026-10-16 by the PM, before any run; D17, INV-32)
+
+SA-R2's A3g over-predicts 4v4 (+3.1%) and 3v3 (+6.8%) attempts per 60 OFFLINE, and G2 fails both cells closed-loop (+4.2% / +6.6%) with the hazard-level component dominant. This is the third stage-3 respec, so the D13 forking-paths guard applies: a fix counts only if it also improves the fold-1 thin-state bias.
+
+### Arms (everything not listed is A3g as frozen in SA-R2: LC-1 levels, k = 5, w = 0.85, b = 200, 15 leaves, 800 min-data, 459 rounds)
+
+| id | change vs A3g |
+|---|---|
+| A3g | reference (refit only to confirm reproduction) |
+| A3g-s | separate LC-1 levels and profiles for 4v4 and 3v3 (five groups: ES-5v5, PP-for, PK, 4v4, 3v3; EN keeps the ES level). Group prior K scaled by exposure share, as in SA-R2 |
+| A3g-c | A3g plus a fixed log-offset cell for 4v4 and for 3v3: log(training actual / training A3g prediction) per state, gamma-shrunk to 0 with strength b_c expected attempts, b_c in {50, 200, 800} tuned on fold 1 by LL |
+| A2g-c | A2g with the same cells (the next-simpler twin) |
+
+Complexity order: A2g-c < A3g < A3g-c < A3g-s. 3v3 in the regular season is OT only, so the 3v3 cell is the OT term; no separate OT feature is added.
+
+### Metric, noise floor, decision rule
+
+- Primary: fold-2 LL per game vs A3g (nats/game, paired SE); noise floor = A3g refit under seed 2.
+- Thin-state bias gate (offline, fold 2): 4v4 and 3v3 attempts per 60 within the `docs/gates.yaml` G2 tolerance, with the cell SE reported (3v3 runs about 25 team-hours per season; label UNDERPOWERED where the SE exceeds the tolerance, but the cell still gates, as D17 ruled). The fold-1 thin-state bias must improve on A3g's in the same direction (D13 guard).
+- Every SA-R2 check still passes (overall level, PP, PK, monthly, responsiveness band).
+- Select the simplest arm that passes all of the above and whose LL is not worse than A3g by > 2 SE. If none passes, report; the PM rules. No SA-R4 is pre-authorised.
+
+### Engine merge and G2
+
+1. Merge the T2 per-team penalty-type table from the engine sibling `sim_ss_r5.py` into `sim.py` behind a default-off flag (one engine, no forks). Parity tests: flag off = current `sim.py` output bit-identical on a fixed seed set; flag on = `sim_ss_r5.py` output bit-identical on the same seeds. Then `sim_ss_r5.py` is retired (left in place, marked superseded).
+2. G2 (200 seeds, gates.yaml unchanged) on stage 1 = H3'' + T2 (the incumbent at launch, old level under D15), for the selected arm and A3g. Report the full G2 table and the per-team-game and by-state decompositions as in SA-R2, plus 100-vs-200 seed stability. The EN watch item (D17) is reported, not gated.
+
+### Results
+
+(append below this line)

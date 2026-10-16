@@ -29,3 +29,5 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | SS-R3c stopped at the LC-1 parity assertion (fold-1 train H0''c -2.1% / +2.0%); fold 2 not graded; D15 unchanged; see docs/tests/strength_state_ss_r3c_2026-10-15.md | (this commit) |
 | 2026-10-15 | shot_attempt | TESTING | TESTING (ruling) | D17: A3g leads; G2 4v4/3v3 fail; SA-R3 next | (this commit) |
 | 2026-10-15 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | D17: SS-R3c stopped at LC-1 parity; LC-2 next; H3''+T2 on old level | (this commit) |
+| 2026-10-16 | strength_state | CONFIRMED-INCUMBENT (provisional) | CONFIRMED-INCUMBENT (provisional) | LC-2 pre-registered (INV-33): level constructions L2c/L2a/L2b vs L1, parity on genuine-prior seasons, then SS-R3c decision rule + INV-29 re-measure | (this commit) |
+| 2026-10-16 | shot_attempt | TESTING | TESTING | SA-R3 pre-registered (INV-32): A3g-s / A3g-c / A2g-c thin-state arms; T2 merged into sim.py behind a flag; G2 on H3''+T2 | (this commit) |
