@@ -32,7 +32,9 @@ def load_rows(seasons) -> pd.DataFrame:
     return M.load_rows(seasons, version=VERSION)
 
 
-def attach_features(rows: pd.DataFrame, w: float, b: int, k: int) -> pd.DataFrame:
+def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, profile_fold: int | None = None) -> pd.DataFrame:
+    """profile_fold=1|2 (SS-R3): the offset `level` is the de-seasonalised level plus the season-phase profile
+    p(b), from league_level_v3_f<fold>.parquet; None reproduces SS-R2."""
     g = load_games(sorted(rows.season.unique()), columns=["game_id", "home_id", "away_id"])
     r = rows.merge(g[["game_id", "home_id", "away_id"]], on="game_id", how="left", validate="many_to_one")
     if r.home_id.isna().any():
@@ -49,8 +51,14 @@ def attach_features(rows: pd.DataFrame, w: float, b: int, k: int) -> pd.DataFram
                 on=["game_id", "team_id"], how="left")
     r = r.merge(own.rename(columns={"team_id": "opp_id", "taken": "taken_opp", "drawn": "drawn_opp",
                                     "b2b": "b2b_opp"}), on=["game_id", "opp_id"], how="left")
-    lv = pd.read_parquet(SS / f"league_level_{VERSION}.parquet", columns=["game_id", f"level_k{k}"])
-    r = r.merge(lv.rename(columns={f"level_k{k}": "level"}), on="game_id", how="left", validate="many_to_one")
+    if profile_fold is None:
+        lv = pd.read_parquet(SS / f"league_level_{VERSION}.parquet", columns=["game_id", f"level_k{k}"])
+        lv = lv.rename(columns={f"level_k{k}": "level"})
+    else:
+        lv = pd.read_parquet(SS / f"league_level_v3_f{profile_fold}.parquet", columns=["game_id", f"level_k{k}", "p"])
+        lv["level"] = lv[f"level_k{k}"] + lv["p"]
+        lv = lv[["game_id", "level"]]
+    r = r.merge(lv, on="game_id", how="left", validate="many_to_one")
     for c in ("taken_own", "drawn_opp", "b2b_own", "b2b_opp", "level"):
         if r[c].isna().any():
             raise ValueError(f"missing feature {c} on {int(r[c].isna().sum())} rows")

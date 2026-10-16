@@ -180,3 +180,11 @@ This is the same as SS-R2, for the selected arm and the next simpler arm that pa
 ### Results
 
 (append below this line)
+
+#### SS-R3 results (Lane H3, 2026-10-15; full report `docs/tests/strength_state_ss_r3_2026-10-15.md`)
+
+- Profile p(b) from training seasons only (fold 2: Oct +0.135, Nov +0.018, Dec -0.030, Jan -0.012, Feb -0.025, Mar -0.045, Apr -0.055, PO +0.052); de-seasonalised level; both enter every arm as a fixed offset. Frozen on fold 1: k = 15 (grid corner), w = 1.0, prior strength 1,800; H3'' num_leaves 7, min_data_in_leaf 200, 378 rounds. Tables `*_v3_f{1,2}*`.
+- Fold 2, LL/game vs H0'': H1'' +0.051 (SE 0.011), H2'' +0.261 (0.020), H3'' +0.336 (0.020); H3'' vs H2'' +0.075 (0.012); seed floor 0.0073. **Offline winner H3''**, runner-up H2''. Versus the SS-R2 twins (paired): +0.009 / +0.010 / +0.008 / -0.0001 nats/game, none worse by more than 2 SE.
+- Bias checks, fold 2 (gate): **FAIL for every arm.** The overall level passes for all (H3'' +1.45%). January 2025 runs +8.3% (H2'') to +9.0% (H1'') against the +/-8% limit, n = 224; all other months with n >= 100 pass. The 'other' net shortfall passes (-0.27% to +0.12%).
+- Bias checks, fold 1 (diagnostic): every profile arm passes (worst month -5.4%); the SS-R2 twins refit on fold 1 fail October 2023 (-8.7% to -9.5%). The profile fixes the fold-1 bias but not the fold-2 January one, so under the D13 guard it does not count as a fix.
+- Twin preference: no SS-R3 arm is preferred (none passes the fold-2 checks). Closed-loop G1: **NOT RUN** (no arm passed); the engine offset lookup and its parity test were not built. Status stays TESTING; the accept-with-biases-or-stop decision is the PM's (D13).

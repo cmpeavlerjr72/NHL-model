@@ -81,3 +81,11 @@ Ratings writer: `created_at` = latest puck drop of the games used + 6 h; `assert
 | `season_f` | removed | | GLM `cell` = st x ptype, pooled over training seasons; H3' features = `models_r2.LGB_FEATURES` |
 | `taken_own`, `drawn_opp` | grid extended | `ratings_grid_v2.parquet`: w in {0.7, 0.85, 1.0}, prior strength in {1800, 5400} | frozen w = 1.0, b = 1800 |
 | type rows `st` | follows the new `st` | `type_rows_v2.parquet` | T1 not re-raced (SS-R1 fit carried over) |
+
+## 5. SS-R3 changes (tables `*_v3_f{1,2}*`; code `seasonality.py`, `models_r2.attach_features(profile_fold=)`)
+
+| Feature | Change | Source / computation | Notes |
+|---|---|---|---|
+| `p(b)` season-phase profile | new, every arm, fixed offset (coefficient 1) | `profile_v3_f{1,2}.json`: mean over TRAINING seasons of log(bin rate / same-season full rate); bins Oct..Apr (RS by game-date month; the one May RS game in Apr) and PO | fold 1 trains 2021-23, fold 2 trains 2021-24. Full rate = all games of the season |
+| `level` | now de-seasonalised | `league_level_v3_f{1,2}.parquet` `level_k{15,50,150}`: SS-R2 formula with events divided by exp(p(bin)) for the season-to-date count and for r_prev | arm offset = level_k + p. `created_at < puck_drop` asserted. 2021-22 = 0. Frozen k = 15 |
+| everything else | unchanged from SS-R2 | w = 1.0, prior strength 1,800, v2 rows and ratings, T1 carried over | H3'' LightGBM: num_leaves 7, min_data_in_leaf 200, 378 rounds (`ss_r3_frozen_params.json`) |

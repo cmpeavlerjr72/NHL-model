@@ -92,7 +92,7 @@ def main():
     ap.add_argument("--round", default="SS-R1")
     a = ap.parse_args()
     res_dir = Path(a.res)
-    pr = "'" if a.round != "SS-R1" else ""
+    pr = "''" if a.round == "SS-R3" else ("'" if a.round != "SS-R1" else "")
     rows = pd.read_parquet(res_dir / "fold2_rows.parquet")
     haz = {f.stem.split("_")[2]: np.load(f) for f in sorted(res_dir.glob("fold2_haz_*.npy"))}
     typ = {f.stem.split("_")[2]: np.load(f) for f in sorted(res_dir.glob("fold2_type_*.npy"))}
