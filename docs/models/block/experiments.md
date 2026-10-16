@@ -100,3 +100,45 @@ The "for" spread is near 1 pp in actual terms, with a CI on its ratio of 0.90-6.
 
 - Fold-1 selection (committed db8880f before any fold-2 fit): 6 of 12 cells within 2 SE of the best-LL cell (b 3000, w 0.5); minimum max|log spread ratio| 0.190 at b 1000, w 0.7 (no other cell within 0.02). Stronger shrinkage did not bring the against-ratio toward 1 (1.11 at b 1000 up to 1.79 at b 30000 w 0.85), because the B1 coefficient is refit on the standardised rating. Selected cell = SB-R1's cell, so fold-2 results are identical to SB-R1.
 - Fold 2: B1 +0.071 and B2 +0.096 nats/game vs B0 (SE 0.013 / 0.014; floor 0.0006); every block-share bias check passes. ES responsiveness B1 1.59 / 1.49, B2 1.38 / 1.43 FAIL the band (against CI 1.06-2.17 excludes it); B0 flat. **No arm eligible; none selected.** Fold 1: B1 eligible, B2 fails the arena gate.
+
+---
+
+## PM ruling on SB-R2 (2026-10-16, D29)
+
+- No arm is eligible. The fold-2 results are identical to SB-R1.
+- D27 is corrected: shrinkage cannot damp a refitted coefficient.
+- Next is SB-R3 (below), which diagnoses first and then runs response-side arms.
+
+---
+
+## SB-R3: why the fitted block response does not transfer, then response-side arms (pre-registered 2026-10-16 by the PM, before any run; D29)
+
+Everything not listed is as in SB-R1: level M1 (K = 500), features, the B2 booster parameters, bias checks, responsiveness band, grading, and the floor. Ratings stay b 1000, w 0.7.
+
+### Step 0: diagnosis (training seasons and fold-1 test only; written into the report and committed before step 1)
+
+1. **Per-season actual ES spread.** For each of 2021-22 to 2023-24, by quintile of the as-of rating (for and against): the actual Q5-Q1 block-share spread with a bootstrap CI.
+   - Is the actual spread shrinking over seasons? (Fold 2's actual spread is not read here.)
+2. **Coefficient by fold.** B1's rating coefficients fitted on fold-1 train vs fold-2 train, with SEs.
+3. **Within-season persistence.** By month of the season: the slope of the realised block share on the as-of rating (this is the coefficient that would be calibrated for that month). Pooled over the training seasons, with SEs.
+   - Is the full-season fitted coefficient driven by late-season rows, where ratings are mature, and then applied to all rows?
+4. **Arena-factor interplay.** The rating coefficients with and without the arena factor.
+
+### Step 1: arms (B1 structure; only the rating response varies)
+
+| Arm | Rating response |
+|---|---|
+| B1 | as SB-R1 (reference) |
+| B1p | coefficient = training-season time-forward persistence: the slope of realised block share in games t+1..t+20 on the as-of rating at t, estimated across training seasons only. It enters as a fixed offset scale, and is not refit |
+| B1m | coefficient varies by as-of rating maturity: interaction of rating x log(1 + rating exposure in games), refit |
+
+- B2p is B2 with B1p's fixed-scale rating offsets in its init_score. The trees get no rating features.
+- Complexity order: B0 < B1p < B1 < B1m < B2p.
+
+### Decision
+
+As SB-R1: eligibility = every fold-2 bias check + the ES responsiveness band; > 2 SE and > the floor to beat a simpler arm. This is the third block round, so the D13 guard applies: the selected arm must also be in band on fold 1.
+
+### Results
+
+(append below this line)

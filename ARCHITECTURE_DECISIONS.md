@@ -306,3 +306,16 @@ Reason: `docs/tests/block_sb_r1_2026-10-16.md`. Status: ADOPTED.
   - Both of Lane A4's spec readings (same-period-type shrink target, pooled within period type) are accepted.
 
 Reason: `docs/tests/shot_attribute_sl_r4_2026-10-16.md` (5b5052d). Status: ADOPTED.
+
+## D29 (2026-10-16): SB-R2 ruling; D27 corrected (shrinkage cannot damp a refitted coefficient); SB-R3 diagnoses first
+
+- **SB-R2 (db8880f, e464b7f).** The D27 rule re-selected the SB-R1 cell (b 1000, w 0.7), so fold 2 is identical: no arm is eligible.
+  - Ratios: B1 1.59 / 1.49, B2 1.38 / 1.43.
+  - The "against" CI (B1 1.10-2.17) excludes the band, so the over-response is real.
+  - Every bias check passes.
+- **D27 corrected (PM reasoning error).** B1 refits a coefficient on the standardised rating. A stronger prior rescales the rating and the refit coefficient undoes it, so the prior strength cannot damp the response. Lane B2's grid shows this: the against-ratio rises with b. D27's rule therefore applies only where a rating enters with a fixed scale (an offset, or coefficient 1). For a fitted coefficient, the over-response lies in the coefficient, and the fix is response-side.
+  - L34 is amended to say so.
+  - Already-adopted incumbents are untouched: they passed their bands.
+- **Shared signature.** In blocks, the fold-1 band holds (B1 0.83 / 1.18) and fold 2 over-responds. Before another arm is chosen, SB-R3 diagnoses why the fitted response does not transfer, then runs pre-registered response-side arms.
+
+Reason: `docs/tests/block_sb_r2_2026-10-16.md`. Status: ADOPTED.
