@@ -214,3 +214,27 @@ Complexity order: A2g-c < A3g < A3g-c < A3g-s. 3v3 in the regular season is OT o
 ### Results
 
 (append below this line)
+
+#### SA-R3 run, 2026-10-16 (Lane S3, INV-32)
+
+- A3g refit reproduces SA-R2 bit-identically. Thin-state levels `league_level_v3_f{1,2}` (5v5 / 4v4 / 3v3, k = 5). Frozen b_c: A3g-c 50 (grid corner), A2g-c 800 (LL flat; in-sample cells about 0, the GLM fits its st cells exactly). A3g-c cells are -1.6% / -1.3%.
+- Fold 2, LL vs A3g (nats/game, SE): A2g-c -0.126 (0.018, worse by > 2 SE), A3g-c +0.001 (0.0005), A3g-s +0.001 (0.004). The noise floor is 0.0015.
+- Thin-state bias, fold 2 (4v4 / 3v3; tolerance 3%, cell SE about 2.3%, powered):
+
+  | arm | 4v4 | 3v3 |
+  |---|---|---|
+  | A2g-c | +1.3% | **+5.4%** |
+  | A3g | **+3.1%** | **+6.8%** |
+  | A3g-c | +1.5% | **+5.4%** |
+  | A3g-s | -0.5% | **+4.2%** |
+
+- D13 fold-1 guard (strict, both cells): A3g-s FAILS. Its 4v4 bias is -2.2% against A3g's +1.5%, although 3v3 improves from +11.6% to +3.3%. A2g-c and A3g-c pass.
+- Every arm passes the SA-R2 checks.
+- **Decision rule: no arm passes. Selected: NONE.** The PM rules.
+- Engine: T2 is merged into `sim.py` as `per_team_types` (default off). Parity tests are bit-identical both ways (`tests/engine/test_sim_t2_merge.py`), and `sim_ss_r5.py` is marked superseded. The full suite passes (124, 1 xfail).
+- G2 (A3g only, stage 1 = H3'' + T2, 200 seeds), regular season:
+  - 5v5 +0.4%, PP -0.5%, PK -2.1% and per team-game -0.9%: PASS, and the run is CLEAN;
+  - **4v4 +4.4% and 3v3 +6.6%: FAIL**, with the hazard level dominant;
+  - responsiveness 1.135 / 1.122, PASS;
+  - every 100 vs 200 seed status is identical.
+- Report: `docs/tests/shot_attempt_sa_r3_2026-10-16.md`.

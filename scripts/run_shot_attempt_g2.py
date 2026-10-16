@@ -9,6 +9,9 @@ training season, no team terms, not graded). No goalie pull (EN unreachable), sh
                                                                                        as parallel processes)
     SA-R2 (INV-31): add --round SA-R2 (results/shot_attempt_r2, LC-1 tables v2, g arms on group levels);
     --stage1 r3c uses the SS-R3c re-levelled stage-1 incumbent (results/strength_state_r3c) instead of D15's H3''.
+    SA-R3 (INV-32): --round SA-R3 (results/shot_attempt_r3; arms A3g, A3g-c, A2g-c, A3g-s with level "lc1s");
+    --stage1 r3t2 = H3'' + T2 (the incumbent at SA-R3 launch): the cached H3'' hazard table and the T2 per-team type
+    table of results/strength_state_r5 (SS-R5), run through engine.sim with per_team_types=True (the merged T2 flag).
     run_shot_attempt_g2.py grade --arm A3 [--tag sa_r1_g2_A3]   (merge blocks; G2 RS / PO / overall, 100 vs 200
                                                                  seeds, D14 decomposition, closed-loop responsiveness)
 """
@@ -48,10 +51,29 @@ def md(df, fmt=".4f"):
 
 
 ROUND = dict(TV="v1", LEVEL=None)
-S1_LABEL = {"r3": "H3'' + T1 (D15)", "r3c": "H3''c + T1 (SS-R3c)"}
+S1_LABEL = {"r3": "H3'' + T1 (D15)", "r3c": "H3''c + T1 (SS-R3c)", "r3t2": "H3'' + T2 (SS-R5 ruling; merged T2 flag)"}
+
+
+def stage1_tables_t2():
+    """H3'' + T2 from the SS-R5 cache (lam_H3_fold2.npy, types_T2_fold2.npy), read-only; same game order and stub /
+    coincidental tables as run_strength_state_g1_v5.build_tables."""
+    from nhl_sim.strength_state import lookup as LK
+    r5, r1 = Path("results/strength_state_r5"), Path("results/strength_state_r1")
+    rows = pd.read_parquet("results/strength_state_r3/fold2_rows.parquet", columns=["game_id"])
+    games = np.sort(rows.game_id.unique())
+    lam = np.load(r5 / "lam_H3_fold2.npy", mmap_mode="r")
+    types = np.load(r5 / "types_T2_fold2.npy")
+    if lam.shape[0] != len(games) or types.shape[:2] != (len(games), 2):
+        raise ValueError("stage-1 cache does not match the fold-2 game list")
+    smp, pim = LK.coinc_table(LAST_TRAIN)
+    stub = json.loads((r1 / f"stub_tables_{LAST_TRAIN}.json").read_text())
+    return dict(lam=lam, types=types, coinc_smp=smp, coinc_pim=pim, goal_rate=np.asarray(stub["goal_rate"]),
+                stop_rate_ot=float(stub["stop_rate_ot"])), games, stub
 
 
 def stage1_tables(stage1="r3"):
+    if stage1 == "r3t2":
+        return stage1_tables_t2()
     spec = importlib.util.spec_from_file_location("g1v3", ROOT / "scripts" / "run_strength_state_g1_v3.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -63,10 +85,15 @@ def stage1_tables(stage1="r3"):
 def arm_level(arm):
     if ROUND["LEVEL"] is None:
         return "r3"
+    if ROUND["LEVEL"] == "sa_r3":
+        return "lc1s" if arm == "A3g-s" else "lc1g"
     return "lc1g" if arm.endswith("g") else "lc1"
 
 
 def load_arm(arm):
+    if arm.endswith("-c"):
+        m = json.loads((RES / "models" / f"{arm}.json").read_text())
+        return {"base": load_arm(m["base_model"].rsplit(".", 1)[0]), "cell": m["cell"]}
     if arm.startswith("A3"):
         import lightgbm as lgb
         return lgb.Booster(model_file=str(RES / "models" / f"{arm}.txt"))
@@ -81,7 +108,14 @@ def cmd_sim(a):
     fz = json.loads(FROZEN.read_text())
     gdf = pd.DataFrame({"game_id": games, "season": TEST})
     t0 = time.time()
-    tables["att_lam"] = attempt_table(a.arm, load_arm(a.arm), gdf, fz, fold=2, tv=ROUND["TV"], level=arm_level(a.arm))
+    cache = RES / f"att_lam_{a.arm}_fold2.npy"       # SA-R3: the attempt table is built once and shared by blocks
+    if a.round == "SA-R3" and cache.exists():
+        tables["att_lam"] = np.load(cache)
+    else:
+        tables["att_lam"] = attempt_table(a.arm, load_arm(a.arm), gdf, fz, fold=2, tv=ROUND["TV"],
+                                          level=arm_level(a.arm))
+        if a.round == "SA-R3":
+            np.save(cache, tables["att_lam"])
     tables["p_goal"] = goal_stub(LAST_TRAIN)
     print(now(), f"attempt table {tables['att_lam'].shape} ({time.time() - t0:.0f}s); p_goal {np.round(tables['p_goal'], 4)}",
           flush=True)
@@ -90,7 +124,8 @@ def cmd_sim(a):
     for s0 in range(a.seed0, a.seed0 + a.nseeds, a.chunk):
         t1 = time.time()
         n = min(a.chunk, a.seed0 + a.nseeds - s0)
-        o = simulate(tables, games, gt.game_type.to_numpy(), n, era_for_season(TEST), seed0=s0)
+        o = simulate(tables, games, gt.game_type.to_numpy(), n, era_for_season(TEST), seed0=s0,
+                     per_team_types=(a.stage1 == "r3t2"))
         es = np.array(["", "REG", "OT", "SO"])[o["end_state"]]
         if (es == "").any():
             raise RuntimeError("unfinished sims")
@@ -110,7 +145,7 @@ def cmd_sim(a):
         print(now(), f"seeds {s0}-{s0 + n - 1}: {time.time() - t1:.0f}s", flush=True)
     pd.concat(parts, ignore_index=True).to_parquet(out / f"part_{a.seed0:04d}.parquet", index=False)
     (out / f"meta_{a.seed0:04d}.json").write_text(json.dumps(dict(
-        arm=a.arm, round=a.round, stage1=("H3''c + T1 (SS-R3c)" if a.stage1 == "r3c" else "H3'' + T1 (D15)"), goals=f"STUB: league goals per attempt by strength state, {LAST_TRAIN}",
+        arm=a.arm, round=a.round, stage1=S1_LABEL[a.stage1], goals=f"STUB: league goals per attempt by strength state, {LAST_TRAIN}",
         p_goal=tables["p_goal"].tolist(), goalie_pull="none (EN unreachable)", shootout="skipped",
         fold=2, season=TEST, sealed_touched=False, seed0=a.seed0, nseeds=a.nseeds)))
     print(now(), "done", flush=True)
@@ -234,7 +269,7 @@ def cmd_grade(a):
     rows_all = S.load_rows([TEST])
     R = G2.real_team_arrays(rows_all)
     Sm = G2.sim_team_arrays(s)
-    L = [f"# G2 closed loop (SA-R1): {a.tag}, arm {a.arm}, fold 2 (2024-25), {s.game_id.nunique()} games x {nseed} seeds", "",
+    L = [f"# G2 closed loop ({a.round}): {a.tag}, arm {a.arm}, fold 2 (2024-25), {s.game_id.nunique()} games x {nseed} seeds", "",
          f"Generated {now()} by `scripts/run_shot_attempt_g2.py`. Stage 1 = {S1_LABEL[a.stage1]}; attempts from {a.arm}; "
          "goals from a LABELLED STUB (league goals per attempt by strength state, 2023-24; not graded); no goalie pull "
          "(EN states UNREACHABLE); shootout skipped. Tolerance `g2_rate_rel` on rate-type quantities.", ""]
@@ -285,12 +320,16 @@ if __name__ == "__main__":
     ap.add_argument("--chunk", type=int, default=25)
     ap.add_argument("--tag", default=None)
     ap.add_argument("--report", default=None)
-    ap.add_argument("--round", default="SA-R1", choices=["SA-R1", "SA-R2"])
-    ap.add_argument("--stage1", default="r3", choices=["r3", "r3c"])
+    ap.add_argument("--round", default="SA-R1", choices=["SA-R1", "SA-R2", "SA-R3"])
+    ap.add_argument("--stage1", default="r3", choices=["r3", "r3c", "r3t2"])
     a = ap.parse_args()
     if a.round == "SA-R2":
         RES = Path("results/shot_attempt_r2")
         FROZEN = Path("docs/models/shot_attempt/sa_r2_frozen_params.json")
         ROUND.update(TV="v2", LEVEL="lc1")
+    if a.round == "SA-R3":
+        RES = Path("results/shot_attempt_r3")
+        FROZEN = Path("docs/models/shot_attempt/sa_r3_frozen_params.json")
+        ROUND.update(TV="v2", LEVEL="sa_r3")
     a.tag = a.tag or (f"sa_r1_g2_{a.arm}" if a.round == "SA-R1" else f"sa_r2_g2_{a.arm}_{a.stage1}")
     {"sim": cmd_sim, "grade": cmd_grade}[a.cmd](a)

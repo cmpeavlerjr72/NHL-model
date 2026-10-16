@@ -28,6 +28,7 @@ ARMS_GLM = ("A0", "A1", "A2", "A5")
 LGB_FEATURES = ["st", "ptype", "period", "last5", "sc", "own_r", "opp_r", "is_home", "b2b_own", "b2b_opp", "arena_f",
                 "clock"]
 OPP_GROUP = np.array([0, 2, 1], np.int8)   # opponent's group when own group is ES / PP / PK
+THIN_GROUPS = {"s5v5": 0, "s44": 3, "s33": 4}   # SA-R3 "lc1s" level groups -> team-view strength state
 
 
 def wkey(w, b):
@@ -42,7 +43,8 @@ def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, are
                     level: str = "r3") -> pd.DataFrame:
     """tv: version of the ratings / level / arena tables ("v1" SA-R1, "v2" SA-R2). level: "r3" (SA-R1, SS-R3
     method), "lc1" (SA-R2, D16 all-state LC-1 level + its profile), "lc1g" (SA-R2 A2g / A3g: the LC-1 level and
-    profile of the row's strength group ES / PP-for / PK; EN rows use ES, labelled)."""
+    profile of the row's strength group ES / PP-for / PK; EN rows use ES, labelled), "lc1s" (SA-R3 A3g-s: lc1g with
+    separate 5v5 / 4v4 / 3v3 levels and profiles from league_level_v3)."""
     g = load_games(sorted(rows.season.unique()), columns=["game_id", "home_id", "away_id"])
     r = rows.merge(g.drop(columns="season"), on="game_id", how="left", validate="many_to_one")
     if r.home_id.isna().any():
@@ -83,6 +85,23 @@ def attach_features(rows: pd.DataFrame, w: float, b: int, k: int, fold: int, are
         LV = np.stack([r[f"level_{g}_k{k}"].to_numpy() + r[f"p_level_{g}"].to_numpy() for g in ("es", "pp", "pk")], 1)
         r["level"] = LV[np.arange(len(r)), grp]
         r = r.drop(columns=gc)
+    elif level == "lc1s":
+        # SA-R3 A3g-s: five groups. PP-for / PK (and EN, which keeps the SA-R2 ES level, labelled) as "lc1g" (tv
+        # tables); 5v5, 4v4 and 3v3 rows take their own LC-1 level + profile from league_level_v3 (k = 5 only).
+        gc = [f"level_{g}_k{k}" for g in ("es", "pp", "pk")] + [f"p_level_{g}" for g in ("es", "pp", "pk")]
+        lv = pd.read_parquet(SA / f"league_level_{tv}_f{fold}.parquet", columns=["game_id", *gc])
+        tc = [f"level_{g}_k{k}" for g in THIN_GROUPS] + [f"p_level_{g}" for g in THIN_GROUPS]
+        lt = pd.read_parquet(SA / f"league_level_v3_f{fold}.parquet", columns=["game_id", *tc])
+        r = r.merge(lv, on="game_id", how="left", validate="many_to_one")
+        r = r.merge(lt, on="game_id", how="left", validate="many_to_one")
+        LV = np.stack([r[f"level_{g}_k{k}"].to_numpy() + r[f"p_level_{g}"].to_numpy() for g in ("es", "pp", "pk")], 1)
+        lev = LV[np.arange(len(r)), grp]
+        st_ = r.st.to_numpy()
+        for g, s_ in THIN_GROUPS.items():
+            m = st_ == s_
+            lev = np.where(m, r[f"level_{g}_k{k}"].to_numpy() + r[f"p_level_{g}"].to_numpy(), lev)
+        r["level"] = lev
+        r = r.drop(columns=gc + tc)
     else:
         raise ValueError(level)
     need = ["own_r", "opp_r", "b2b_own", "b2b_opp", "level"]
@@ -192,6 +211,32 @@ def predict_lgb(model, r):
     e = eff(r)
     raw = model.predict(e[LGB_FEATURES].astype(float), raw_score=True)
     return np.exp(raw) * e.exposure_s.to_numpy(float) / 3600.0
+
+
+# --------------------------------------------------------------------------- SA-R3 thin-state cells (A3g-c / A2g-c)
+THIN_STATES = (3, 4)          # 4v4, 3v3 (team view)
+
+
+def thin_cells(r: pd.DataFrame, mu: np.ndarray, b_c: float) -> list:
+    """Fixed log-offset per team-view state (7 entries; 0 except 4v4 / 3v3): log(training actual / training
+    prediction) gamma-shrunk to 0 with strength b_c expected attempts: log((Y + b_c) / (M + b_c))."""
+    c = np.zeros(7)
+    st = r.st.to_numpy()
+    y = r.y.to_numpy(float)
+    for s_ in THIN_STATES:
+        m = st == s_
+        c[s_] = float(np.log((y[m].sum() + b_c) / (mu[m].sum() + b_c)))
+    return c.tolist()
+
+
+def predict_arm(arm: str, model, r: pd.DataFrame) -> np.ndarray:
+    """Expected attempts per row for any arm. A cell arm ("-c" suffix) is a dict {"base": booster | glm dict,
+    "cell": 7 log-offsets by team-view state}: mu = base mu x exp(cell[st])."""
+    if arm.endswith("-c"):
+        base = model["base"]
+        mu = predict_lgb(base, r) if arm.startswith("A3") else predict_glm(base, r)
+        return mu * np.exp(np.asarray(model["cell"], float)[r.st.to_numpy().astype(np.int64)])
+    return predict_lgb(model, r) if arm.startswith("A3") else predict_glm(model, r)
 
 
 # --------------------------------------------------------------------------- likelihoods

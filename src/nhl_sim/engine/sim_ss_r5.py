@@ -1,4 +1,7 @@
-"""Closed-loop strength-state sim (cascade stage 1) over (games x seeds), one second per step, lookup tables only.
+"""SUPERSEDED (SA-R3, INV-32, 2026-10-16): merged into `engine/sim.py` as `simulate(..., per_team_types=True)`; kept
+in place only as the parity reference of `tests/engine/test_sim_t2_merge.py`. Do not use for new runs.
+
+Closed-loop strength-state sim (cascade stage 1) over (games x seeds), one second per step, lookup tables only.
 
 Per second, for every alive sim: (1) expire due penalties (`settle`), (2) read the PRE-event state (strength,
 score bucket, penalty-differential bucket, minute), (3) draw goals from the goal table, (4) draw coincidental

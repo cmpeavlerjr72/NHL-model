@@ -34,7 +34,8 @@ def _grid():
 def attempt_table(arm: str, model, games: pd.DataFrame, fz: dict, fold: int, chunk: int = 48, tv: str = "v1",
                   level: str = "r3") -> np.ndarray:
     """games: game_id, season (sorted by game_id). fz: frozen params (k, w, prior_strength_min). tv / level: as
-    `models.attach_features` (SA-R1 defaults; SA-R2 tv="v2", level "lc1" or "lc1g" for the g arms)."""
+    `models.attach_features` (SA-R1 defaults; SA-R2 tv="v2", level "lc1" or "lc1g" for the g arms; SA-R3 "lc1s").
+    A cell arm ("-c") passes model = {"base": ..., "cell": [...]} (`models.predict_arm`)."""
     games = games.sort_values("game_id").reset_index(drop=True)
     base = _grid()
     B = len(base)
@@ -50,7 +51,7 @@ def attempt_table(arm: str, model, games: pd.DataFrame, fz: dict, fold: int, chu
         r = S.attach_features(big, fz["w"], fz["prior_strength_min"], fz["k"], fold, tv=tv, level=level)
         if len(r) != len(big):
             raise ValueError("feature attach changed the row count")
-        mu = S.predict_lgb(model, r) if arm.startswith("A3") else S.predict_glm(model, r)
+        mu = S.predict_arm(arm, model, r)
         out[a0:a0 + len(part)] = np.asarray(mu, np.float32).reshape(len(part), 2, B)
     return out.reshape(len(games), 2, N_MIN, N_ST_ENGINE, N_SC)
 

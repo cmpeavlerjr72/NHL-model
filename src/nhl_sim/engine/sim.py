@@ -16,6 +16,11 @@ st = team-view strength 0..4, sc7 = team-view pre-event score bucket <=-3..>=+3)
 inverse CDF (P(k >= 3) ~ lam^3 / 6 per second, about 1e-6, is folded into k = 2), and each attempt is a goal with
 probability p_goal[st] (a LABELLED STUB goal model until stage 6). Attempt counts by state / score bucket and the
 pre-event exposure by (home-view st, sc7) are recorded.
+
+Per-team penalty-type variant (default off; `per_team_types=True`, SA-R3 merge of the SS-R5 T2 engine sibling
+`sim_ss_r5.py`, which is superseded): tables["types"] has shape (G, 2, 6, 5, 4, 4), a per-game per-team type table
+(team terms, T2), indexed [game, team, st, sc, period]. Off: the shared (6, 5, 4, 4) table, as before. Parity tests
+`tests/engine/test_sim_t2_merge.py`: off is bit-identical to the pre-merge engine, on to `sim_ss_r5.simulate`.
 """
 from __future__ import annotations
 
@@ -63,9 +68,10 @@ class Recorder:
 
 
 def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds: int, era: RuleEra,
-             seed0: int = 0, max_t: int = 3600 + 6 * 1200) -> dict:
-    """tables: lam (G, 2, M, 5, 5, 5) per hour (games in game_ids order), types (6, 5, 4, 4),
-    coinc_smp / coinc_pim arrays, goal_rate (3, 3) per hour, stop_rate_ot per second."""
+             seed0: int = 0, max_t: int = 3600 + 6 * 1200, per_team_types: bool = False) -> dict:
+    """tables: lam (G, 2, M, 5, 5, 5) per hour (games in game_ids order), types (6, 5, 4, 4) or, with
+    per_team_types=True, (G, 2, 6, 5, 4, 4), coinc_smp / coinc_pim arrays, goal_rate (3, 3) per hour, stop_rate_ot per
+    second."""
     G, S = len(game_ids), n_seeds
     N = G * S
     gi = np.repeat(np.arange(G), S)
@@ -88,6 +94,10 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     M = lam.shape[2]
     lam_flat = lam.reshape(-1)
     ptyp = tables["types"]
+    if per_team_types and (ptyp.ndim != 6 or ptyp.shape[:2] != (G, 2)):
+        raise ValueError(f"per_team_types needs a (G, 2, 6, 5, 4, 4) type table, got {ptyp.shape}")
+    if not per_team_types and ptyp.ndim != 4:
+        raise ValueError(f"shared type table must be (6, 5, 4, 4), got {ptyp.shape} (per_team_types is off)")
     c_smp, c_pim = tables["coinc_smp"], tables["coinc_pim"]
     goal_rate = np.asarray(tables["goal_rate"]) / 3600.0
     stop_p = 1.0 - np.exp(-tables["stop_rate_ot"])
@@ -115,7 +125,10 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
 
         lh = lam_of(0, st_h, sc_h, pd_h) / 3600.0
         la = lam_of(1, st_a, 4 - sc_h, 4 - pd_h) / 3600.0
-        Ph, Pa = ptyp[st_h, sc_h, per], ptyp[st_a, 4 - sc_h, per]
+        if per_team_types:
+            Ph, Pa = ptyp[g_a, 0, st_h, sc_h, per], ptyp[g_a, 1, st_a, 4 - sc_h, per]
+        else:
+            Ph, Pa = ptyp[st_h, sc_h, per], ptyp[st_a, 4 - sc_h, per]
         if att is None:
             # goals (stub)
             gh = rng.uniform(K["goal"][a], t, 0) < 1.0 - np.exp(-goal_rate[sh - 3, sa - 3])
