@@ -149,3 +149,21 @@ Residual mean distance by arena is reported, labelled UNDERPOWERED below 1,500 a
 ### Results
 
 (append below this line)
+
+### SL-R2 results (Lane A2, 2026-10-16; report `docs/tests/shot_attribute_sl_r2_2026-10-16.md`, grade `docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md`)
+
+- **Step 0 (committed before any fit, 66736da).**
+  - No as-of construction passes parity. Max |xG parity|: E 1.19%, M1 K500 1.30%, M2 H30 1.34%, M2 H60 1.36%, M1 K2000 1.44%, M1 K8000 1.81%, M0 4.39%.
+  - The oracle passes both lines (0.01 pp, 0.49%).
+  - **Selected: E** by the fallback rule (the simplest within 0.2%).
+  - Labelled caveats: E's parity is in-sample on every judged cell, and E is zero on fold 1, so the fold-1 diagnostic cannot test it.
+- **Tuning (explicit L24 rule).** w = 0.7, b = 1,000 (in band 1.191 / 1.119). The LL-best cell, w = 1.0, b = 300, sits at 1.214 out of band. LightGBM: 15 leaves, 800 min-data, 35 rounds, init_score = log class frequency + level. A first pass without the class base was discarded before any fold-2 fit.
+- **Fold 2 (blind): no arm eligible.**
+  - L0m passes every bias check (xG +1.97%, ES +2.63%, PK +2.86%, every tier cell within 1.4 pp) but is flat on responsiveness (0.00 / -0.03).
+  - L1m: PK +3.22% FAIL; responsiveness 1.69 / 1.37 FAIL; LL -0.096 (SE 0.038) vs L0m.
+  - L3m: ES +3.27% and ENF -3.39% FAIL; PP tiers -2.29 / +2.31 pp FAIL; responsiveness 1.09 / 0.86 PASS; LL -0.024 (0.041). L3ms2 is the same; seed floor 0.0054.
+  - References: the level is worth +0.873 nats per game over plain L0 (SE 0.037). The oracle level adds a further +0.075 (0.011) and reaches xG +0.71%.
+- **Diagnosis.** L3m under-fits the strength-group mix in-sample: PP -2.0% xG, EN-for -3.4%. The booster starts from the pooled, ES-dominated class frequency and stops at 35 rounds. This is a fitting defect, not drift.
+- **Step 4 skipped** (no eligible arm). `scripts/run_shot_attribute_g3_v2.py` is ready and has not been run.
+- Status: BUILDING; the PM rules. Proposal: SL-R3 with L3b, a booster started from log L0m (levelled). Also a ruling on the responsiveness requirement given that L0m is the only bias-clean arm, and a GameState recording-era flag if E stays.
+

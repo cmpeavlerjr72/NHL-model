@@ -49,7 +49,7 @@ def asof_levels(u: pd.DataFrame, games: pd.DataFrame, specs: dict) -> tuple[pd.D
     final = {s: C[(games.season == s).to_numpy()].sum(0) for s in seasons}
     final = {s: v / v.sum(1, keepdims=True) for s, v in final.items()}
     out = {n: np.zeros((len(games), N_LG, N_CELL)) for n in specs}
-    created = np.full(len(games), np.datetime64("NaT"), dtype="datetime64[ns]")
+    created = np.full(len(games), np.datetime64("NaT", "ns"), dtype="datetime64[ns]")
     last_drop = None
     for i, season in enumerate(seasons):
         s_prev = final[seasons[i - 1]] if i > 0 else final[season]

@@ -46,8 +46,9 @@ def clock_intervals(arm: str, model) -> tuple[np.ndarray, np.ndarray]:
     return iv.astype(np.int64), minutes[rep_idx]
 
 
-def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int, chunk: int = 64):
-    """games: game_id, season (sorted by game_id). Returns (cdf, interval_of_minute)."""
+def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int, chunk: int = 64, predict=None):
+    """games: game_id, season (sorted by game_id). Returns (cdf, interval_of_minute). predict: optional callable(rows)
+    -> P (n, 78) replacing models.predict_arm (SL-R2 levelled arms; default None keeps SL-R1 behaviour)."""
     games = games.sort_values("game_id").reset_index(drop=True)
     iv, rep = clock_intervals(arm, model)
     NI = len(rep)
@@ -72,7 +73,7 @@ def attr_table(arm: str, model, games: pd.DataFrame, fold: int, w: float, b: int
         r = M.attach_features(big, fold, w, b)
         if len(r) != len(big) or not (r.game_id.to_numpy() == big.game_id.to_numpy()).all():
             raise ValueError("feature attach changed the rows")
-        P = M.predict_arm("L3" if arm.startswith("L3") else arm, model, r)
+        P = predict(r) if predict is not None else M.predict_arm("L3" if arm.startswith("L3") else arm, model, r)
         out[a0:a0 + len(part)] = P.reshape(len(part), 2, B, N_CLASS).astype(np.float32)
     cdf = np.cumsum(out.reshape(len(games), 2, NI, 3, 7, N_CLASS).astype(np.float64), -1)
     cdf /= cdf[..., -1:]

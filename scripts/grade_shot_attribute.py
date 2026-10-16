@@ -14,6 +14,9 @@ Only then is labels_sealed.json opened to apply the decision rule (fold 2) or at
 
     grade_shot_attribute.py --fold 2      -> docs/tests/shot_attribute_sl_r1_grade_2026-10-16.md (+ results json)
     grade_shot_attribute.py --fold 1      -> fold-1 diagnostic section appended to the same file
+    grade_shot_attribute.py --round r2 --fold 2|1   SL-R2 (L0m < L1m < L3m, seed pair L3m / L3ms2; references L0 and
+                                       L0o (oracle level) graded blind but never selectable; arena reported, not gated, D23)
+                                       -> docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md
 """
 import argparse
 import json
@@ -36,6 +39,14 @@ NB, BSEED = 1000, 20261016
 XG_TOL, XG_GRP_TOL, XG_MONTH_TOL, MIX_PP = 0.02, 0.03, 0.04, 1.5
 N_GRP_MIN, N_MONTH_GAMES, N_ARENA_MIN = 2000, 100, 1500
 BAND = (0.8, 1.2)
+ROUND = "r1"
+ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_attribute_sl_r1_grade_2026-10-16.md",
+                     salt="SL-R1-2026-10-16", arms=("L0", "L1", "L2", "L3"), seed=("L3", "L3s2"), refs=(),
+                     arena_gate=("L2", "L3", "L3s2"), title="SL-R1 blind grade (Lane A, 2026-10-16)", spec="SL-R1"),
+          "r2": dict(res="results/shot_attribute_r2", report="docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md",
+                     salt="SL-R2-2026-10-16", arms=("L0m", "L1m", "L3m"), seed=("L3m", "L3ms2"), refs=("L0", "L0o"),
+                     arena_gate=(), title="SL-R2 blind grade (Lane A2, 2026-10-16)", spec="SL-R2")}
+CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
 CLASS_TYPE = np.tile(np.arange(N_TYPE), N_CELL)           # class -> type
 CLASS_CELL = np.repeat(np.arange(N_CELL), N_TYPE)
@@ -201,11 +212,11 @@ def cmd_grade(fold):
 
 
 def summary_tables(res, pair, name, fold, G):
-    arms = [a for a in ("L0", "L1", "L2", "L3", "L3s2") if a in name.values()]
+    base = CFG["arms"][0]
+    arms = [a for a in CFG["arms"] + (CFG["seed"][1],) + CFG["refs"] if a in name.values()]
     h = {v: k for k, v in name.items()}
     L = []
     rows = []
-    l0 = res[h["L0"]]["ll_game"]
     for a in arms:
         R = res[h[a]]
         X = R["xg"]
@@ -214,9 +225,9 @@ def summary_tables(res, pair, name, fold, G):
         xg_fail = X[X.status == "FAIL"]
         es = R["resp"].get(("ES", "for"), {})
         esa = R["resp"].get(("ES", "against"), {})
-        p = pair[(pair.a == h[a]) & (pair.b == h["L0"])]
-        rows.append(dict(arm=a, label=h[a], ll_att=R["ll_att"], ll_game_vs_L0=0.0 if a == "L0" else float(p.diff_per_game.iloc[0]),
-                         se=np.nan if a == "L0" else float(p.se.iloc[0]),
+        p = pair[(pair.a == h[a]) & (pair.b == h[base])]
+        rows.append(dict(arm=a, label=h[a], ll_att=R["ll_att"], **{f"ll_game_vs_{base}": 0.0 if a == base else float(p.diff_per_game.iloc[0])},
+                         se=np.nan if a == base else float(p.se.iloc[0]),
                          xg_overall=float(X[X.level == "overall"].rel.iloc[0]),
                          xg_fails=", ".join(f"{c} {v:+.2%}" for c, v in zip(xg_fail.cell, xg_fail.rel)) or "none",
                          tier_fails=", ".join(f"{lv}/{t} {v:+.2f}" for lv, t, v in zip(*[tier[tier.status == 'FAIL'][c] for c in ('level', 'tier', 'diff_pp')])) or "none",
@@ -224,27 +235,29 @@ def summary_tables(res, pair, name, fold, G):
                          resp_es_for=es.get("ratio"), resp_es_against=esa.get("ratio"),
                          arena_slope=R["arena_slope"], arena_slope_se=R["arena_slope_se"]))
     S = pd.DataFrame(rows).set_index("arm")
-    s0 = S.loc["L0", "arena_slope"]
-    S["arena_slope_ratio_vs_L0"] = S.arena_slope / s0
-    S["arena_gate"] = [("PASS" if abs(v) <= 0.3 else "FAIL") if a in ("L2", "L3", "L3s2") else "n/a (reported)"
-                       for a, v in S.arena_slope_ratio_vs_L0.items()]
+    s0 = S.loc[base, "arena_slope"]
+    S[f"arena_slope_ratio_vs_{base}"] = S.arena_slope / s0
+    S["arena_gate"] = [("PASS" if abs(v) <= 0.3 else "FAIL") if a in CFG["arena_gate"] else "n/a (reported)"
+                       for a, v in S[f"arena_slope_ratio_vs_{base}"].items()]
     S["resp_gate"] = [("PASS" if (BAND[0] <= f_ <= BAND[1] and BAND[0] <= g_ <= BAND[1]) else "FAIL")
                       for f_, g_ in zip(S.resp_es_for, S.resp_es_against)]
     S["bias_gate"] = np.where((S.xg_fails == "none") & (S.tier_fails == "none") & (S.type_fails == "none")
                               & S.arena_gate.isin(["PASS", "n/a (reported)"]), "PASS", "FAIL")
-    S["eligible"] = (S.bias_gate == "PASS") & (S.resp_gate == "PASS")
+    S["eligible"] = (S.bias_gate == "PASS") & (S.resp_gate == "PASS") & S.index.isin(CFG["arms"])
     return S, arms, h
 
 
 def write(fold):
     r, res, pair, name, dcell, G = cmd_grade(fold)
     S, arms, h = summary_tables(res, pair, name, fold, G)
-    floor = abs(float(pair[(pair.a == h["L3"]) & (pair.b == h["L3s2"])].diff_per_game.iloc[0])) if "L3s2" in h else np.nan
+    s1, s2 = CFG["seed"]
+    floor = abs(float(pair[(pair.a == h[s1]) & (pair.b == h[s2])].diff_per_game.iloc[0])) if s2 in h else np.nan
     L = [f"## Fold {fold} ({'selection' if fold == 2 else 'diagnostic'}): {r.season.iloc[0]} test, {len(r):,} unblocked attempts, {G} games", "",
-         f"Generated {now()} by `scripts/grade_shot_attribute.py --fold {fold}` (blind: every label scored before "
-         "`labels_sealed.json` was opened; salt `SL-R1-2026-10-16`).", "",
+         f"Generated {now()} by `scripts/grade_shot_attribute.py --round {ROUND} --fold {fold}` (blind: every label scored before "
+         f"`labels_sealed.json` was opened; salt `{CFG['salt']}`).", "",
          "### Summary", "", md(S.drop(columns=["label"]), ".4f"), "",
-         f"- Seed floor |L3 - L3s2| = {floor:.4f} nats/game.", ""]
+         f"- Seed floor |{s1} - {s2}| = {floor:.4f} nats/game.",
+         f"- Not selectable (references, graded blind with the arms): {list(CFG['refs']) or 'none'}.", ""]
     hn = {v: k for k, v in h.items()}
     P = pair.assign(a=pair.a.map(hn), b=pair.b.map(hn))
     order = {a: i for i, a in enumerate(arms)}
@@ -266,7 +279,7 @@ def write(fold):
               "Per team (no gate; xG_ref per attempt):", "", md(R["teams"], ".4f"), ""]
     sel = None
     if fold == 2:
-        el = [a for a in ("L0", "L1", "L2", "L3") if S.loc[a, "eligible"]]
+        el = [a for a in CFG["arms"] if S.loc[a, "eligible"]]
         L += ["### Decision rule (fold 2)", "", f"- Eligible arms (every bias check and the ES responsiveness band): {el or 'none'}.",
               f"- Seed floor {floor:.4f} nats/game."]
         for a in reversed(el):
@@ -284,7 +297,7 @@ def write(fold):
         L += [f"- **Selected: {sel}**" if sel else "- **No arm selected.**", ""]
     text = "\n".join(L) + "\n"
     if fold == 2:
-        REPORT.write_text(f"# SL-R1 blind grade (Lane A, 2026-10-16)\n\nSpec: `docs/models/shot_attribute/experiments.md` SL-R1. "
+        REPORT.write_text(f"# {CFG['title']}\n\nSpec: `docs/models/shot_attribute/experiments.md` {CFG['spec']}. "
                           "Bias checks gate on fold 2; fold 1 is a diagnostic.\n\n" + text, encoding="utf-8")
     else:
         with REPORT.open("a", encoding="utf-8") as fh:
@@ -299,5 +312,9 @@ def write(fold):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--fold", type=int, default=2, choices=[1, 2])
+    ap.add_argument("--round", default="r1", choices=sorted(ROUNDS))
     a = ap.parse_args()
+    ROUND = a.round
+    CFG = ROUNDS[a.round]
+    RES, REPORT = Path(CFG["res"]), Path(CFG["report"])
     write(a.fold)
