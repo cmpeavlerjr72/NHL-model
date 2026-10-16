@@ -22,7 +22,7 @@ PM-owned. Items are never deleted. Closing an item requires a PROOF block: what 
 | INV-11 | ESPN pickcenter coverage, all weeks 2023-24 and 2024-25 | P0 | CLOSED | Sonnet | PROOF: `docs/tests/espn_lines_coverage_2026-10-15.md` (f56669e): 2023-24 single Unibet line 100%, 2024-25 0%, 2025-26 DK open+close 71% |
 | INV-19 | Historical closes for 2024-25 (fold 2) | P1 | CLOSED | Sonnet x2 + Opus | PROOF: ESPN core `/odds` 2024-25 open+close ML/PL/total on 73/73 sampled games (2a28c22), PM spot-check; DRatings second source (ece8f09); D10 |
 | INV-20 | Kalshi logger rows include futures series; filter to game/prop markets downstream | P4 | OPEN | | |
-| INV-12 | Kalshi fee schedule verification (fee PDF 429'd) | P4 | ASSIGNED(K) | Haiku (Lane K) | CFB figure 0.07*P*(1-P) unverified for NHL |
+| INV-12 | Kalshi fee schedule verification (fee PDF 429'd) | P4 | OPEN | | PARTIAL 8c60e91: all 70 KXNHL series fee_type verified (65 quadratic, 5 with maker fees, multiplier 1); fee rounds up to $0.000001 per fill; maker = 0.25 x standard per API schema; taker coefficient still UNVERIFIED (PDF 429); fee history before 2025-10-04 not covered. Re-try PDF before any fee-aware backtest |
 | INV-13 | Odds API purchase decision | P1 | DEFERRED | user | D7: revisit after Control engine |
 | INV-21 | Control R2: extend edge-hit grids (lambda, w, goalie kappa, rest ridge); a dependence family allowing negative correlation / excess ties | P1 | DEFERRED | | D9 |
 | INV-22 | P2 kickoff: event-engine GameState + strength-state/penalty sub-model spec (Opus worker, engine core) | P2 | CLOSED | Opus (Lane H) | PROOF: engine core + 26 rule tests, replay 99.993% gap-aware; SS-R1 graded (1b3abfe); H3 not confirmed (compensated G1), D12 |
