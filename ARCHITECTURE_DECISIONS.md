@@ -224,3 +224,14 @@ Status: ADOPTED.
   - Both sources run 0.01-0.016 above the observed over rate. That is not significant (z 0.75-1.19), and it is a monitoring item for the market scorecard.
 
 Reason: `docs/tests/lines_totals_lt_r1_2026-10-16.md` (470a1a4). Status: ADOPTED.
+
+## D23 (2026-10-16): SL-R1 ruling; Fenwick cascade order; mix drift is a level problem; xG_ref stays fixed
+
+- **Blocks rule (b) applies (pre-registered).** Block coordinates are block points: defencemen's blocked attempts sit at a median of 26 ft against 51-53 ft unblocked, and type is recorded on 0% of blocks. The cascade order is now: attempt -> blocked? -> (unblocked) location x type -> SOG / miss -> goal. The block decision is the front of stage 5 and may not use location. FRAMEWORK_PLAN item 4/5 order is updated to match.
+- **No SL-R1 arm is eligible.** Every arm over-predicts xG_ref per unblocked attempt on 2024-25 by +3.9% and the high-danger share by +1.7 pp. The cause is a drift in the recorded mix: the ES high-danger share went 14.5 / 14.8 / 12.75 / 12.2%, with a step at the 2023-24 boundary (October 2023 already 12.3%). Goals per unblocked attempt barely moved, 0.0627 to 0.0602. This is L27 for a mix: no arm had a league-level mix term.
+- **Tuning deviation, accepted with a label.** The spec said the L24 spread ratio is reported per grid cell. The worker excluded out-of-band cells instead (w = 0.7, b = 1,000 rather than the LL-best w = 1.0, b = 300, which sits at 1.214). The LL gap is 0.00007 nats per attempt and no arm was eligible anyway. SL-R2 pre-registers the exclusion rule explicitly.
+- **xG_ref stays fixed per fold, not season-levelled.** It is a fixed weighting that summarises the mix. Levelling it by season would hide exactly the mix error it exists to measure. The fact that goals did not fall with the mix is stage 6's problem: goal-given-location will need its own as-of conversion level, and stage 4's mix level and stage 6's conversion level each pass their own parity test. A closed-loop goals gate (G4 / G6) then checks the pair for compensation. If the location shift is a recording change, a per-cell conversion from training rows would under-predict goals by roughly what a non-levelled mix over-predicts. That is a compensating pair, banned by the bottom-up rule.
+- **Venue arm dropped.** The arena factor stopped carrying over (season-to-season correlation 0.62, then 0.10), and the L0 arena slope is indistinguishable from 0, so the SL-R1 ratio gate is unreadable. Arena residuals stay reported only.
+- **Next: SL-R2,** pre-registered in `docs/models/shot_attribute/experiments.md`.
+
+Reason: `docs/tests/shot_attribute_sl_r1_2026-10-16.md` (436da19). Status: ADOPTED.

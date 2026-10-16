@@ -19,8 +19,8 @@ Per event step, a cascade of sub-models:
 1. **Strength-state process**: penalty draws (by team, game state), PP expiry, coincidental minors, PP goals ending minors.
 2. **Deployment**: which F line / D pair / PP unit / PK unit is on the ice (from shift-chart-derived deployment model + pregame line projections).
 3. **Shot-attempt generation**: hazard of a shot attempt for each side given on-ice units, strength state, score state (pre-event), home, rest.
-4. **Shot attributes**: location/danger zone, type, rebound / rush flags, shooter (usage among on-ice skaters).
-5. **Attempt outcome**: blocked / missed / on goal.
+4. **Shot attributes** (unblocked attempts only, D23): location/danger zone, type, rebound / rush flags, shooter (usage among on-ice skaters). The block decision comes first (start of stage 5, location-free), because block coordinates are block points.
+5. **Attempt outcome**: blocked (drawn before attributes, D23) / missed / on goal.
 6. **Goal given shot on goal**: shooter finishing x goalie save talent x shot quality.
 7. **Faceoffs and stoppages**: zone starts, whistle rate.
 8. **End game**: goalie pull (trailing margin x time x team tendency), 3v3 OT, shootout.

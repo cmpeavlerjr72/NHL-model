@@ -89,3 +89,63 @@ Rebound attempts (same team, <= 3 s after a prior attempt, no stoppage), rush at
 - **Cause:** a drift in the recorded location mix. The ES high-danger share went 14.5 / 14.8 / 12.75 / 12.2% over 2021-22 to 2024-25 and the miss share 27 to 35%, while goals per unblocked attempt held at 0.063 to 0.060. The pooled-season mix overstates the test season (the L27 mechanism on a mix); no arm has a league-level mix term. Fold 1 shows the same signature (+2.6%).
 - **Step 5 skipped** (no eligible arm). The engine variant (`sim.py` `tables["attr"]`, default off, flag-off bit-identical to b024504 on 4 cases), the lookup (exact to 2e-5 for L1-L3) and the G3 runner are committed but have not been run in closed loop.
 - Status: BUILDING; the PM rules (proposal: SL-R2 with an as-of league mix level, plus a ruling on levelling the xG_ref yardstick).
+
+---
+
+## PM ruling on SL-R1 (2026-10-16, D23)
+
+- Rule (b) applies: Fenwick target, block decision first in stage 5.
+- No arm is eligible. The cause is a drift in the recorded mix (an era step at 2023-24); no arm had a league mix level.
+- The tuning deviation is accepted with a label; SL-R2 pre-registers the exclusion rule.
+- xG_ref stays fixed per fold.
+- The venue arm is dropped.
+- Noted for SL-R2: L1 is worse than L0 by 2.4 SE and over-responds. Team shot-quality ratings have not yet shown out-of-sample value.
+
+---
+
+## SL-R2: as-of league mix level (pre-registered 2026-10-16 by the PM, before any run; D23)
+
+Everything not listed is as in SL-R1: Fenwick target (rule b), 13 cells x 6 types, xG_ref fixed per fold, folds, grading script, noise floor, bias checks except the arena gate, responsiveness band, segments, and closed loop (incl. the block-first stub and the G2 re-check).
+
+### Step 0: mix-level constructions (level-only arm L0m; no other arm is fit until the selection is written into the report)
+
+The level is a per-(strength group in {ES, PP, PK}; EN pooled with ES) vector of as-of league log shares over the 13 location cells. It enters every arm as a per-cell offset log(s_asof / s_train), with coefficient 1, where s_train is the arm's own pooled training share. Type is not levelled: type shares passed in SL-R1.
+
+| id | construction | grid |
+|---|---|---|
+| M1 | s_asof = (n_std + K s_prev) / (N_std + K): season to date shrunk to last season's final shares | K in {500, 2000, 8000} unblocked attempts per group |
+| M2 | M1 with counts discounted by 0.5^(age in days / half-life) (the LC-2 form) | K = 2000; half-life in {30, 60} days |
+| M0 | prior only: last season's final shares, constant all season | none |
+| E | era intercept: shares from the training rows of the same recording era only (era 1 = 2021-23, era 2 = 2023-24 on, a GameState flag) | none |
+| O | oracle: the season's own final shares. Diagnostic; never selectable | none |
+
+- 2021-22 has no previous season, so its prior is its own final shares (labelled, as in LC-1). Parity is judged on the genuine-prior seasons only.
+- E is admissible because the 2023-24 step is visible within fold 2's training seasons. For fold 1, era 2 has no training rows, so E equals M0's pooled fallback there and is labelled.
+
+**Parity (per genuine-prior training season, both folds), for L0m:**
+- ES high-danger share within +/-0.5 pp;
+- mean xG_ref per attempt within +/-0.5%.
+
+**Selection:**
+- If any construction passes, take the simplest passer (M0 < E < M1 < M2; within a family, the smallest max |parity|).
+- Otherwise take the smallest max |xG_ref parity|, with ties within 0.2% going to the simpler. List the failure and proceed (the LC-2 rule and its stated reason).
+
+### Arms (with the selected level)
+
+| Arm | Model |
+|---|---|
+| L0m | L0 + level |
+| L1m | L1 + level |
+| L3m | L3 + level (as init_score per class) |
+
+- L3m also gets a seed-2 retrain.
+- **Rating tuning (L24 guard, now explicit):** the fold-1 LL maximum among grid cells whose fold-1 ES spread ratios (for and against) both lie in [0.8, 1.2]. Report the unconstrained LL-best cell alongside.
+- Complexity: L0m < L1m < L3m.
+
+### Arena
+
+Residual mean distance by arena is reported, labelled UNDERPOWERED below 1,500 attempts. Its regression on the as-of arena factor is reported with its SE. It does not gate (D23).
+
+### Results
+
+(append below this line)
