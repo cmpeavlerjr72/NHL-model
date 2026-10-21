@@ -105,3 +105,22 @@ Resume, if the PM rules the check on judged seasons: `train_shot_attribute_v7.py
 4. **Listed whichever way the PM rules:** the parity table shows the as-of scale tracks the likelihood slope, whose "for" R is about 1.15-1.2 on every training season (fold-1 R 1.105). Fold 2's "for" R gate at 1.2 is therefore close. This is a reading of the training seasons only, not a fold-2 number.
 
 **Proposed LEARNINGS candidate:** a prior "of P events" expressed as P x the per-event Fisher information has no strength when the ratings carry no spread (season openings). An as-of slope then jumps on the first days. Either the burn-in is excluded from every check, or the prior needs an absolute floor.
+
+## Resume after D42
+
+### In-sample check restated on the judged training seasons (D42): PASS
+
+`train_shot_attribute_v7.py insample_d42` (12:26:20 to 12:26:29). The gate is read on fold-2 training rows from 2022-23 onward; all rows are reported. Output: `results/shot_attribute_r7/insample.json` (basis D42); the all-rows result is kept as `insample_all_rows_pre_d42.json`.
+
+| stratum (2022-23 + 2023-24) | n | L1x-as vs L0s | high / medium / low pp |
+|---|---|---|---|
+| 5v5 | 191,646 | +0.017% | +0.018 / -0.054 / +0.036 |
+| PP | 36,193 | +0.081% | +0.036 / -0.018 / -0.018 |
+| PK | 6,073 | +0.092% | +0.050 / -0.086 / +0.035 |
+| 4v4 | 2,817 | +0.079% | +0.033 / -0.038 / +0.005 |
+| 3v3 | 2,408 | -0.089% | -0.022 / -0.020 / +0.043 |
+| 4v4 reg / 3v3 OT | 2,667 / 2,406 | +0.063% / -0.090% | |
+
+- Not gated (n < 2,000): 5v5 OT -0.91% (n 620), PK OT, 4v4 OT, PP OT.
+- EN rows are bit-identical to L0s.
+- The burn-in spike (2021-10-12 to 10-25) is listed as a construction defect and is not fixed in this round (D42).

@@ -399,7 +399,8 @@ def outdir(fold):
     return RES if fold == 2 else RES / "fold1"
 
 
-def cmd_insample():
+def cmd_insample(d42=False):
+    """d42: the check is read on the judged training seasons (2022-23 onward), per D42; all rows reported."""
     D, tr, otr, P = arm_preds(2, "train")
     xg = D["xg"]
     grp = tr.grp.to_numpy()
@@ -409,8 +410,9 @@ def cmd_insample():
     cells = [(f"{MS.STATE_NAMES[s]}", st == s) for s in range(7)]
     cells += [(f"{MS.STATE_NAMES[s]} {'OT' if p_ else 'reg'}", (st == s) & (pt == p_)) for s in range(7) for p_ in (0, 1)]
     rows = []
-    for scope, smask in (("all training rows", np.ones(len(tr), bool)),
-                         ("excl. 2021-22 burn-in (reported)", (tr.season != FIRST).to_numpy())):
+    judged = "judged seasons 2022-23 onward (D42, gated)" if d42 else "excl. 2021-22 burn-in (reported)"
+    gscope = judged if d42 else "all training rows"
+    for scope, smask in (("all training rows", np.ones(len(tr), bool)), (judged, (tr.season != FIRST).to_numpy())):
         for nm, m0 in cells:
             m = m0 & smask
             n = int(m.sum())
@@ -424,13 +426,13 @@ def cmd_insample():
                 for k in range(3):
                     rec[f"{a}_{TIER_NAMES[k]}_pp"] = float((P[a][m][:, CLASS_TIER == k].sum(1).mean()
                                                             - P["L0s"][m][:, CLASS_TIER == k].sum(1).mean()) * 100)
-            rec["gated"] = scope == "all training rows" and n >= V6.N_MIN
+            rec["gated"] = scope == gscope and n >= V6.N_MIN
             rec["pass"] = (not rec["gated"]) or abs(rec["L1xas_vs_L0s"]) <= V6.TOL
             rows.append(rec)
     ok = all(x["pass"] for x in rows)
     en = np.isin(st, MS.EN_STATES)
     res = dict(fold=2, rule=f"L1x-as xG_ref per attempt within +/-{V6.TOL:.1%} of L0s in every stratum with n >= {V6.N_MIN} "
-               "(state x period type, and state), all fold-2 training rows", pass_all=bool(ok), rows=rows,
+               "(state x period type, and state), " + ("fold-2 judged training seasons 2022-23 onward (D42)" if d42 else "all fold-2 training rows"), basis="D42" if d42 else "SL-R4 inherited, all rows", pass_all=bool(ok), rows=rows,
                en_identical=bool(np.array_equal(P["L1xas"][en], P["L0s"][en])),
                ll_per_attempt={a: float(M.joint_ll(P[a], tr.cls.to_numpy()).mean()) for a in ("L0s", "L1x", "L1xas")})
     RES.mkdir(parents=True, exist_ok=True)
@@ -524,15 +526,15 @@ def cmd_guard():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["snap", "parity", "insample", "fold1", "guard", "pred2"])
+    ap.add_argument("cmd", choices=["snap", "parity", "insample", "insample_d42", "fold1", "guard", "pred2"])
     a = ap.parse_args()
     print(now(), "start", a.cmd, flush=True)
     if a.cmd == "snap":
         cmd_snap()
     elif a.cmd == "parity":
         cmd_parity()
-    elif a.cmd == "insample":
-        if not cmd_insample():
+    elif a.cmd in ("insample", "insample_d42"):
+        if not cmd_insample(d42=a.cmd == "insample_d42"):
             print(now(), "IN-SAMPLE CHECK FAILED: stop; nothing on fold 2 is read", flush=True)
             sys.exit(3)
     elif a.cmd == "fold1":
