@@ -541,3 +541,11 @@ Status: ADOPTED.
 - **Listed.** INV-70 (10.6 s per game of delayed-penalty pulled time absent). Results not on HF.
 
 Status: ADOPTED.
+
+## D47 (2026-10-21): SB-R5 passed offline; B1a-as is the provisional block incumbent, pending its closed loop
+
+- **Fold 2 (aa095da; `docs/tests/block_sb_r5_2026-10-21.md`).** B1a-as (as-of two-slope scale on Ra with the AS-1 floor, fallback cell H90 P2000, max |log R| 0.138; frozen SB-R4 B1a non-rating terms; comparator B0' with the INV-54 groups) is eligible: every block-share check passes (ES +0.25, PP +0.95, PK +0.22 pp), the arena slope gate passes, ES "for" R 0.986 (CI 0.60-2.54) and "against" R 0.999 (CI 0.78-1.35), both UNDERPOWERED with the point estimates in band, D13 guard on fold 1 PASS (R 0.981 / 0.994, +0.0957 nats/game, SE 0.0124). It beats B0' by +0.0701 nats/game (SE 0.0113, 6.2 SE). The SB-R4 reference B1a reproduces exactly (R 1.213 / 1.328, still failing). Under the D40 rule **B1a-as is selected.** The third rating to be fixed by the as-of scale (goalie 0.70 -> 0.98, stage-4 for 1.29 -> 1.18, blocks against 1.33 -> 1.00).
+- **Status.** block is CONFIRMED-INCUMBENT (provisional) on the offline grade; the engine step (default-off flag, flag-off fixture, served parity, 200-seed closed loop with the block-share and team-decile R checks of the spec) runs after Lane H8b's `engine_otso` commit, in the sim.py order of D44. Until then the engine serves the B0 stand-in.
+- **Listed.** The parity step used the fallback cell (no cell in [0.9, 1.1], as in every as-of instance so far: the per-season parity cannot be read tighter than about +/-0.1 R, L37). Fold-2 training-date pairs recomputed with 2024-25 rows loaded differ from the step-1 snapshot by up to 4e-16 (BLAS summation order on a longer array; inputs identical): accepted, and the engine serves the committed snapshot, never a recompute. EN rows are inside the as-of window per the SB-R1 row scope.
+
+Status: ADOPTED.
