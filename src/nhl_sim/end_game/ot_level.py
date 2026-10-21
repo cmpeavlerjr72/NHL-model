@@ -159,3 +159,62 @@ def select_level(par: pd.DataFrame, judged, candidates=SIMPLICITY, tol=TOL, tie=
     sel = next(k for k in candidates if mx[k] <= best + tie)
     return dict(selected=sel, how="fallback: smallest max |parity|, ties within 0.1 pp to the simpler "
                                   "(no construction passes)", max_abs_parity=mx)
+
+
+# --------------------------------------------------------------------------- served 3v3 table (EG-R1 part B wiring)
+TEST = {1: 20232024, 2: 20242025}
+SELECTED = "M1_K500"
+B_C = 50.0                                         # the A3g-c cell strength (frozen, SA-R3)
+FROZEN = "docs/models/shot_attempt/sa_r3_frozen_params.json"
+MODELS = {1: "results/shot_attempt_r3/fold1/models", 2: "results/shot_attempt_r3/models"}
+
+
+def selected_level(fold: int, name: str = SELECTED) -> pd.Series:
+    """Per-game log level (attempts per team-hour), games of the fold's training seasons and its test season,
+    from games dated strictly earlier. The caller must have committed the training parity table first."""
+    seasons = TRAIN[fold] + [TEST[fold]]
+    games = game_table(seasons)
+    rows = load_rows(seasons)
+    meta, lev = asof_levels(rows, games, {name: GRID[name]})
+    return pd.Series(np.log(lev[name]), index=meta.game_id.to_numpy())
+
+
+def frames_3v3(fold: int):
+    """(train, test) 3v3 rows with the A3g-c features (SA-R3 'lc1g', tv v2): the same attach_features call the
+    SA-R3 trainer used, restricted to st == 3v3. level = the OLD shared ES-group level + profile."""
+    import json
+    from nhl_sim.shot_attempt import models as S
+    fz = json.loads(open(FROZEN, encoding="utf-8").read())
+    seasons = TRAIN[fold] + [TEST[fold]]
+    rows = S.load_rows(seasons)
+    rows = rows[rows.st == ST_3V3].reset_index(drop=True)
+    r = S.attach_features(rows, fz["w"], fz["prior_strength_min"], fz["k"], fold, arena=True, tv="v2", level="lc1g")
+    return r[r.season.isin(TRAIN[fold])].reset_index(drop=True), r[r.season == TEST[fold]].reset_index(drop=True)
+
+
+def booster(fold: int):
+    import lightgbm as lgb
+    return lgb.Booster(model_file=str(MODELS[fold] + "/A3g.txt"))
+
+
+def swapped_prediction(r: pd.DataFrame, bst, new_level: pd.Series, cell: float | None = None):
+    """Expected attempts per row under the own level: mu = A3g(row, old level) x exp(L_new - L_old) [x exp(cell)]."""
+    from nhl_sim.shot_attempt import models as S
+    mu = S.predict_arm("A3g", bst, r)
+    d = new_level.reindex(r.game_id.to_numpy()).to_numpy() - r.level.to_numpy(float)
+    if np.isnan(d).any():
+        raise ValueError("a 3v3 row has no own level")
+    mu = mu * np.exp(d)
+    return mu if cell is None else mu * np.exp(cell), d
+
+
+def training_cell(fold: int, new_level: pd.Series, b_c: float = B_C):
+    """The A3g-c 3v3 cell, refit on the fold's training rows with the own level in place of the shared one:
+    log((Y + b_c) / (M + b_c)). With new_level = the old level this reproduces the frozen A3g-c cell (asserted by
+    the test). Returns (cell, dict of training diagnostics)."""
+    tr, _ = frames_3v3(fold)
+    bst = booster(fold)
+    mu, d = swapped_prediction(tr, bst, new_level)
+    y = tr.y.to_numpy(float)
+    cell = float(np.log((y.sum() + b_c) / (mu.sum() + b_c)))
+    return cell, dict(train_y=float(y.sum()), train_mu_before_cell=float(mu.sum()), mean_delta=float(d.mean()))

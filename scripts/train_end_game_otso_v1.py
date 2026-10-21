@@ -79,8 +79,59 @@ def ot_parity():
     (ROOT / "docs" / "tests" / "end_game_eg_r1_otso_ot_parity_2026-10-21.md").write_text("\n".join(doc), encoding="utf-8")
 
 
+def ot_fold2():
+    """Fold-2 (2024-25) parity of the selected level M1 K500, plus the other grid members and O for reference."""
+    sel = json.loads((OUT / "ot_selection.json").read_text())["2"]["selected"]
+    seasons = [20212022, 20222023, 20232024, 20242025]
+    games = OL.game_table(seasons)
+    rows = OL.load_rows(seasons)
+    specs = {**OL.GRID, "E": ("E", None), "O": ("O", None)}
+    meta, lev = OL.asof_levels(rows, games, specs, train_seasons=OL.TRAIN[2])
+    par = OL.level_parity(rows, meta, lev, [20242025])
+    par["season"] = par.season.map(SLAB)
+    par["per_team_hour_actual"] = par.actual / par.team_hours
+    par["per_team_hour_pred"] = par.predicted / par.team_hours
+    r = rows[rows.season == 20242025]
+    par["goals"] = int(r.y_goal.sum())
+    par["poisson_se_rel"] = 1 / np.sqrt(par.actual)
+    par["selected"] = par.level == sel
+    par["within_poisson_se"] = par.parity.abs() <= par.poisson_se_rel
+    print(md(par))
+    par.to_csv(OUT / "ot_parity_fold2.csv", index=False)
+    # served form: A3g(row, old level) x exp(L_new - L_old) x exp(refit 3v3 cell), against the A3g-c table
+    lev = OL.selected_level(2, sel)
+    cell, info = OL.training_cell(2, lev)
+    tr, te = OL.frames_3v3(2)
+    bst = OL.booster(2)
+    old_cell = json.loads((ROOT / "results/shot_attempt_r3/models/A3g-c.json").read_text())["cell"][4]
+    mu_old, _ = OL.swapped_prediction(te, bst, pd.Series(te.level.to_numpy(), index=te.game_id.to_numpy()).groupby(level=0).first(), old_cell)
+    mu_new, dl = OL.swapped_prediction(te, bst, lev, cell)
+    y = te.y.to_numpy(float)
+    rows_ = []
+    for nm, mu in (("A3g-c (shared ES level, cell %.4f)" % old_cell, mu_old), ("own %s level, refit cell %.4f" % (sel, cell), mu_new)):
+        rows_.append(dict(arm=nm, actual=y.sum(), predicted=mu.sum(), bias=mu.sum() / y.sum() - 1,
+                          per60_combined_pred=2 * mu.sum() / (te.exposure_s.sum() / 3600), per60_combined_actual=2 * y.sum() / (te.exposure_s.sum() / 3600),
+                          poisson_se_rel=1 / np.sqrt(y.sum())))
+    served = pd.DataFrame(rows_)
+    print(md(served))
+    print("training cell", cell, info)
+    served.to_csv(OUT / "ot_served_offline_fold2.csv", index=False)
+    json.dump(dict(cell=cell, old_cell=old_cell, **info), open(OUT / "ot_cell_fold2.json", "w"))
+    doc = ["# EG-R1 part B: fold-2 parity and offline served bias of the 3v3 level (Lane H8b, 2026-10-21)", "",
+           "Read AFTER the training parity table and the selection were committed (e977e74). Fold 2 = 2024-25 regular season, "
+           "3v3 team-view rows, both teams. Parity is of the level alone (reported); the gate is the closed-loop G2 3v3 cell.", "",
+           md(par), "",
+           "Offline served form on the same rows (A3g booster x exp(L_new - L_old) x exp(cell); the cell is the SA-R3 "
+           "recipe refit on the fold-2 TRAINING rows with the own level in place; with the old level the same code "
+           "reproduces the frozen A3g-c cell to 1e-12):", "", md(served), "",
+           "Training diagnostics of the refit cell: " + json.dumps(info) + f"; frozen A3g-c cell {old_cell:.5f}, refit cell {cell:.5f}.",
+           "", "UNDERPOWERED note: about 1,370 attempts and 160 goals in the season; the Poisson count error is 2.7%."]
+    (ROOT / "docs" / "tests" / "end_game_eg_r1_otso_ot_fold2_2026-10-21.md").write_text(chr(10).join(doc), encoding="utf-8")
+    return par
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["ot_parity", "ot_fold2", "so_fold1", "so_fold2"])
     a = ap.parse_args()
-    {"ot_parity": ot_parity}[a.cmd]()
+    {"ot_parity": ot_parity, "ot_fold2": ot_fold2}[a.cmd]()
