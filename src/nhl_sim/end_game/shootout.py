@@ -191,8 +191,8 @@ def so_levels(att: pd.DataFrame, seasons):
     fi = gi.reindex(first.game_id.to_numpy()).to_numpy().astype(np.int64)
     xf = np.bincount(fi, weights=first.shoot_home.to_numpy(float), minlength=len(games))
     mf = np.bincount(fi, minlength=len(games)).astype(float)
-    meta, p = SO.asof_m1(games, xg, mg, SO.K_SUCCESS)
-    _, hf = SO.asof_m1(games, xf, mf, SO.K_FIRST)
+    meta, p = asof_m1(games, xg, mg, K_SUCCESS)
+    _, hf = asof_m1(games, xf, mf, K_FIRST)
     return pd.DataFrame({"game_id": games.game_id.to_numpy(), "season": games.season.to_numpy(), "p": p, "home_first": hf,
                          "created_at": meta.created_at.to_numpy(), "puck_drop": meta.puck_drop.to_numpy()})
 
@@ -204,6 +204,8 @@ def s1_tables(games: np.ndarray, test: int = 20242025, train_through: int = 2023
     seasons = [s for s in (20212022, 20222023, 20232024, 20242025) if s <= test]
     att = so_attempts(seasons)
     lv = so_levels(att, seasons).set_index("game_id").reindex(games)
-    if lv.p.isna().any():
-        raise ValueError("a served game has no S1 level")
+    po = ~np.isin(games, _ot().game_table([test]).query("game_type == 2").game_id.to_numpy())
+    if lv.p[~po].isna().any():
+        raise ValueError("a served regular-season game has no S1 level")
+    lv = lv.fillna(lv.mean())          # playoff games never reach a shootout; any value serves
     return dict(p_home=lv.p.to_numpy(float), p_away=lv.p.to_numpy(float), home_first=lv.home_first.to_numpy(float))
