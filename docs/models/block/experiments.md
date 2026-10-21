@@ -229,3 +229,53 @@ As SB-R1, with R for responsiveness. The D13 guard: the selected arm is also in 
 - B0 stays the engine STAND-IN.
 - An as-of response scale is deferred (INV-53).
 - The 4v4 / 3v3 level groups go into the stand-in (INV-54).
+
+---
+
+## SB-R5: block ratings with the as-of response scale (pre-registered 2026-10-21 by the PM, before any run; D43, INV-53, INV-64)
+
+Everything not listed is frozen from SB-R4 / SB-R1: the Ra rating construction (arena-adjusted, all games, b 1,000, w 0.7, log-odds relative to the snapshot league mean), the level M1 K500, the fitted home / score / rest terms and the arena factor (frozen from the fold's SB-R4 B1a fit), the bias checks, the arena slope gate (within 2 SE), R (D32), grading, the floor. Rr is dropped (SB-R4: it fails the arena gate). No booster (D31). The SB-R4 fixed multiplier is not used; the as-of scale replaces it.
+
+### Comparator
+
+**B0'**: the B0 stand-in as served by the engine since D41: level M1 K500 with own level groups for 4v4 and 3v3 (INV-54). The original SB-R1 B0 (pooled ES) is reported alongside for continuity.
+
+### Construction (the SL-R7 template on a binary logistic)
+
+The ratings enter as s_for,t x z_for + s_against,t x z_against on the logit, where z are the Ra ratings standardised by their fold's 2021-22 SD (unit only), and (s_for,t, s_against,t) is the as-of pair:
+- **Window:** every in-scope attempt (the SB-R1 row scope) dated before the game date, across seasons, weighted 0.5^(age in days / H).
+- **Fit:** the two-slope logistic with the offset fixed at logit B0' + the frozen SB-R4 B1a non-rating terms (home, score, rest, arena factor), shrunk to the previous date's pair with prior precision P x Ibar_t, **with the AS-1 floor at the selected f** (INV-62). Start (0, 0); 2021-22 is burn-in, never judged or served. `created_at` = the previous date's last puck drop + 6 h, asserted < puck_drop.
+- **Leakage tests** as in SL-R7, in `tests/test_block_asof_scale.py`.
+- **Grid:** H in {45, 90, 180, 365} days x P in {2000, 10000}.
+
+### Step 0 (training seasons only; committed before step 2)
+
+Re-state SB-R4's per-season Ra coefficients (for, against, with SEs) as the trend the as-of pair must track; add the per-date s_t path per cell (training dates only).
+
+### Parity analogue (judged training seasons only; fold 1: 2022-23; fold 2: 2022-23 and 2023-24)
+
+The "for" R and "against" R of B1a-as must both lie in [0.9, 1.1]. Selection: the simplest passer (larger H, then larger P). Otherwise the smallest max |log R| over both directions and all judged seasons, listed. Also report the per-season R of SB-R4's fixed-scale B1a and the labelled season-own-MLE diagnostic. Committed before any fold-2 row is predicted.
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| B0' | stand-in comparator (M1 K500, INV-54 groups) |
+| B1a | SB-R4's fixed-scale arm (reference; must reproduce the SB-R4 fold-2 grade on the original B0) |
+| B1a-as | B0' + frozen terms + the as-of pair on Ra |
+
+### Checks before fold 2 (stop if any fails)
+
+- In-sample block share by strength group x period type on the judged training seasons: B1a-as within 0.5 pp of B0'.
+- The D28-form guard on fold 1: B1a-as minus B0' block share within 0.5 pp overall and by strength group.
+
+### Decision (D40 harmonised rule)
+
+- **Eligible:** every fold-2 bias check passes (the SB-R1 block-share checks), the arena slope gate passes, "for" R and "against" R are in [0.8, 1.2] (point estimates gate; CIs listed, UNDERPOWERED when they contain 1 on both sides), and the D13 guard holds on fold 1 (R in band, not worse than B0' by > 2 SE, bias clean).
+- **Selected:** eligible and not worse than B0' by > 2 SE on fold 2 (LL per game).
+- On selection: wire B1a-as into the engine behind a default-off flag (flag off bit-identical to HEAD; the per-date pair served from the committed snapshot), replacing B0 when on, then run the closed loop (200 seeds, fold 2, with the engine's other incumbents): blocked share by strength state vs actual within the SB-R1 bias bands, blocked and unblocked attempts per 60 by state, a team-decile R on the sim block share (D32 helper), and the G3 / G2 re-checks unchanged within noise. Nothing in the loop is tuned.
+- If B1a-as is not selected, blocks stay on the B0 stand-in and the PM reports; the next step is a PM ruling, not an automatic round.
+
+### Results
+
+(append below this line)
