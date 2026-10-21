@@ -498,3 +498,13 @@ Status: ADOPTED.
 - **Stage 4 is no longer a user item.** The D39 / D40 "options to the user" path is closed.
 
 Status: ADOPTED.
+
+## D44 (2026-10-21): AS-1 adopted; the as-of response scale carries a prior-precision floor at f = 0.5; INV-63 and INV-65 closed
+
+- **AS-1 (Lane B5; `docs/tests/asof_floor_as1_2026-10-21.md`).** f = 0.50 is the only grid value that passes on every instance and fold; the goalie instance decides it (burn-in max raw |s| 109-113 unfloored, 6.9 at f 0.5, judged max 2.71, limit 8.1). On every instance, fold and f the judged-season snapshots are bit-identical to the unfloored ones; the floor binds only until 2022-01-24 (goalie) and 2021-12-09 (stage 4), and the paths coalesce exactly by 2022-02-07. f = None reproduces the v1 snapshots bit for bit; leakage tests pass under the floor. Under the floored stage-4 snapshot the SL-R7 burn-in 4v4 stratum goes from +20.3% to +0.14%.
+- **Ruling.** The floor at f = 0.5 is the as-of scale's construction from here (SB-R5 and any later instance use it). The goalie and stage-4 incumbents are unchanged in effect: their served dates are all after the coalescence date. The v2 snapshots are extended over the served fold-2 dates at the next engine step that touches them, with a test that they are bit-identical to v1 on every served date; until then the engine keeps serving v1, which is the same numbers. INV-62 is closed.
+- **INV-63 (Lane E3, 6121793).** `src/nhl_sim/engine/defaults.py` is the single default table builder: L1x-as, block B0 and miss S0t stand-ins, C1s with the oracle goalie. Fixture bit-identical to 16f877f; the 200-seed default loop is bit-identical (part-file sha256) to Lane A7's SL-R7 loop. Closed.
+- **INV-65 (Lane Z, d596f03).** The stage 7-8 step-0 audit on the training seasons; the G7 gate targets match the pbp-derived numbers on all 36 comparisons. Closed. The audit grounds EG-R1 (`docs/models/end_game/experiments.md`), pre-registered in this commit.
+- **sim.py edit order for the rest of the session:** H8a (pull) -> H8b (OT level, shootout) -> B5 (blocks, only if selected). Each waits for the previous lane's marker commit.
+
+Status: ADOPTED.
