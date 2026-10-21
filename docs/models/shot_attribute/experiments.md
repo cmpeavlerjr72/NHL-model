@@ -495,3 +495,22 @@ Per genuine-prior training season (fold 1: 2022-23; fold 2: 2022-23 and 2023-24)
 ### Results
 
 (append below this line)
+
+### SL-R7 results (Lane A7, 2026-10-21; report `docs/tests/shot_attribute_sl_r7_2026-10-21.md`, step 0 / parity `docs/tests/shot_attribute_sl_r7_parity_2026-10-21.md`)
+
+- **Step 1 (d3961a3).**
+  - `scale.py`: the two-slope as-of estimator (G-R3 template), frozen SL-R6 L1x-ot0 offset, Qa in 2021-22 SD units.
+  - Leakage tests: 6 pass.
+  - Snapshots for 8 cells x 2 folds, about 90 s locally.
+  - Two solver fixes, made before any result: eigen-restricted steps for collinear early ratings (G-R3's 0/0 fix in 2-D), and step halving in the burn-in jump.
+  - Series evaluation vs direct evaluation: max |diff| 1.8e-15.
+- **Step 0 / parity (37ed8c0, training seasons only).**
+  - The as-of pair tracks the falling Qa "for" slope (season MLE 1.70 / 1.52 / 1.22 raw).
+  - No cell passes [0.9, 1.1]. Every cell over-responds on "for" (1.14-1.25); the in-sample season MLE itself gives 1.17. SL-R6's 0.75 multiplier is dropped by the spec.
+  - Fallback selection: **H45 P10000** (max |log R| 0.173; for 1.18 / 1.19 / 1.14, against 0.93 / 0.89 / 1.01).
+- **In-sample stratum check (fold-2 training rows): FAIL.** 4v4 is +0.62% vs L0s (n 4,334; limit 0.5%).
+  - Cause: the 2021-22 burn-in transient (2021-10-12 to 10-25). The near-zero early ratings give the P x information prior no strength, and s jumps (raw up to about 500-680); 4v4 on those dates is +20% (n 116).
+  - Without 2021-22 every stratum is within 0.09%; after 10-25, within 0.22%.
+- **D28 guard (fold 1): PASS** (xG within 0.12%, tiers within 0.09 pp). Fold-1 R: 1.105 / 1.001.
+- **Stopped before fold 2.** Nothing on 2024-25 was predicted or read; no engine change, no closed loop.
+- Status: BUILDING; the PM rules. Proposal: read the inherited check on judged seasons only, since the spec already calls 2021-22 burn-in, never judged; then predict fold 2.
