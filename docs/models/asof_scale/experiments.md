@@ -28,3 +28,14 @@ For each existing instance (goalie H90 P2000 on both folds; stage-4 H45 P10000 o
 ### Results
 
 (append below this line)
+
+### AS-1 results (Lane B5, 2026-10-21; report `docs/tests/asof_floor_as1_2026-10-21.md`)
+
+- **Selected f = 0.50**, the only grid value that passes on every instance and fold. The goalie decides it:
+  - goalie burn-in max raw |s| is 109-113 unfloored, and 26 / 19 / 11 / 6.9 at f 0.05 / 0.1 / 0.25 / 0.5, against a judged max of 2.71 (limit 3x = 8.1);
+  - stage 4 is 515-684 unfloored and at most 2.96 at every f, against a judged max of 2.37 / 1.93.
+- **Judged-season snapshots are bit-identical to the unfloored ones** on every instance, fold and f (fold-1 2023-24 too). At f = 0.5 the floor binds only up to 2022-01-24 (goalie) and 2021-12-09 (stage 4), and the paths coalesce exactly by 2022-02-07.
+- **f = None reproduces** `goalie_scale_v1_*` and `sq_scale_v1_*` bit-for-bit on every grid cell (fold 2 on training dates). It also equals the pre-AS-1 modules in tests.
+- Leakage tests pass for both instances under the floor (`tests/test_asof_floor.py`).
+- SL-R7 burn-in in-sample check under the floored stage-4 snapshot (reported): 2021-10-12 to 10-25 4v4 goes from +20.3% to +0.14%; the all-rows 4v4 from +0.62% to +0.09%. Every gated stratum (n >= 2,000) is within 0.09% on all training rows.
+- Floored siblings: `goalie_scale_v2_f{1,2}`, `sq_scale_v2_f{1,2}` (fold 2 through 2023-24 only; no 2024-25 row touched). The incumbents are not replaced; that needs a PM ruling.

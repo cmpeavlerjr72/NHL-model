@@ -27,6 +27,12 @@ for a Newton iterate only while the exact max |t| over the window (convex hull o
 SAFE x pi / range(c), half of a guaranteed lower bound on its radius; otherwise the iterate is evaluated directly on the
 window's rows (the near-zero-rating burn-in days of 2021-22). `asof_scale_exact` evaluates every iterate directly (the
 reference used by the tests and the real-data spot check).
+
+AS-1 prior-precision floor (docs/models/asof_scale/experiments.md AS-1; INV-62, L38). Optional `floor=(f, I_ref)`:
+the prior precision is P x Ibar while lambda_min(Ibar) >= f x lambda_min(I_ref), and P x (Ibar + f x I_ref)
+otherwise, read at every Newton iterate (Ibar is re-read at every iterate). I_ref (2 x 2) = Ibar at s = 0 over every
+in-scope row of the fold's burn-in season (2021-22), unweighted, ratings in their standard units (`info_ref`).
+floor=None is the SL-R7 construction, bit-for-bit.
 """
 from __future__ import annotations
 
@@ -90,7 +96,23 @@ def _solve(Hf, G):
     return V[:, keep] @ ((V[:, keep].T @ G) / lam[keep])
 
 
-def _newton2(s_prev, stats, P, tol=TOL, max_it=MAX_IT):
+def info_ref(A, C, zf, za):
+    """AS-1 I_ref: the per-attempt Fisher information matrix at s = 0, unweighted, over the given rows."""
+    p = _softmax(np.array(A, float, copy=True))
+    C = np.asarray(C, float)
+    E = (p * C).sum(1)
+    V = (p * C * C).sum(1) - E * E
+    Z2 = np.column_stack([zf, za]).astype(float)
+    return (Z2 * V[:, None]).T @ Z2 / len(V)
+
+
+def floor_binds(Ibar, floor):
+    """AS-1: whether the floor binds for a window information Ibar (per-event)."""
+    f, Iref = floor
+    return not np.linalg.eigvalsh(Ibar)[0] >= f * np.linalg.eigvalsh(Iref)[0]
+
+
+def _newton2(s_prev, stats, P, tol=TOL, max_it=MAX_IT, floor=None):
     """stats(s) -> (g (2,), I (2, 2), sw): data score and information of the weighted window at s.
     Solves the template's stationarity condition G(s) = g(s) - P Ibar(s) (s - s_prev) = 0 (Ibar = I / sw re-read at
     every iterate) by Newton from s_prev. Optimiser safeguard (does not move the solution): if the full step does not
@@ -103,6 +125,8 @@ def _newton2(s_prev, stats, P, tol=TOL, max_it=MAX_IT):
         if not sw > 0 or not np.trace(I) > 0:
             return None
         Ibar = I / sw
+        if floor is not None and floor_binds(Ibar, floor):          # AS-1
+            Ibar = Ibar + floor[0] * np.asarray(floor[1], float)
         G = g - P * Ibar @ (s - s_prev)
         Hf = I + P * Ibar
         d = _solve(Hf, G)
@@ -259,7 +283,7 @@ def _series_stats(order):
     return stats
 
 
-def asof_from_moments(mom, H, P, s0=S0, exact=False):
+def asof_from_moments(mom, H, P, s0=S0, exact=False, floor=None):
     """Per-date as-of pair. Each Newton iterate is evaluated by the series while its max |t| over the window is within
     t_safe, otherwise (or with exact=True) directly on the window's rows; n_exact counts the direct evaluations."""
     days = mom["days"]
@@ -294,23 +318,31 @@ def asof_from_moments(mom, H, P, s0=S0, exact=False):
                     cache["ex"] = _exact_stats(rw["A"][:nb], rw["C"][:nb], rw["cy"][:nb], rw["Z2"][:nb], w)
                 cnt["exact"] += 1
                 return cache["ex"](sv)
-            s, neff = _newton2(s, stats, P)
+            s, neff = _newton2(s, stats, P, floor=floor)
+            n_ex = cnt["exact"]
+            if floor is not None:
+                g_, I_, sw_ = stats(s)
+                bnd = bool(sw_ > 0 and np.trace(I_) > 0 and floor_binds(I_ / sw_, floor))
         else:
             neff = 0.0
+            bnd = False
         rec = dict(mom["meta"][k])
-        rec.update(s_for=float(s[0]), s_against=float(s[1]), n_eff=neff, n_before=nb, n_exact=cnt["exact"])
+        rec.update(s_for=float(s[0]), s_against=float(s[1]), n_eff=neff, n_before=nb,
+                   n_exact=n_ex if nb > 0 else cnt["exact"])
+        if floor is not None:
+            rec["floor_binds"] = bnd
         out.append(rec)
     return _frame(out)
 
 
-def asof_scale(date, drop, A, C, y, zf, za, H, P, s0=S0, order=ORDER):
+def asof_scale(date, drop, A, C, y, zf, za, H, P, s0=S0, order=ORDER, floor=None):
     """Production path (series evaluation where valid, direct evaluation elsewhere)."""
-    return asof_from_moments(daily_moments(date, drop, A, C, y, zf, za, order), H, P, s0)
+    return asof_from_moments(daily_moments(date, drop, A, C, y, zf, za, order), H, P, s0, floor=floor)
 
 
-def asof_scale_exact(date, drop, A, C, y, zf, za, H, P, s0=S0):
+def asof_scale_exact(date, drop, A, C, y, zf, za, H, P, s0=S0, floor=None):
     """Reference: every Newton iterate evaluated directly on the window's rows."""
-    return asof_from_moments(daily_moments(date, drop, A, C, y, zf, za, order=2), H, P, s0, exact=True)
+    return asof_from_moments(daily_moments(date, drop, A, C, y, zf, za, order=2), H, P, s0, exact=True, floor=floor)
 
 
 def attach_scale(dates, sc: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:

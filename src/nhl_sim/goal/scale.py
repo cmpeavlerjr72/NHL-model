@@ -12,6 +12,11 @@ unit). s_t is an as-of estimate of the goalie-rating logistic coefficient:
   start    s = S0 = 0 before any data (first data season 2021-22: burn-in, labelled, never judged)
   snapshot one s per game date; created_at = last puck drop of the previous game date + 6 h (LC-2 form), asserted
            < puck_drop for every game on d.
+
+AS-1 prior-precision floor (docs/models/asof_scale/experiments.md AS-1; INV-62, L38). Optional `floor=(f, i_ref)`:
+the prior precision is P x ibar while ibar >= f x i_ref and P x (ibar + f x i_ref) otherwise, read at every Newton
+iterate (ibar is the per-shot information at the current iterate). i_ref = ibar at s = 0 over every in-scope row of
+the fold's burn-in season (2021-22), unweighted (`info_ref`). floor=None is the G-R3 construction, bit-for-bit.
 """
 from __future__ import annotations
 
@@ -34,9 +39,19 @@ def skey(H, P):
     return f"H{int(H)}_P{int(P)}"
 
 
-def _newton(s_prev, y, off, z, w, P, tol=1e-8, max_it=50):
+def info_ref(y, off, z):
+    """AS-1 I_ref (scalar): the per-shot Fisher information at s = 0, unweighted, over the given rows (the fold's
+    2021-22 in-scope rows). y is unused (kept for a uniform call)."""
+    p = sigmoid(np.asarray(off, float))
+    z = np.asarray(z, float)
+    return float((p * (1 - p) * z * z).sum() / len(z))
+
+
+def _newton(s_prev, y, off, z, w, P, tol=1e-8, max_it=50, floor=None):
     s = s_prev
     sw = w.sum()
+    if floor is not None:
+        thr = floor[0] * floor[1]                     # f x lambda_min(I_ref) = f x I_ref (scalar)
     for _ in range(max_it):
         p = sigmoid(off + s * z)
         info = w * p * (1 - p) * z * z
@@ -44,6 +59,8 @@ def _newton(s_prev, y, off, z, w, P, tol=1e-8, max_it=50):
         if not I > 0:                                 # no rating spread in the window yet (season-opening priors all 0)
             return s_prev, float(sw)
         ibar = I / sw
+        if floor is not None and not ibar >= thr:     # AS-1: the floor binds
+            ibar = ibar + thr
         g = (w * (y - p) * z).sum() - P * ibar * (s - s_prev)
         h = I + P * ibar
         step = g / h
@@ -55,7 +72,14 @@ def _newton(s_prev, y, off, z, w, P, tol=1e-8, max_it=50):
     return s, float(sw)
 
 
-def asof_scale(date, drop, y, off, z, H, P, s0=S0):
+def _binds(s, off, z, w, floor):
+    """Whether the AS-1 floor binds at the converged s (reported per date; does not affect the estimate)."""
+    p = sigmoid(off + s * z)
+    I = (w * p * (1 - p) * z * z).sum()
+    return bool(I > 0 and not I / w.sum() >= floor[0] * floor[1])
+
+
+def asof_scale(date, drop, y, off, z, H, P, s0=S0, floor=None):
     """date (n,) game dates (str/datetime), drop (n,) puck drops (UTC), y (n,) 0/1, off (n,) fixed logit offset, z (n,)
     standardised rating. Returns a per-date frame: date, s, n_eff (summed weight of the window), created_at, first/last
     puck drop of the date. s on date d uses rows with date < d only."""
@@ -76,13 +100,18 @@ def asof_scale(date, drop, y, off, z, H, P, s0=S0):
         if n > 0:
             age = day.astype(np.int64) - dnum[:n]
             w = 0.5 ** (age / H)
-            s, neff = _newton(s, y[:n], off[:n], z[:n], w, P)
+            s, neff = _newton(s, y[:n], off[:n], z[:n], w, P, floor=floor)
+            bnd = _binds(s, off[:n], z[:n], w, floor) if floor is not None else False
         else:
             neff = 0.0
+            bnd = False
         drops = dr.iloc[start[k]:end[k]]
         created = None if last_drop is None else last_drop + pd.Timedelta(hours=6)
-        out.append(dict(date=pd.Timestamp(day), s=s, n_eff=neff, n_before=int(n), created_at=created,
-                        first_drop=drops.min(), last_drop=drops.max()))
+        rec = dict(date=pd.Timestamp(day), s=s, n_eff=neff, n_before=int(n), created_at=created,
+                   first_drop=drops.min(), last_drop=drops.max())
+        if floor is not None:
+            rec["floor_binds"] = bnd
+        out.append(rec)
         last_drop = drops.max()
     f = pd.DataFrame(out)
     f["created_at"] = pd.to_datetime(f.created_at, utc=True)
