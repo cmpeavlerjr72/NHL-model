@@ -225,3 +225,10 @@ Served / actual conversion by score bucket, relative to tied, within +/-3% on ev
 ### Results
 
 (append below this line)
+
+### G-R4 results (Lane G4, 2026-10-21; report `docs/tests/goal_g_r4_2026-10-21.md`): STOPPED after step 3, fold 2 unread
+
+- Step 0 (1be71d3, training seasons only): four bucket deviations on the frozen C1s non-score logit; fold-2 trend z lead1 +2.69 (0.011, 0.059, 0.125), others |z| <= 1.01; trail1 flat on training seasons (0.068, 0.048, 0.050).
+- Step 2 (0838766, before any fold-2 read): C1s-sa snapshots for the 6-cell grid, AS-1 floor f 0.5 (never binds), leakage tests; parity: no cell within +/-3% on every judged season; **selected H90 P2000** by the fallback (max |log ratio| 0.044, listed).
+- Step 3 (fold 1, 2023-24): C1s reproduces G-R3 (max |diff| 0). All non-C0 arms pass the G-R3 bias checks and R; LL per SOG vs C1s: C1s-sa +0.000009 (SE 0.000044), C1s-sp -0.000083 (0.000051), C1s-sap -0.000067 (0.000064). Bucket ratio vs tied (trail2+ / trail1 / lead1 / lead2+): C1s 1.068 / 1.027 / 0.948 / 1.014; C1s-sa 1.040 / 1.009 / 1.011 / 1.004; C1s-sp 1.067 / 1.028 / 0.948 / 1.016; C1s-sap 1.040 / 1.010 / 1.013 / 1.006. **Every arm fails the D13 guard on the +/-3% check**, so no arm can be eligible.
+- Cause (labelled parametric redraw from each arm's own probabilities): SD of a one-season bucket ratio about 0.032; a calibrated model passes all four buckets within +/-3% with probability 0.20-0.22 per season; the 95% band is +/-7.6-8.0%. Stopped before step 4 (the D45 pattern) for a PM restatement of the check; fold 2 unread; no engine step. Resume commands in the report.
