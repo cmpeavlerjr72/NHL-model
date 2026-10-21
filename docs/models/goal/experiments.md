@@ -251,3 +251,12 @@ Served / actual conversion by score bucket, relative to tied, within +/-3% on ev
 - Fold 2 (blind, 9f115d2): bias and R pass every arm; the bucket check fails C1s and C1s-sp (trail1 1.070 / 1.072). LL per SOG vs C1s: C1s-sa -0.000070 (SE 0.000035, z -2.02, excluded), C1s-sap -0.000069 (0.000048, z -1.44). **Selected: C1s-sap** (the sole eligible arm within 2 SE of C1s; no tie-break). Listed: C1s-sa and C1s-sap have equal LL (+0.0000008); the selection turns on the wider SE.
 - Engine (`engine_goal_r4`, 7a6fd4b): flag attr["goal"]["sc_game"] (G, 4, 7), default off; flag off bit-identical to 4c7570d (fixture); served vs offline 1.1e-16; full suite 381 passed.
 - Closed loop (200 paired seeds, fold 2, pull off, default set with B0 / S0t, B1a-as off): G5b FAIL for both (55:00 RS tie +3.36 pp c1s -> +2.51 pp sap; real SE 1.04); team-standardised goal O/E FAIL for both (trail1 1.080 -> 1.049 vs real 0.996; max |z| 2.59 -> 1.63); G4: sap shifts loop sv % +0.11 pp overall (about 1 real SE), PP +0.64 vs actual (c1s +0.51). C1s-sap closes about 25% of the 55:00 tie gap. The default stays C1s pending the PM ruling.
+
+### G-R4 closed loop in the pre-registered configuration (Lane E4, 2026-10-21; report `docs/tests/engine_defaults_g5b_2026-10-21.md`)
+
+- Configuration (D53): the new engine default (`defaults.default_attr`: L1x-as, block B1a-as, miss S0t stand-in, goal C1s; `defaults.att_table` with the 3v3 OT level on), pull and shootout off, oracle goalie, 200 paired seeds, fold 2. Arms c1s (default) and sap (attr["goal"] = C1s-sap, `sc_game` flag).
+- G5b at 55:00, regular season (sim - real, pp; gate 1.5): c1s tie +3.05, |1| -1.99, |2| -1.19, 3+ +0.14 -> FAIL; sap tie +2.18, |1| -2.22, |2| -0.56, 3+ +0.60 -> FAIL (real tie 0.1723, SE 1.04 pp).
+- Goal O/E (team-standardised, tied = 1): trail-1 c1s 1.076 (z +2.46), sap 1.044 (z +1.48) vs real 0.996 (SE 0.033); max |z| 2.46 / 1.54; FAIL both at 1 SE.
+- G4: sap - c1s +0.11 pp overall (as Lane G4's loop); PP sim - actual +0.50 (c1s) / +0.64 (sap) vs gate 0.5 (same as Lane G4's loop).
+- G2 PASS and G3 PASS in both arms (G2 3v3 per-60 attempts now 55.6 / 55.5 vs 55.23, the OT level).
+- Status: C1s-sap "selected offline, closed loop run: G5b and goal O/E FAIL with every repair wired" (D53 disposition: unattributed gap plus H90 lag; next step is a diagnosis).

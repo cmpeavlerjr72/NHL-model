@@ -240,7 +240,7 @@ def test_refit_cell_reproduces_the_frozen_a3gc_cell_with_the_old_level():
 def test_defaults_att_table_flag_off_is_the_disk_table_and_flag_on_is_3v3_only():
     from nhl_sim.engine import defaults as DF
     games = np.sort(pd.read_parquet("results/strength_state_r3/fold2_rows.parquet", columns=["game_id"]).game_id.unique())
-    off, info0 = DF.att_table(games)
+    off, info0 = DF.att_table(games, ot3v3=False)
     on, info1 = DF.att_table(games, ot3v3=True)
     assert info0 == {} and np.array_equal(off, np.load(OL.ATT_TABLE[2]))
     assert (on[:, :, :, :4, :] == off[:, :, :, :4, :]).all() and not (on[:, :, :, 4, :] == off[:, :, :, 4, :]).all()
