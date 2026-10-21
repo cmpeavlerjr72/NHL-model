@@ -124,3 +124,125 @@ Resume, if the PM rules the check on judged seasons: `train_shot_attribute_v7.py
 - Not gated (n < 2,000): 5v5 OT -0.91% (n 620), PK OT, 4v4 OT, PP OT.
 - EN rows are bit-identical to L0s.
 - The burn-in spike (2021-10-12 to 10-25) is listed as a construction defect and is not fixed in this round (D42).
+
+### Clock after D42 (-04:00)
+
+| step | start | end |
+|---|---|---|
+| in-sample restated (insample_d42), commit 3de175b | 12:26:20 | 12:26:29 |
+| grader `--round r7`, fold-1 grade + D13 guard | 12:27:28 | 12:27:43 |
+| pred2 (fold-2 predictions), blind fold-2 grade | 12:27:49 | 12:28:17 |
+| engine flag, `serve_l1xas.py`, parity fixture (from 80f0b2e via git show), tests | 12:28 | 12:34:10 |
+| closed loop: smoke run (2 seeds, 15 s), then 4 blocks x 50 seeds, 2 threads each | 12:36:01 | 12:43:12 |
+| measured slice: 25 seeds per block in 188-192 s, so about 6.5 min for 200 seeds (under 15 min, local) | 12:36:44 | 12:39:59 |
+| closed-loop grade (G3, G2 re-check) | 12:43:28 | 12:43:34 |
+
+### Fold 1 (2023-24): D13 guard, D40 harmonised form: PASS
+
+Grade: `docs/tests/shot_attribute_sl_r7_grade_fold1_2026-10-21.md`.
+
+| arm | LL/game vs L0s (SE) | xG overall | R ES for | R ES against |
+|---|---|---|---|---|
+| L0s | 0 | +1.13% | 0.43 | 0.21 |
+| L1x-ot0 (SL-R6 ref) | +0.0347 (0.0204) | +1.15% | 0.969 | 0.945 |
+| **L1x-as** | +0.0324 (0.0212) | +1.14% | **1.105** | **1.001** |
+
+- The D28 guard passes (L1x-as minus L0s).
+- R is in band.
+- L1x-as is not worse than L0s by more than 2 SE.
+- Reported: the absolute SL-R1 bias read fails the PK tier cells (+1.61 / -2.27 pp). L0s fails them too (+1.57 / -2.18): this is the fold-1 level read, as in SL-R6. The guard is the D28 form.
+
+### Fold 2 (2024-25, blind): 119,924 unblocked attempts, 1,398 games
+
+Grade: `docs/tests/shot_attribute_sl_r7_grade_2026-10-21.md`. Every label was scored before `labels_sealed.json` was opened.
+
+| arm | LL/game vs L0s (SE) | xG overall | ES | PP | PK | tiers / types | R ES for (CI) | R ES against (CI) | old Q5-Q1 for / against |
+|---|---|---|---|---|---|---|---|---|---|
+| L0s | 0 | +0.46% | | | | PASS | -0.30 | 0.43 | |
+| L1x-ot0 (reference) | +0.0467 (0.0181) | +0.46% | | | | PASS | 1.291 (0.99-1.82) FAIL | 0.966 (0.73-1.39) | 1.330 / 1.037 |
+| **L1x-as** | **+0.0463 (0.0182)** | +0.45% | +0.51% | -0.02% | +2.41% | all PASS (max tier 0.81 pp PK high; max type 0.93 pp tip) | **1.182 (0.91-1.67) PASS, UNDERPOWERED** | **1.138 (0.87-1.63) PASS, UNDERPOWERED** | 1.207 / 1.218 |
+
+- **The reference reproduces SL-R6 exactly.**
+  - The prediction file is identical (max |diff| 0).
+  - LL +0.0467 (SE 0.0181) and R 1.291 / 0.966, as in SL-R6.
+- **Seed floor 0.** L1x-as2 recomputes the snapshot from shuffled rows; its predictions match within 1.1e-16.
+- **L1x-as vs L1x-ot0:** -0.0003 nats/game (SE 0.0021). The as-of scale costs no likelihood.
+- **Months:** every powered month is within 1.9%.
+- **Reported only:**
+  - EN: ENF -1.0%, ENA +1.2%.
+  - PP R 0.20 / 0.17 and PK R 0.51 / 0.80, both UNDERPOWERED.
+  - Per state: 5v5 +0.66%, PP -0.02%, PK +2.41%; 4v4 -4.5% and 3v3 -3.8% (UNDERPOWERED).
+- **Decision (D40 harmonised):**
+  - L1x-as is **eligible**: every bias check passes, ES R is in [0.8, 1.2] on the point estimates, and the D13 guard passes.
+  - It is **not worse than L0s by more than 2 SE**: it is better by 2.5 SE.
+  - **Selected: L1x-as.**
+  - Listed: the "for" R of 1.182 sits 0.018 inside the line, and both CIs are wider than the band (UNDERPOWERED).
+
+### Engine wiring (on top of 80f0b2e; default-off flag `attr["l1x"]`)
+
+- **`src/nhl_sim/engine/sim.py`.**
+  - When `attr["l1x"]` is present, the class row is softmax(log state_pdf[st, ptype] + log game_mult[g, rg] + game_logit[g, team, rg] + sc_logit[ptype, sc7]).
+  - The flag requires the L0s state_pdf and game_mult. It refuses an "attr" stand-in label, because L1x-as replaces the stand-in.
+  - The output carries `attr_model`.
+- **`src/nhl_sim/shot_attribute/serve_l1xas.py`** builds the tables:
+  - frozen W of the SL-R6 L1x-ot0 fold-2 fit;
+  - s_t from the committed snapshot (H45 P10000), keyed by game date;
+  - Qa from `sq_ratings_v2_f2`, b2b from `team_game_v2`;
+  - score terms zero on OT.
+- **Flag off is bit-identical** (sha256 of every output array) to the engine at 80f0b2e. That covers 16 cases: E2's 13, plus the full INV-60 stack switched on, synthetic and real. Fixture: `tests/fixtures/sim_l1xas_flag_parity.json`, made by `scripts/diag_engine_l1xas_parity_fixture.py`, which reads the pre-change engine with `git show`.
+- **Tests.** `tests/engine/test_sim_l1xas.py` passes. Wiring:
+  - zero logits reproduce the L0s draws;
+  - the served row equals the softmax (atol 1e-14);
+  - the OT row is used at t >= 3600;
+  - refusals work.
+
+  The whole `tests/engine` suite plus the scale tests: 134 passed.
+- **Served vs offline:** max |diff| 1.5e-8 over 116,716 reachable fold-2 rows. The offline file is float32, and the served s_t is the snapshot value itself. E2's components re-checked: block 1.5e-8, miss 3.0e-8, goal 1.1e-16.
+
+### Closed loop (200 seeds, fold 2, 1,398 games)
+
+Command: `scripts/run_shot_attribute_g3_v4.py sim --seed0 {0,50,100,150} --nseeds 50`, then `grade`.
+
+Stack:
+- stage 1 H3''-LC2 + T2;
+- stage 3 A3g-c;
+- block B0 STAND-IN (own 4v4 / 3v3);
+- **stage 4 L1x-as**;
+- miss S0t STAND-IN;
+- goal C1s with ORACLE GOALIE;
+- stages 7-8 absent.
+
+Reports: `docs/tests/gates_g3_sl_r7_L1xas_2026-10-21.md` and `docs/tests/gates_g2_sl_r7_L1xas_2026-10-21.md`.
+
+- **G3 (overall slice): PASS.** xG per unblocked attempt, sim vs actual:
+
+  | cell | xG rel | tiers |
+  |---|---|---|
+  | all reachable | +0.34% | within 0.38 pp |
+  | 5v5 | +0.66% | within 0.32 pp |
+  | PP | -0.03% | within 0.20 pp |
+  | PK | +2.21% | within 0.78 pp |
+
+  - Reported: 4v4 -4.85% and 3v3 -3.68% xG (n 1,242 / 1,129). The 4v4 / 3v3 tier mix is off by 5.5-8.7 pp on medium; these are the L0s 4v4 / 3v3 type-given-cell and shrink cells (D28 list), not the tilt.
+  - Block share and goals per unblocked attempt are within 0.9 pp / 0.2 pp.
+  - Per team (UNDERPOWERED): xG corr 0.82; 29 of 32 teams within 3%.
+- **Closed-loop ES responsiveness (reported, not a pre-registered gate).** Units are (game, team), with Qa ES deciles.
+  - "For": R 1.243 (CI 0.95-1.85, UNDERPOWERED), against 1.182 offline.
+  - "Against": R 1.126 (CI 0.86-1.66).
+  - The gap from the offline R is sim noise plus the per-unit weighting. It is listed as a watch item with "for" just outside the band.
+- **G2 re-check: every gated cell passes.** 5v5 +0.4%, PP -0.4%, PK -1.4%, team-game mean -1.0%, score buckets within 2.8%, responsiveness 1.147 / 1.111.
+  - 4v4 +2.6% is listed (INV-42) and passes.
+  - 3v3 +5.3% FAIL is listed (INV-35), the same as E2's plumbing loop (+5.4%).
+  - The playoffs slice is UNDERPOWERED.
+- **Stage 5b / 6 by state** (reported, stand-in miss, oracle goalie): in the G3 report.
+
+### Outcome after D42
+
+**L1x-as is selected and the closed loop passes.** Per SL-R4 / SL-R7, shot_attribute becomes **CONFIRMED-INCUMBENT (provisional)**. L1x-as replaces the L0s STAND-IN in the engine when `attr["l1x"]` is on; the flag stays default off until the PM switches it.
+
+Listed:
+- the 2021-22 burn-in spike (D42);
+- the parity fallback (no cell in [0.9, 1.1]);
+- fold-2 "for" R 1.182 (UNDERPOWERED);
+- closed-loop "for" R 1.243 (reported);
+- 4v4 / 3v3 mix (reported, UNDERPOWERED).

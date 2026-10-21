@@ -72,6 +72,14 @@ tests/engine/test_sim_c1s.py):
     D8); no in-game goalie change (stage 8). The output carries "goal_model", "oracle_goalie", "goalie_against" and
     attr_sog / attr_gprob (shots on goal and summed C1s probability by (team, team-view state)); xG_ref is still summed
     per unblocked attempt (attr_xg) for G3.
+
+SL-R7 L1x-as (Lane A7, 2026-10-21; default off, on when attr holds "l1x", which requires the L0s state_pdf and the
+per-game level game_mult; replaces the L0s STAND-IN, so attr["stand_in"] must NOT label "attr"): the unblocked
+attempt's class row is softmax(log state_pdf[st, ptype] + log game_mult[g, rating group] + l1x["game_logit"][g, team,
+rating group] + l1x["sc_logit"][ptype, sc7]) (cumsum / last). game_logit bakes in the frozen SL-R6 L1x-ot0 home and
+rest terms and the as-of rating tilt (s_for,t(date) zf + s_against,t(date) za) x c of the game's teams; sc_logit holds
+the centred score terms, zero on OT rows (ptype 1, D38). Tables: shot_attribute.serve_l1xas. The output carries
+"attr_model". Flag off: bit-identical (tests/engine/test_sim_l1xas.py).
 """
 from __future__ import annotations
 
@@ -159,7 +167,10 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
                 raise ValueError(f"attr state_pdf must be a positive (7, 2, C) table, got {state_pdf.shape}")
             if not levelled:
                 raise ValueError("the L0s stand-in is served levelled: attr needs era_mult or game_mult")
-            if "attr" not in labels:
+            if "l1x" in attr:
+                if "attr" in labels:
+                    raise ValueError("attr l1x replaces the L0s STAND-IN: do not label 'attr' as a stand-in")
+            elif "attr" not in labels:
                 raise ValueError("attr state_pdf is a STAND-IN: attr['stand_in'] must label it ('attr')")
             cdf = None
             nc = state_pdf.shape[2]
@@ -224,6 +235,17 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             if em.shape != (max(RECORDING_ERAS) + 1, 3, nc) or not np.isfinite(em[list(RECORDING_ERAS)]).all():
                 raise ValueError(f"era_mult must be ({max(RECORDING_ERAS) + 1}, 3, {nc}) finite on eras {RECORDING_ERAS}")
             AS.update(era_mult=em, rec_era=gs.rec_era.astype(np.int64))
+        if "l1x" in attr:                               # SL-R7 L1x-as on the levelled L0s baseline
+            lx = attr["l1x"]
+            if state_pdf is None or "game_mult" not in AS:
+                raise ValueError("attr l1x needs the L0s state_pdf and the per-game level game_mult")
+            glx, slx = np.asarray(lx["game_logit"], np.float64), np.asarray(lx["sc_logit"], np.float64)
+            if glx.shape != (G, 2, 3, nc) or slx.shape != (2, 7, nc):
+                raise ValueError(f"attr l1x needs game_logit (G, 2, 3, {nc}) and sc_logit (2, 7, {nc})")
+            if not (np.isfinite(glx).all() and np.isfinite(slx).all()) or not lx.get("label"):
+                raise ValueError("attr l1x logits must be finite and carry a model label")
+            AS.update(l1x_game=glx, l1x_sc=slx, l1x_base=np.log(state_pdf), l1x_lgm=np.log(AS["game_mult"]),
+                      attr_model=str(lx["label"]))
         AS["cell"] = np.zeros((N, 2, 5, AS["n_cell"]), np.int32)
         AS["type"] = np.zeros((N, 2, 5, AS["n_type"]), np.int32)
     lam = tables["lam"]
@@ -321,6 +343,8 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
                      attr_type=AS["type"])
         if "stand_in" in AS:
             extra["stand_in"] = AS["stand_in"]
+        if "attr_model" in AS:
+            extra["attr_model"] = np.array([AS["attr_model"]])
         if "goal_cls" in AS:
             extra.update(attr_sog=AS["sog"], attr_gprob=AS["gprob"], goal_model=np.array([AS["goal_label"]]),
                          oracle_goalie=np.array([AS["oracle_goalie"]]), goalie_against=AS["goalie_id"])
@@ -428,6 +452,12 @@ def class_cdf(AS, ai, gi, team, st, sc, m, t):
     state_pdf[st, period type] or the arm lookup cdf / pdf[g, team, interval, rating group, sc]; levelled by
     era_mult[rec_era, rating group] and renormalised when era_mult is present."""
     rg = ST_RGRP[st]
+    if "l1x_game" in AS:                                # SL-R7 L1x-as
+        pt = int(t >= 3600)
+        z = AS["l1x_base"][st, pt] + AS["l1x_lgm"][gi, rg] + AS["l1x_game"][gi, team, rg] + AS["l1x_sc"][pt, sc]
+        z = np.exp(z - z.max(1, keepdims=True))
+        row = np.cumsum(z, 1)
+        return row / row[:, -1:]
     if "state_pdf" in AS:
         row = AS["state_pdf"][st, int(t >= 3600)]
     else:

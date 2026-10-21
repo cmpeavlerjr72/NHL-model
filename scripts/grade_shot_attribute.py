@@ -23,6 +23,8 @@ Only then is labels_sealed.json opened to apply the decision rule (fold 2) or at
                                        r4 (the D28 guard is computed by train_shot_attribute_v5.py guard, not here)
     grade_shot_attribute.py --round r6 --fold 2   SL-R6 (L0s, L1x = L1x-ot0 per D38; seed pair L1x / L1xs2): decision as r4,
                                        with responsiveness gated on the D32 slope ratio R (old Q5 - Q1 reported)
+    grade_shot_attribute.py --round r7 --fold 1|2   SL-R7 (L0s, L1xas; seed L1xas / L1xas2; ref L1x = SL-R6 L1x-ot0): D40
+                                       rule; fold 1 = D13 guard (D28 guard + R in band + not worse than L0s by > 2 SE)
     grade_shot_attribute.py --round r2 --fold 2|1   SL-R2 (L0m < L1m < L3m, seed pair L3m / L3ms2; references L0 and
                                        L0o (oracle level) graded blind but never selectable; arena reported, not gated, D23)
                                        -> docs/tests/shot_attribute_sl_r2_grade_2026-10-16.md
@@ -70,7 +72,12 @@ ROUNDS = {"r1": dict(res="results/shot_attribute_r1", report="docs/tests/shot_at
                      report_f1="docs/tests/shot_attribute_sl_r6_grade_fold1_2026-10-16.md",
                      salt="SL-R6-D38-2026-10-16", arms=("L0s", "L1x"), seed=("L1x", "L1xs2"), refs=(),
                      arena_gate=(), title="SL-R6 blind grade (Lane A6, 2026-10-16; L1x-ot0 per D38, level M1 K500 per D35)",
-                     spec="SL-R6", decision="r4", states=True, en_reported=True, resp="slope")}
+                     spec="SL-R6", decision="r4", states=True, en_reported=True, resp="slope"),
+          "r7": dict(res="results/shot_attribute_r7", report="docs/tests/shot_attribute_sl_r7_grade_2026-10-21.md",
+                     report_f1="docs/tests/shot_attribute_sl_r7_grade_fold1_2026-10-21.md",
+                     salt="SL-R7-2026-10-21", arms=("L0s", "L1xas"), seed=("L1xas", "L1xas2"), refs=("L1x",),
+                     arena_gate=(), title="SL-R7 blind grade (Lane A7, 2026-10-21; L1x-as H45 P10000, D42)",
+                     spec="SL-R7", decision="r7", states=True, en_reported=True, resp="slope")}
 CFG = ROUNDS["r1"]
 CELL_TIER = np.repeat(TIER_OF_CELL, N_TYPE)               # class -> tier
 CLASS_TYPE = np.tile(np.arange(N_TYPE), N_CELL)           # class -> type
@@ -357,6 +364,37 @@ def write(fold):
                   f"- {c} vs {b}: {dv:+.4f} nats/game (SE {se:.4f}); not worse by > 2 SE: **{notworse}**. Seed floor "
                   f"{floor:.4f} (deterministic booster, 0 per D26).",
                   f"- {b} is flat and not adoptable (D24).",
+                  f"- **Selected: {sel}**" if sel else "- **No arm selected.**", ""]
+    elif CFG.get("decision") == "r7":
+        # D40 harmonised rule. D13 guard (fold 1) = the D28 guard (L1x-as minus L0s, train_shot_attribute_v7.py guard)
+        # AND fold-1 ES R for / against in [0.8, 1.2] AND not worse than L0s by > 2 SE; the absolute bias read is reported
+        c, b = CFG["arms"][1], CFG["arms"][0]
+        q = P[(P.a == c) & (P.b == b)]
+        dv, se = float(q.diff_per_game.iloc[0]), float(q.se.iloc[0])
+        notworse = dv >= -2 * se
+        rf, ra = S.loc[c, "resp_es_for"], S.loc[c, "resp_es_against"]
+        r_ok = S.loc[c, "resp_gate"] == "PASS"
+        if fold == 1:
+            g = json.loads((RES / "fold1" / "guard.json").read_text())
+            d13 = bool(g["guard_pass"] and r_ok and notworse)
+            L += ["### D13 guard (fold 1; D40 harmonised: D28 guard, R in band, not worse than L0s by > 2 SE)", "",
+                  f"- D28 guard (L1x-as minus L0s; train_shot_attribute_v7.py guard): **{'PASS' if g['guard_pass'] else 'FAIL'}** "
+                  f"(max |xG rel| {g['max_abs_xg_rel']:.4%} incl. underpowered months, max |tier| {g['max_abs_tier_pp']:.3f} pp).",
+                  f"- ES R for / against on fold 1: {rf:.3f} / {ra:.3f}: **{S.loc[c, 'resp_gate']}**.",
+                  f"- {c} vs {b} LL per game {dv:+.4f} (SE {se:.4f}); not worse by > 2 SE: **{notworse}**.",
+                  f"- Absolute SL-R1 bias read on fold 1 (reported; the guard is the D28 form): {S.loc[c, 'bias_gate']} "
+                  f"(xG fails: {S.loc[c, 'xg_fails']}; tier fails: {S.loc[c, 'tier_fails']}; type fails: {S.loc[c, 'type_fails']}).",
+                  f"- **D13 guard: {'PASS' if d13 else 'FAIL'}**", ""]
+        else:
+            g1 = json.loads((RES / "grade_fold1.json").read_text())
+            d13 = g1.get("d13_guard_pass")
+            el = bool(S.loc[c, "eligible"]) and bool(d13)
+            sel = c if (el and notworse) else None
+            L += [f"### Decision rule (fold 2, {CFG['spec']}, D40 harmonised)", "",
+                  f"- {c}: bias {S.loc[c, 'bias_gate']}; ES R {rf:.3f} / {ra:.3f} {S.loc[c, 'resp_gate']}; D13 guard on fold 1 "
+                  f"{'PASS' if d13 else 'FAIL'} -> eligible: **{el}**.",
+                  f"- {c} vs {b}: {dv:+.4f} nats/game (SE {se:.4f}); not worse by > 2 SE: **{notworse}**. Seed floor {floor:.4f}.",
+                  f"- {b} is a flat stand-in, not adoptable (D24); L1x (SL-R6 L1x-ot0) is a reference, not selectable.",
                   f"- **Selected: {sel}**" if sel else "- **No arm selected.**", ""]
     elif fold == 2:
         el = [a for a in CFG["arms"] if S.loc[a, "eligible"]]

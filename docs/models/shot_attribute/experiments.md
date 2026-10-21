@@ -526,3 +526,23 @@ Per genuine-prior training season (fold 1: 2022-23; fold 2: 2022-23 and 2023-24)
 ### SL-R7 results after D42
 
 (append below this line)
+
+- **Report:** `docs/tests/shot_attribute_sl_r7_2026-10-21.md`, section "Resume after D42". Grades: `docs/tests/shot_attribute_sl_r7_grade_2026-10-21.md` (fold 2) and `..._grade_fold1_2026-10-21.md`. Closed loop: `docs/tests/gates_g3_sl_r7_L1xas_2026-10-21.md` and `gates_g2_sl_r7_L1xas_2026-10-21.md`.
+- **In-sample check on the judged seasons (3de175b): PASS**, max 0.09%.
+- **Fold 1 (D13 guard): PASS.**
+  - D28 guard passes; R 1.105 / 1.001.
+  - +0.0324 nats/game (SE 0.0212) vs L0s.
+- **Fold 2 (blind):**
+  - The L1x-ot0 reference reproduces SL-R6 exactly: +0.0467 (0.0181), R 1.291 / 0.966.
+  - L1x-as: +0.0463 nats/game (SE 0.0182) vs L0s.
+  - Every bias check passes: xG +0.45%, PK +2.41%, tiers within 0.81 pp.
+  - **ES R 1.182 (CI 0.91-1.67) / 1.138 (CI 0.87-1.63), in band**, both UNDERPOWERED; old Q5-Q1 1.207 / 1.218. Seed floor 0.
+  - **Selected: L1x-as.**
+- **Engine:** default-off `attr["l1x"]` on top of 80f0b2e.
+  - Flag off is bit-identical to 80f0b2e (16 cases, sha256).
+  - Served vs offline: 1.5e-8 over 116,716 rows. 134 engine tests pass.
+- **Closed loop (200 seeds; oracle goalie; B0 / S0t stand-ins; C1s):**
+  - **G3 PASS.** xG all reachable +0.34%, 5v5 +0.66%, PP -0.03%, PK +2.21%; tiers within 0.78 pp. 4v4 / 3v3 reported: -4.9% / -3.7%.
+  - **G2 re-check: every gated cell passes.** 3v3 +5.3% is listed (INV-35); 4v4 is listed (INV-42) and passes.
+  - Closed-loop ES R (reported): 1.243 / 1.126, UNDERPOWERED.
+- **Status:** CONFIRMED-INCUMBENT (provisional). Listed: the burn-in spike (D42), the parity fallback, "for" R near the line (1.182 offline, 1.243 closed loop).
