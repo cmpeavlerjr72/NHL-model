@@ -218,3 +218,56 @@ def training_cell(fold: int, new_level: pd.Series, b_c: float = B_C):
     y = tr.y.to_numpy(float)
     cell = float(np.log((y.sum() + b_c) / (mu.sum() + b_c)))
     return cell, dict(train_y=float(y.sum()), train_mu_before_cell=float(mu.sum()), mean_delta=float(d.mean()))
+
+
+ATT_TABLE = {1: "results/shot_attempt_r3/fold1/att_lam_A3g-c_fold1.npy", 2: "results/shot_attempt_r3/att_lam_A3g-c_fold2.npy"}
+A3GC_CELL = "results/shot_attempt_r3/models/A3g-c.json"
+N_MIN = 100
+
+
+def old_level(fold: int) -> pd.Series:
+    """The level the A3g-c table used for 3v3 rows: the SA-R2 ES-group level + profile (k = 5, tv v2)."""
+    lv = pd.read_parquet(SA / f"league_level_v2_f{fold}.parquet", columns=["game_id", "level_es_k5", "p_level_es"])
+    return pd.Series((lv.level_es_k5 + lv.p_level_es).to_numpy(), index=lv.game_id.to_numpy())
+
+
+def served_delta(fold: int, games: np.ndarray):
+    """Per-game log multiplier on the A3g-c 3v3 entries: (L_new - L_old) + (refit cell - frozen cell).
+    games: sorted game ids of the served table. Returns (delta (G,), info)."""
+    import json
+    lev = selected_level(fold)
+    cell_new, info = training_cell(fold, lev)
+    cell_old = float(json.loads(open(A3GC_CELL, encoding="utf-8").read())["cell"][ST_3V3])
+    ol = old_level(fold)
+    d = lev.reindex(games).to_numpy() - ol.reindex(games).to_numpy()
+    if np.isnan(d).any():
+        raise ValueError("a served game has no own 3v3 level")
+    info = dict(info, cell_new=cell_new, cell_old=cell_old, level_name=SELECTED)
+    return d + (cell_new - cell_old), info
+
+
+def served_att_lam(att: np.ndarray, games: np.ndarray, fold: int = 2):
+    """The A3g-c served table (G, 2, N_MIN, 5, 7) with its 3v3 entries (st index 4) re-levelled by the own as-of
+    3v3 level. Everything outside st = 4 is bit-identical to `att`. Returns (new table float32, info)."""
+    if att.shape[0] != len(games) or att.shape[2] != N_MIN or att.shape[3] != 5:
+        raise ValueError(f"unexpected stage-3 table shape {att.shape}")
+    delta, info = served_delta(fold, games)
+    out = np.array(att, dtype=np.float32, copy=True)
+    out[:, :, :, ST_3V3, :] *= np.exp(delta).astype(np.float32)[:, None, None, None]
+    return out, info
+
+
+def served_parity(att_new: np.ndarray, games: np.ndarray, fold: int = 2) -> dict:
+    """Served-vs-offline check (< 1e-6 relative): on every test-season 3v3 row, the table entry equals the offline
+    per-hour rate A3g(row, old level) x exp(delta) = mu_new / (exposure / 3600)."""
+    lev = selected_level(fold)
+    cell_new, _ = training_cell(fold, lev)
+    _, te = frames_3v3(fold)
+    bst = booster(fold)
+    mu, _ = swapped_prediction(te, bst, lev, cell_new)
+    gi = pd.Series(np.arange(len(games)), index=games).reindex(te.game_id.to_numpy()).to_numpy().astype(np.int64)
+    minute = np.minimum(te.t0.to_numpy() // 60, N_MIN - 1)
+    srv = att_new[gi, te.team.to_numpy().astype(np.int64), minute, ST_3V3, te.sc.to_numpy().astype(np.int64)].astype(np.float64)
+    off = mu / (te.exposure_s.to_numpy(float) / 3600.0)
+    rel = np.abs(srv / off - 1.0)
+    return dict(n_rows=int(len(te)), max_rel_diff=float(rel.max()), max_abs_diff=float(np.abs(srv - off).max()))
