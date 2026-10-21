@@ -88,6 +88,24 @@ L1x-as (attr["l1x"]), block B0 and miss S0t as labelled STAND-INS, goal C1s with
 and stage 3 A3g-c are the other tables keys. Its output carries stand_in = [block, miss] (no "attr" label), attr_model,
 goal_model, oracle_goalie. The L0s stand-in (defaults.l0s_attr) and the xG_ref goal stub (attr["xg"] without
 attr["goal"]) stay behind their explicit flags. tests/engine/test_sim_defaults.py.
+
+GOALIE PULL + EN CASCADE (EG-R1 part A, INV-66, Lane H8a, 2026-10-21; default off, on when `tables` holds "pull", which
+needs the stage-3 attempt table, the L0s state_pdf baseline, block B0 (p_block_game), miss S0t and goal C1s): at the
+start of each second t in the last 600 s of regulation, before the second's draws, each team trailing before the
+second whose goalie is in draws a pull (stream "pull", counter (t, team)) with the served hazard: P1 =
+table[deficit 1 / 2 / 3+, (3600 - t - 1) // 10, penalty state none / pk / pp from the penalty-derived skaters,
+pulled_before, home] (pull["hazard"]["kind"] == "P1"), or P0's h_first[deficit, penalty-on, t - 3000] / h_repull[t -
+last return]. Returns (GameState, deterministic): at a goal against and at the team's own tying goal. While a team's
+goalie is out the cascade runs at the team-view states 5 EN-for (pulled team) / 6 EN-against (its opponent): attempts at
+pull["en_lam"][g, st - 5] per hour (STAND-IN as-of M1 K500 levels; A3g-c has no EN state), block = B0's own ENF / ENA
+groups with the ES level (pull["p_block_en"][g, st - 5, ptype]), class = L0s baseline row 5 / 6 x the ES-group level (L33;
+the L1x-as terms are not applied on EN rows, as offline), miss = S0t's own ENF / ENA groups with the ES level group
+(pull["p_miss_en"][g, st - 5, ptype, class]), goal: EN-for = C1s EAF (pull["eaf_cls"][class] + pull["eaf_game"][g, team];
+no score dummies on EAF rows, L33), EN-against =
+pull["p_en_goal"][g] (STAND-IN level, no goalie). Stage 1 keeps reading the penalty-derived strength. No delayed-penalty
+state (INV-70). Recording arrays by team-view state have 7 states when the flag is on (5 otherwise); outputs add
+pull_s / n_pulls / n_repulls / first_pull_t / first_pull_def / pull_at_trail1 / trail1_seen / n_ret_ga / n_ret_tie /
+n_repull_after_ga and the pull_model / pull_stand_in markers. Flag off: bit-identical (tests/engine/test_sim_pull.py).
 """
 from __future__ import annotations
 
@@ -104,6 +122,9 @@ UNIT_PIM = np.array([2, 4, 5])
 SWAP = np.array([0, 2, 1, 3, 4], np.int64)
 EQ_ST = {5: 0, 4: 3, 3: 4}
 ST_RGRP = np.array([0, 1, 2, 0, 0], np.int64)      # team-view state 0..4 -> rating group ES / PP-for / PK
+ST_RGRP7 = np.array([0, 1, 2, 0, 0, 0, 0], np.int64)  # with the EN states 5 / 6 (ES group); equal on 0..4
+BLK_ST = np.array([0, 1, 2, 3, 4, 0, 0], np.int64)    # team-view state -> (G, 5, 2) block table index (EN: ES group)
+PULL_WIN = 600                                         # pulls are drawn in the last 600 s of regulation
 
 
 def team_view_state(sk: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -150,15 +171,17 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     K = {f: rng.stream_keys(seeds, gid, f) for f in ("goal", "penalty", "penalty_type", "coincidental",
                                                      "stoppage", "shootout_stub")}
     att = tables.get("att_lam")
+    pull = tables.get("pull")
+    n_st = 7 if pull is not None else 5
     if att is not None:
         K["attempt"] = rng.stream_keys(seeds, gid, "attempt")
         K["attempt_goal"] = rng.stream_keys(seeds, gid, "attempt_goal")
         Ma = att.shape[2]
         att_flat = att.reshape(-1)
         p_goal = np.asarray(tables["p_goal"], np.float64)
-        att_st = np.zeros((N, 2, 5), np.int32)
+        att_st = np.zeros((N, 2, n_st), np.int32)
         att_sc = np.zeros((N, 2, 7), np.int32)
-        toi_st_sc = np.zeros((N, 5, 7), np.int32)
+        toi_st_sc = np.zeros((N, n_st, 7), np.int32)
     attr = tables.get("attr")
     AS = None
     if attr is not None:
@@ -192,7 +215,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         AS = dict(cdf=cdf, imap=np.asarray(attr.get("interval_of_minute", np.zeros(100)), np.int64),
                   p_block=np.asarray(attr["p_block"], float) if "p_block" in attr else None,
                   xg=np.asarray(attr["xg"], float), n_type=int(attr["n_type"]), n_cell=nc // int(attr["n_type"]),
-                  fen=np.zeros((N, 2, 5), np.int32), xg_sum=np.zeros((N, 2, 5)), goals=np.zeros((N, 2, 5), np.int32))
+                  fen=np.zeros((N, 2, n_st), np.int32), xg_sum=np.zeros((N, 2, n_st)), goals=np.zeros((N, 2, n_st), np.int32))
         if state_pdf is not None:
             AS["state_pdf"] = state_pdf
         if "p_block_game" in attr:                      # D32 stand-in: block B0 per (game, rating group / st, period type)
@@ -225,8 +248,8 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             if not gm_.get("label") or "oracle" not in str(gm_.get("oracle_goalie", "")).lower():
                 raise ValueError("attr goal needs a model label and an oracle_goalie label (the box-score starter, D8)")
             AS.update(goal_cls=cl, goal_game=gl_, goal_sc=sl, goalie_id=gid_, goal_label=str(gm_["label"]),
-                      oracle_goalie=str(gm_["oracle_goalie"]), sog=np.zeros((N, 2, 5), np.int32),
-                      gprob=np.zeros((N, 2, 5)))
+                      oracle_goalie=str(gm_["oracle_goalie"]), sog=np.zeros((N, 2, n_st), np.int32),
+                      gprob=np.zeros((N, 2, n_st)))
         elif "p_miss" in AS:
             raise ValueError("the miss stand-in needs the C1s goal model (attr['goal']): xG_ref is per unblocked attempt")
         if labels:
@@ -254,8 +277,15 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
                 raise ValueError("attr l1x logits must be finite and carry a model label")
             AS.update(l1x_game=glx, l1x_sc=slx, l1x_base=np.log(state_pdf), l1x_lgm=np.log(AS["game_mult"]),
                       attr_model=str(lx["label"]))
-        AS["cell"] = np.zeros((N, 2, 5, AS["n_cell"]), np.int32)
-        AS["type"] = np.zeros((N, 2, 5, AS["n_type"]), np.int32)
+        AS["cell"] = np.zeros((N, 2, n_st, AS["n_cell"]), np.int32)
+        AS["type"] = np.zeros((N, 2, n_st, AS["n_type"]), np.int32)
+    PS = None
+    if pull is not None:                                # EG-R1 part A goalie pull + EN cascade
+        if att is None:
+            raise ValueError("the goalie pull needs the stage-3 attempt table (att_lam)")
+        PS = _pull_setup(pull, AS, G, N, gs)
+        AS["en"] = PS
+        K["pull"] = rng.stream_keys(seeds, gid, "pull")
     lam = tables["lam"]
     M = lam.shape[2]
     lam_flat = lam.reshape(-1)
@@ -279,6 +309,10 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         sh, sa = sk[:, 0].astype(np.int64), sk[:, 1].astype(np.int64)
         st_h, st_a = team_view_state(sk)
         diff = gs.score[a, 0].astype(np.int64) - gs.score[a, 1]
+        if PS is not None:
+            ast_h, ast_a = _pull_second(gs, PS, K, a, t, sk, diff, st_h, st_a)
+        else:
+            ast_h, ast_a = st_h, st_a
         sc_h = np.clip(diff, -2, 2) + 2
         pdd = gs.pen_count[a, 0].astype(np.int64) - gs.pen_count[a, 1]
         pd_h = np.clip(pdd, -2, 2) + 2
@@ -303,7 +337,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             ga &= gs.alive[a]
             gs.goal(a[ga], 1)
         else:
-            _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc, AS)
+            _attempts_second(gs, a, t, g_a, ast_h, ast_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc, AS)
         live = gs.alive[a]
         # coincidental stoppages
         r_pair = 0.5 * (lh * Ph[:, 3] + la * Pa[:, 3])
@@ -356,6 +390,11 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         if "goal_cls" in AS:
             extra.update(attr_sog=AS["sog"], attr_gprob=AS["gprob"], goal_model=np.array([AS["goal_label"]]),
                          oracle_goalie=np.array([AS["oracle_goalie"]]), goalie_against=AS["goalie_id"])
+    if PS is not None:
+        extra.update(pull_s=PS["pull_s"], n_pulls=PS["n_pulls"], n_repulls=PS["n_repulls"], first_pull_t=PS["first_t"],
+                     first_pull_def=PS["first_d"], pull_at_trail1=PS["at_t1"], trail1_seen=PS["t1_seen"],
+                     n_ret_ga=gs.n_ret_ga.copy(), n_ret_tie=gs.n_ret_tie.copy(), n_repull_after_ga=PS["rep_ga"],
+                     pull_model=np.array([PS["label"]]), pull_stand_in=np.array(PS["stand_in"]))
     return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),
@@ -376,6 +415,11 @@ def _attempts_second(gs, a, t, g_a, st_h, st_a, diff, K, att_flat, Ma, p_goal, a
     m = min(t // 60, Ma - 1)
 
     def lam_of(team, st, sc):
+        if AS is not None and "en" in AS and (st > 4).any():   # EN states: STAND-IN levels (A3g-c has no EN state)
+            en = st > 4
+            v = att_flat[(((g_a * 2 + team) * Ma + m) * 5 + np.where(en, 0, st)) * 7 + sc].astype(np.float64) / 3600.0
+            v[en] = AS["en"]["en_lam"][g_a[en], st[en] - 5] / 3600.0
+            return v
         return att_flat[(((g_a * 2 + team) * Ma + m) * 5 + st) * 7 + sc].astype(np.float64) / 3600.0
 
     kh = poisson_k(rng.uniform(K["attempt"][a], t, 0), lam_of(0, st_h, sc_h))
@@ -411,7 +455,7 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     if not unb.any():
         return np.zeros(len(ai), np.int64)
     ai, gi, st, sc = ai[unb], gi[unb], st[unb], sc[unb]
-    rg = ST_RGRP[st]
+    rg = ST_RGRP7[st]
     row = class_cdf(AS, ai, gi, team, st, sc, m, t)
     u = rng.uniform(K["attempt_attr"][ai], t, kk)
     cls = np.minimum((row <= u[:, None]).sum(1), row.shape[1] - 1)
@@ -437,20 +481,43 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
 def block_prob(AS, gi, st, t):
     """Served block probability per attempt (game index gi, team-view state st, game second t): the B0 stand-in
     p_block_game[g, rating group, period type] when on, else the empirical stub p_block[st]."""
+    if "en" in AS and (np.asarray(st) > 4).any():      # EG-R1 part A: B0's own ENF / ENA groups (ES level)
+        st = np.asarray(st)
+        en = st > 4
+        v = block_prob({k: x for k, x in AS.items() if k != "en"}, gi, np.where(en, 0, st), t)
+        v = np.array(v, np.float64, copy=True)
+        v[en] = AS["en"]["p_block_en"][gi[en], st[en] - 5, int(t >= 3600)]
+        return v
     if "p_block_game" in AS:
         pbg = AS["p_block_game"]
-        return pbg[gi, st if pbg.shape[1] == 5 else ST_RGRP[st], int(t >= 3600)]
+        return pbg[gi, BLK_ST[st] if pbg.shape[1] == 5 else ST_RGRP7[st], int(t >= 3600)]
     return AS["p_block"][st]
 
 
 def miss_prob(AS, gi, st, t, cls):
     """Served miss probability per unblocked attempt (INV-60 S0t STAND-IN): p_miss_game[g, rating group, ptype, class]."""
-    return AS["p_miss"][gi, ST_RGRP[st], int(t >= 3600), cls]
+    if "en" in AS and (np.asarray(st) > 4).any():      # EG-R1 part A: S0t's own ENF / ENA groups (ES level group)
+        st = np.asarray(st)
+        en = st > 4
+        v = np.array(AS["p_miss"][gi, ST_RGRP7[np.where(en, 0, st)], int(t >= 3600), cls], np.float64, copy=True)
+        v[en] = AS["en"]["p_miss_en"][gi[en], st[en] - 5, int(t >= 3600), cls[en]]
+        return v
+    return AS["p_miss"][gi, ST_RGRP7[st], int(t >= 3600), cls]
 
 
 def goal_prob(AS, gi, team, st, sc, cls):
     """Served C1s goal probability per shot on goal (INV-60): sigmoid(cls_logit[class, st] + game_logit[g, team, st] +
     sc_logit[sc7]); team = shooting team (0 home), st = its team-view state 0..4, sc = its score bucket 0..6."""
+    st = np.asarray(st)
+    if "en" in AS and (st > 4).any():                   # EG-R1 part A: EN-for = C1s EAF, EN-against = the EN level
+        PS = AS["en"]
+        ef, ea = st == 5, st == 6
+        s4 = np.minimum(st, 4)
+        z = AS["goal_cls"][cls, s4] + AS["goal_game"][gi, team, s4] + AS["goal_sc"][sc]
+        z[ef] = PS["eaf_cls"][cls[ef]] + PS["eaf_game"][gi[ef], team]       # C1s EAF: no score dummies (L33)
+        p = 1.0 / (1.0 + np.exp(-z))
+        p[ea] = PS["p_en_goal"][gi[ea]]
+        return p
     z = AS["goal_cls"][cls, st] + AS["goal_game"][gi, team, st] + AS["goal_sc"][sc]
     return 1.0 / (1.0 + np.exp(-z))
 
@@ -459,7 +526,15 @@ def class_cdf(AS, ai, gi, team, st, sc, m, t):
     """Served cumulative class row per unblocked attempt (the row the engine draws the class from): the L0s stand-in
     state_pdf[st, period type] or the arm lookup cdf / pdf[g, team, interval, rating group, sc]; levelled by
     era_mult[rec_era, rating group] and renormalised when era_mult is present."""
-    rg = ST_RGRP[st]
+    rg = ST_RGRP7[st]
+    if "l1x_game" in AS and (np.asarray(st) > 4).any():  # EG-R1 part A: EN rows on the L0s baseline x ES-group level
+        en = np.asarray(st) > 4
+        out = np.empty((len(st), AS["l1x_base"].shape[2]))
+        if (~en).any():
+            out[~en] = class_cdf(AS, None, gi[~en], team, st[~en], sc[~en], m, t)
+        row = np.cumsum(AS["state_pdf"][st[en], int(t >= 3600)] * AS["game_mult"][gi[en], 0], 1)
+        out[en] = row / row[:, -1:]
+        return out
     if "l1x_game" in AS:                                # SL-R7 L1x-as
         pt = int(t >= 3600)
         z = AS["l1x_base"][st, pt] + AS["l1x_lgm"][gi, rg] + AS["l1x_game"][gi, team, rg] + AS["l1x_sc"][pt, sc]
@@ -477,3 +552,89 @@ def class_cdf(AS, ai, gi, team, st, sc, m, t):
         row = np.cumsum(row.astype(np.float64) * AS["era_mult"][AS["rec_era"][ai], rg], 1)
         row /= row[:, -1:]
     return row
+
+
+def _pull_setup(pull: dict, AS, G: int, N: int, gs) -> dict:
+    """Validate tables["pull"] and allocate the pull counters."""
+    if AS is None or "goal_cls" not in AS or "p_miss" not in AS or "state_pdf" not in AS or "p_block_game" not in AS:
+        raise ValueError("the goalie pull needs the default cascade: L0s state_pdf, block B0, miss S0t, goal C1s")
+    hz = pull["hazard"]
+    if hz["kind"] == "P1":
+        tab = np.asarray(hz["table"], np.float64)
+        if tab.shape != (3, PULL_WIN // 10, 3, 2, 2):
+            raise ValueError(f"P1 hazard table must be (3, 60, 3, 2, 2), got {tab.shape}")
+        h0 = h1 = None
+    elif hz["kind"] == "P0":
+        tab = None
+        h0, h1 = np.asarray(hz["h_first"], np.float64), np.asarray(hz["h_repull"], np.float64)
+        if h0.shape != (3, 2, PULL_WIN) or h1.shape != (PULL_WIN + 1,):
+            raise ValueError("P0 needs h_first (3, 2, 600) and h_repull (601,)")
+    else:
+        raise ValueError(hz["kind"])
+    pbe, pme = np.asarray(pull["p_block_en"], np.float64), np.asarray(pull["p_miss_en"], np.float64)
+    if pbe.shape != (G, 2, 2) or pme.shape != (G, 2, 2, AS["goal_cls"].shape[0]):
+        raise ValueError("pull needs p_block_en (G, 2, 2) and p_miss_en (G, 2, 2, C) [game, ENF / ENA, period type]")
+    lam, pe = np.asarray(pull["en_lam"], np.float64), np.asarray(pull["p_en_goal"], np.float64)
+    ec, eg = np.asarray(pull["eaf_cls"], np.float64), np.asarray(pull["eaf_game"], np.float64)
+    if lam.shape != (G, 2) or pe.shape != (G,) or eg.shape != (G, 2) or ec.shape != (AS["goal_cls"].shape[0],):
+        raise ValueError("pull needs en_lam (G, 2), p_en_goal (G,), eaf_cls (C,), eaf_game (G, 2)")
+    if not pull.get("label") or not pull.get("stand_in"):
+        raise ValueError("pull needs a model label and its stand_in labels")
+    gs.track_pull = True
+    return dict(kind=hz["kind"], table=tab, h_first=h0, h_repull=h1, en_lam=lam, p_en_goal=pe, eaf_cls=ec, eaf_game=eg,
+                p_block_en=pbe, p_miss_en=pme,
+                label=str(pull["label"]), stand_in=[f"{k}: {v}" for k, v in sorted(pull["stand_in"].items())],
+                reg_end=gs.reg_end, pull_s=np.zeros((N, 2), np.int32), n_pulls=np.zeros((N, 2), np.int16),
+                n_repulls=np.zeros((N, 2), np.int16), first_t=np.full((N, 2), -1, np.int32), first_d=np.zeros((N, 2), np.int8),
+                at_t1=np.zeros((N, 2), bool), t1_seen=np.zeros((N, 2), bool), rep_ga=np.zeros((N, 2), np.int16))
+
+
+def pull_hazard(PS: dict, dcat, t, pen, pb, home, lag) -> np.ndarray:
+    """Served per-second pull probability: dcat 0..2 (deficit 1 / 2 / 3+), game second t, pen 0 none / 1 pk / 2 pp,
+    pulled_before 0 / 1, home 0 / 1, lag = seconds since the last return (P0 re-pull)."""
+    dcat, pen, pb, home, lag = (np.asarray(x, np.int64) for x in (dcat, pen, pb, home, lag))
+    re = PS.get("reg_end", 3600)
+    if PS["kind"] == "P1":
+        return PS["table"][dcat, (re - int(t) - 1) // 10, pen, pb, home]
+    a = PS["h_first"][dcat, (pen > 0).astype(np.int64), int(t) - (re - PULL_WIN)]
+    b = PS["h_repull"][np.clip(lag, 0, PULL_WIN)]
+    return np.where(pb == 1, b, a)
+
+
+def _pull_second(gs, PS, K, a, t, sk, diff, st_h, st_a):
+    """Pull draws at the start of second t (pre-event state), pulled-second counters, and the team-view states of the
+    second's attempts (5 EN-for / 6 EN-against while a goalie is out)."""
+    if gs.reg_end - PULL_WIN <= t < gs.reg_end:
+        for team in (0, 1):
+            d = -diff if team == 0 else diff                  # own deficit before the second
+            own, opp = sk[:, team].astype(np.int64), sk[:, 1 - team].astype(np.int64)
+            PS["t1_seen"][a[d == 1], team] = True
+            j = np.nonzero((d >= 1) & ~gs.pulled[a, team])[0]
+            if not j.size:
+                continue
+            aj = a[j]
+            pen = np.where(own[j] < opp[j], 1, np.where(own[j] > opp[j], 2, 0))
+            pb = gs.pulled_before[aj, team].astype(np.int64)
+            lr = gs.last_return[aj, team]
+            lag = np.where(lr >= 0, t - lr, -1)
+            h = pull_hazard(PS, np.minimum(d[j], 3) - 1, t, pen, pb, np.full(j.size, 1 - team), lag)
+            k = rng.uniform(K["pull"][aj], t, team) < h
+            if k.any():
+                hit, dh = aj[k], d[j][k]
+                gs.pulled[hit, team] = True
+                PS["n_pulls"][hit, team] += 1
+                PS["n_repulls"][hit, team] += gs.pulled_before[hit, team]
+                PS["rep_ga"][hit, team] += gs.ga_open[hit, team]
+                gs.ga_open[hit, team] = False
+                nf = PS["first_t"][hit, team] < 0
+                PS["first_t"][hit[nf], team] = t
+                PS["first_d"][hit[nf], team] = np.minimum(dh[nf], 3)
+                PS["at_t1"][hit[dh == 1], team] = True
+    pu = gs.pulled[a]
+    if not pu.any():
+        return st_h, st_a
+    PS["pull_s"][a] += pu
+    sh, sa = st_h.copy(), st_a.copy()
+    sh[pu[:, 0]], sa[pu[:, 0]] = 5, 6
+    sh[pu[:, 1]], sa[pu[:, 1]] = 6, 5
+    return sh, sa

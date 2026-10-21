@@ -5,8 +5,9 @@ the empty net):
   stage 3 A3g-c      NO EN states (G, 2, M, 5, 7)  -> STAND-IN: as-of M1 K500 attempt level per EN state (this module)
   stage 4 L0s / L1x  L0s state_pdf rows 5 / 6 (the baseline, L33); L1x-as serves EN rows as the L0s baseline x the
                      ES-group M1 K500 level (SL-R7 offline does the same)
-  block B0           ES group (B0 fit pools 5v5 + 4v4 + 3v3 + EN in the ES group)  -> index 0 of the (G, 5, 2) table
-  miss S0t           ES group (rating group 0)
+  block B0           own ENF / ENA groups (one-hot intercepts) on the ES level -> p_block_en (G, 2, 2) (not in the engine's
+                     (G, 5, 2) table, which serves 5v5 / PP / PK / 4v4 / 3v3)
+  miss S0t           own ENF / ENA groups (base / coef columns 3 / 4) on the ES level group -> p_miss_en (G, 2, 2, 78)
   goal C1s           EN-for = sg 5 EAF (5v5 level group), defending starter; EN-against: none (no goalie)
                      -> STAND-IN: as-of M1 K500 level of goal per SOG on st-6 SOG (this module; 1.0 in the data)
 M1 K500 = (n + K s_prev) / (d + K) per game date from the season's earlier dates (K = 500 attempts for the attempt
@@ -149,9 +150,137 @@ def pull_tables(games: np.ndarray, season: int = 20242025, arm: str | None = Non
     if Lg.lam_ef.isna().any():
         raise ValueError("games without an EN level")
     cls, gl, _ = goal_eaf(games)
-    t = dict(hazard=hz, en_lam=np.stack([Lg.lam_ef.to_numpy(), Lg.lam_ea.to_numpy()], 1),
+    pbe, binfo = block_en_table(games)
+    pme, minfo = miss_en_table(games)
+    t = dict(hazard=hz, en_lam=np.stack([Lg.lam_ef.to_numpy(), Lg.lam_ea.to_numpy()], 1), p_block_en=pbe, p_miss_en=pme,
              p_en_goal=Lg.p_en_goal.to_numpy(), eaf_cls=cls, eaf_game=gl,
              label=PULL_LABEL if arm == "P1" else f"goalie pull: {arm}",
              stand_in={"en_attempts": EN_ATT_LABEL, "en_goal": EN_GOAL_LABEL},
              note="no delayed-penalty state (INV-70); stage 1 reads the penalty-derived strength during a pull")
-    return t, dict(arm=arm, levels=linfo, n_games=len(games))
+    return t, dict(arm=arm, levels=linfo, n_games=len(games), block_en=binfo, miss_en=minfo)
+
+
+def block_en_table(games):
+    """(G, 2, 2) = B0's ENF / ENA groups x period type with the ES M1 K500 level offset (the SB-R1 B0 form; the engine's
+    (G, 5, 2) table carries 5v5 / PP / PK / 4v4 / 3v3 only)."""
+    from nhl_sim.block import data as D
+    from nhl_sim.block.data import logit, sigmoid
+    from nhl_sim.engine import standins as SI
+    _, info = SI.block_b0_table(np.asarray(games))
+    coef, s_train = np.asarray(info["coef"]), np.asarray(info["s_train"])
+    L = pd.read_parquet(D.OUT / "level_v1.parquet")
+    L = L[L.construction == SI.LEVEL_NAME].set_index("game_id")["s_0"].reindex(np.asarray(games)).to_numpy()
+    off = logit(L) - logit(s_train[0])
+    out = np.zeros((len(games), 2, 2))
+    for j, g in enumerate((3, 4)):
+        for pt in (0, 1):
+            out[:, j, pt] = sigmoid(coef[g * 2 + pt] + off)
+    return out, dict(groups="ENF, ENA (B0 own intercepts, ES level)", coef=coef[6:].tolist())
+
+
+def miss_en_table(games):
+    """(G, 2, 2, 78) = S0t's ENF / ENA groups x period type x class, level group ES (as CT.miss_s0t_table)."""
+    from nhl_sim.engine import c1s_tables as CT
+    from nhl_sim.miss import data as M
+    from nhl_sim.miss import tier as T
+    from nhl_sim.shot_attribute.tables import N_CLASS, N_TYPE, TIER_OF_CELL
+    sel = json.loads((CT.M_RES / "step1.json").read_text())["selected"]
+    m = json.loads((CT.M_RES / "models" / "S0t.json").read_text())
+    base, coef = np.asarray(m["base"], np.float64), np.asarray(m["coef"], np.float64)
+    tr = M.load_rows(CT.F2_TRAIN)
+    s_train = T.share_table(tr)
+    L = pd.read_parquet(M.OUT / "level_tier_v2.parquet")
+    L = L[L.construction == sel].set_index("game_id")[[f"s_{c}" for c in range(T.NC)]]
+    S = L.reindex(np.asarray(games)).to_numpy()
+    tier = np.repeat(TIER_OF_CELL.astype(np.int64), N_TYPE)
+    col = 3 * tier + 0                                                 # level group ES for the EN groups
+    lev = M.logit(S[:, col]) - M.logit(s_train[col])[None]
+    out = np.zeros((len(games), 2, 2, N_CLASS))
+    for j, g in enumerate((3, 4)):
+        for pt in (0, 1):
+            out[:, j, pt] = M.sigmoid(base[:, g][None] + lev + coef[g * 2 + pt])
+    return out, dict(groups="ENF, ENA (S0t own base / coef, ES level group)", level=sel)
+
+
+def en_parity(games: np.ndarray, attr: dict, pull: dict) -> dict:
+    """Engine-served vs offline fold-2 predictions on the EN rows (max |diff|): hazard (served lookup vs
+    pull.hazard on the fold-2 pull rows), C1s EAF (sg 5, starter rows), block B0 (st 5 / 6), miss S0t (st 5 / 6),
+    stage-4 class row (L0s baseline x ES level on st 5 / 6, through sim.class_cdf with the L1x-as attr)."""
+    from nhl_sim.engine import sim as SIM
+    from nhl_sim.engine import c1s_tables as CT
+    out = {}
+    g = np.asarray(games)
+    # hazard
+    sel = json.loads((MOD / "select.json").read_text())
+    m = json.loads((MOD / f"fold2_{sel['selected']}.json").read_text())
+    rows = pd.read_parquet(PROCESSED / "end_game" / "pull_rows_v1_20242025.parquet")
+    PS = dict(kind=pull["hazard"]["kind"], table=pull["hazard"].get("table"), h_first=pull["hazard"].get("h_first"),
+              h_repull=pull["hazard"].get("h_repull"), reg_end=3600)
+    served = np.concatenate([SIM.pull_hazard(PS, x.dcat.to_numpy(), int(s), x.pen.to_numpy(), x.pb.to_numpy(),
+                                             x.is_home.to_numpy(), x.lag.to_numpy()) for s, x in rows.groupby("s")])
+    order = np.concatenate([x.index.to_numpy() for _, x in rows.groupby("s")])
+    off = PL.hazard(m, rows.dcat, rows.s, rows.pen, rows.pb, rows.is_home, rows.lag)[order]
+    out["hazard"] = dict(n_rows=int(len(rows)), max_abs_diff=float(np.abs(served - off).max()))
+    # C1s EAF
+    lab = json.loads((CT.G_RES / "fold2" / "labels_sealed.json").read_text())["C1s"]
+    r = pd.read_parquet(CT.G_RES / "fold2" / "fold2_rows.parquet", columns=["game_id", "goalie_id", "is_home", "sg", "sc", "cell", "type6", "y"])
+    pred = np.load(CT.G_RES / "fold2" / f"fold2_pred_{lab}.npy").astype(np.float64)
+    k = (r.sg == 5).to_numpy()
+    r, p = r[k].reset_index(drop=True), pred[k]
+    gi = CT._gpos(g, r.game_id.to_numpy())
+    team = np.where(r.is_home.to_numpy() == 1, 0, 1)
+    starter = attr["goal"]["goalie_id"][gi, team] == r.goalie_id.to_numpy()
+    cls = r.cell.to_numpy().astype(np.int64) * 6 + r.type6.to_numpy().astype(np.int64)
+    AS = dict(goal_cls=attr["goal"]["cls_logit"], goal_game=attr["goal"]["game_logit"], goal_sc=attr["goal"]["sc_logit"],
+              en=dict(eaf_cls=pull["eaf_cls"], eaf_game=pull["eaf_game"], p_en_goal=pull["p_en_goal"]))
+    ENd = dict(p_block_en=pull["p_block_en"], p_miss_en=pull["p_miss_en"])
+    sv = SIM.goal_prob(AS, gi, team, np.full(len(r), 5), r.sc.to_numpy().astype(np.int64), cls)
+    d = np.abs(sv - p)
+    out["goal_eaf"] = dict(n_rows=int(len(r)), n_starter=int(starter.sum()), max_abs_diff=float(d[starter].max()),
+                           relief_rows_mean_abs_diff=float(d[~starter].mean()) if (~starter).any() else None,
+                           served_mean=float(sv.mean()), actual=float(r.y.mean()))
+    # block B0 on EN rows
+    lab = json.loads((CT.B_RES / "labels_sealed.json").read_text())["B0"]
+    r = pd.read_parquet(CT.B_RES / "fold2_rows.parquet", columns=["game_id", "st", "ptype", "y"])
+    pred = np.load(CT.B_RES / f"fold2_pred_{lab}.npy").astype(np.float64)
+    k = (r.st >= 5).to_numpy()
+    r, p = r[k].reset_index(drop=True), pred[k]
+    gi = CT._gpos(g, r.game_id.to_numpy())
+    sv = np.zeros(len(r))
+    for t_ in (0, 1):
+        kk = r.ptype.to_numpy() == t_
+        sv[kk] = SIM.block_prob(dict(p_block_game=attr["p_block_game"], en=ENd), gi[kk], r.st.to_numpy()[kk].astype(np.int64), 3600 * t_)
+    out["block"] = dict(n_rows=int(len(r)), max_abs_diff=float(np.abs(sv - p).max()),
+                        by_state={int(s): dict(served=float(sv[r.st == s].mean()), actual=float(r.y[r.st == s].mean())) for s in (5, 6)})
+    # miss S0t on EN rows
+    lab = json.loads((CT.M_RES / "labels_sealed.json").read_text())["S0t"]
+    r = pd.read_parquet(CT.M_RES / "fold2_rows.parquet", columns=["game_id", "st", "ptype", "cell", "type6", "y"])
+    pred = np.load(CT.M_RES / f"fold2_pred_{lab}.npy").astype(np.float64)
+    k = (r.st >= 5).to_numpy()
+    r, p = r[k].reset_index(drop=True), pred[k]
+    gi = CT._gpos(g, r.game_id.to_numpy())
+    cls = r.cell.to_numpy().astype(np.int64) * 6 + r.type6.to_numpy().astype(np.int64)
+    sv = np.zeros(len(r))
+    for t_ in (0, 1):
+        kk = r.ptype.to_numpy() == t_
+        sv[kk] = SIM.miss_prob(dict(p_miss=attr["p_miss_game"], en=ENd), gi[kk], r.st.to_numpy()[kk].astype(np.int64), 3600 * t_, cls[kk])
+    out["miss"] = dict(n_rows=int(len(r)), max_abs_diff=float(np.abs(sv - p).max()),
+                       by_state={int(s): dict(served=float(sv[r.st == s].mean()), actual=float(r.y[r.st == s].mean())) for s in (5, 6)})
+    # stage-4 class on EN rows (L0s offline prediction file), served through the L1x-as attr
+    lab = json.loads((CT.L_RES / "labels_sealed.json").read_text())["L0s"]
+    r = pd.read_parquet(CT.L_RES / "fold2_rows.parquet", columns=["game_id", "st", "ptype"])
+    pred = np.load(CT.L_RES / f"fold2_pred_{lab}.npy").astype(np.float64)
+    k = (r.st >= 5).to_numpy()
+    r, p = r[k].reset_index(drop=True), pred[k]
+    gi = CT._gpos(g, r.game_id.to_numpy())
+    A4 = dict(state_pdf=attr["state_pdf"], game_mult=attr["game_mult"], l1x_base=np.log(attr["state_pdf"]),
+              l1x_game=np.asarray(attr["l1x"]["game_logit"]), l1x_sc=np.asarray(attr["l1x"]["sc_logit"]),
+              l1x_lgm=np.log(attr["game_mult"]))
+    sv = np.zeros_like(p)
+    for t_ in (0, 1):
+        kk = r.ptype.to_numpy() == t_
+        if kk.any():
+            st = r.st.to_numpy()[kk].astype(np.int64)
+            sv[kk] = np.diff(SIM.class_cdf(A4, None, gi[kk], 0, st, np.full(kk.sum(), 3), 0, 3600 * t_), axis=1, prepend=0.0)
+    out["class"] = dict(n_rows=int(len(r)), max_abs_diff=float(np.abs(sv - p).max()))
+    return out

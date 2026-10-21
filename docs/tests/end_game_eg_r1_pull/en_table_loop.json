@@ -1,0 +1,67 @@
+{
+ "sim": {
+  "pulled_s_per_game": 66.04475697211156,
+  "share_trail1_pulled": 0.5990339807476445,
+  "first_median_trail1": 110.0,
+  "first_median_trail2": 174.0,
+  "first_median_trail3": 257.0,
+  "repull_share": 0.27153438662787327,
+  "pulls_per_game": 0.74300796812749
+ },
+ "actual": {
+  "pulled_s_per_game": 77.84860557768924,
+  "literal_s_per_game": 70.48924302788845,
+  "first_median_trail1": 120.0,
+  "first_median_trail2": 185.0,
+  "first_median_trail3": 255.5,
+  "n_first": [
+   444,
+   309,
+   98
+  ],
+  "share_trail1_pulled": 0.6082191780821918,
+  "n_trail1_team_games": 730,
+  "repull_share": 0.22023809523809523,
+  "n_ended_goal_against": 504
+ },
+ "en": {
+  "en_against_goals_per_game": {
+   "sim": 0.3451430615164521,
+   "actual_G7_target": null
+  },
+  "en_against_goals_per_game_RS": {
+   "sim": 0.34474501992031875,
+   "actual_pbp": 0.39939024390243905,
+   "actual_no_goalie_id": 0.39939024390243905
+  },
+  "en_for_goals_per_game_RS": {
+   "sim": 0.15245019920318725,
+   "actual_pbp": 0.1714939024390244
+  },
+  "en_attempts_per_game_RS": {
+   "sim_ef": 2.830402390438247,
+   "sim_ea": 0.8279681274900399
+  },
+  "dp_missing": {
+   "dp_pulled_s_per_game": 10.615091463414634,
+   "dp_goals_for_in": 14,
+   "note": "delayed-penalty pulls: absent from the engine (INV-70)"
+  }
+ },
+ "gates_d45": {
+  "pulled_time": {
+   "sim": 66.04475697211156,
+   "actual": 77.84860557768924,
+   "rel": -0.15162569089048106,
+   "status": "FAIL"
+  },
+  "trail1_share": {
+   "sim": 0.5990339807476445,
+   "actual": 0.6082191780821918,
+   "pp": -0.9185197334547368,
+   "status": "PASS"
+  }
+ },
+ "n_sim_rs_games": 251000,
+ "literal_actual_s_per_game": 70.48924302788845
+}

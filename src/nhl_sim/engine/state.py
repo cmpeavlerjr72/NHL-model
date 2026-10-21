@@ -4,8 +4,13 @@ Clock convention: `t` is elapsed game seconds (periods 1-3 = 0..3599, RS OT = 36
 1200 s from 3600). Events at second t are applied, then the second is recorded with the post-event state, then
 `end_second()` runs the box clock (a minor assessed at t covers seconds t..t+119).
 
-Team index 0 = home, 1 = away. Skater counts here are penalty-derived (goalie pulls are not modelled at this
-stage; a replay passes the real goalie state separately).
+Team index 0 = home, 1 = away. Skater counts here are penalty-derived; a replay passes the real goalie state separately.
+
+Goalie pull (EG-R1 part A, INV-66; off unless `track_pull` is set, which sim.simulate does only when tables carry
+"pull"): `pulled[i, team]` is the goalie-out state. The return rules are deterministic (spec): the goalie returns at a
+goal against (at the goal) and at a goal by its own team that ties the score; never elsewhere. `pulled_before` marks a
+team whose goalie has returned once (re-pull feature); `last_return` the second of the return. No delayed-penalty
+state exists in the engine (INV-70). With track_pull False nothing here changes behaviour.
 
 Recording era (`rec_era`, D24): per sim, 1 before 2023-24 and 2 from 2023-24 on (`rules.recording_era`; boundary fixed,
 not fitted). It is None unless the caller passes the games' seasons; only the levelled stage-4 lookup reads it.
@@ -44,6 +49,13 @@ class GameState:
         self.held = np.zeros((self.n, 2), np.int8)
         self.reg_end = era.reg_period_s * era.n_reg_periods
         self.is_rs = self.gt == 2
+        self.track_pull = False                            # EG-R1 part A goalie pull (off by default)
+        self.pulled = np.zeros((self.n, 2), bool)
+        self.pulled_before = np.zeros((self.n, 2), bool)
+        self.last_return = np.full((self.n, 2), -1, np.int32)
+        self.ga_open = np.zeros((self.n, 2), bool)         # returned at a goal against, no pull since (re-pull share)
+        self.n_ret_ga = np.zeros((self.n, 2), np.int16)
+        self.n_ret_tie = np.zeros((self.n, 2), np.int16)
 
     # ------------------------------------------------------------------ clock / periods
     def period(self) -> np.ndarray:
@@ -89,11 +101,29 @@ class GameState:
         sk = self.skaters()[idx]
         pp = sk[np.arange(idx.size), team] > sk[np.arange(idx.size), 1 - team]
         np.add.at(self.score, (idx, team), 1)
+        if self.track_pull:
+            self._pull_returns(idx, team)
         if self.era.pp_goal_ends_minor and pp.any():
             self.box.pp_goal(idx[pp], team[pp])
         if self.auto_end and self.in_ot():
             self.alive[idx] = False
             self.end_state[idx] = END_OT
+
+    def _pull_returns(self, idx: np.ndarray, team: np.ndarray) -> None:
+        """Return rules after goals by `team` in sims idx (score already updated): the conceding team's pulled goalie
+        returns; the scoring team's pulled goalie returns if the goal tied the score."""
+        opp = 1 - team
+        ga = self.pulled[idx, opp]
+        tie = self.pulled[idx, team] & (self.score[idx, 0] == self.score[idx, 1])
+        for m, tm, cnt in ((ga, opp, self.n_ret_ga), (tie, team, self.n_ret_tie)):
+            if m.any():
+                i, t_ = idx[m], tm[m]
+                self.pulled[i, t_] = False
+                self.pulled_before[i, t_] = True
+                self.last_return[i, t_] = self.t
+                np.add.at(cnt, (i, t_), 1)
+        if ga.any():
+            self.ga_open[idx[ga], opp[ga]] = True
 
     def penalty(self, idx: np.ndarray, team: np.ndarray, kind: int, who=None) -> None:
         idx = np.asarray(idx, np.int64)
@@ -160,6 +190,10 @@ class GameState:
             self.alive[dec] = False
             self.end_state[dec] = END_REG
             self.hold[:] = False
+            if self.track_pull:
+                if (self.pulled & self.alive[:, None]).any():
+                    raise RuntimeError("a goalie is still pulled in a game tied after regulation")
+                self.pulled[:] = False
         elif t == self.reg_end + e.rs_ot_s:
             so = self.alive & self.is_rs
             self.alive[so] = False

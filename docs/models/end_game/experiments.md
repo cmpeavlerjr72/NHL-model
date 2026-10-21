@@ -100,3 +100,18 @@ Fixes only the details the spec leaves to the lane. Code `src/nhl_sim/end_game/p
 ### EG-R1 part A results after D45
 
 (append below this line)
+
+#### Lane H8a, part A after D45 (2026-10-21; `docs/tests/end_game_eg_r1_pull_2026-10-21.md`)
+
+- **Selected: P1** (fold 2, blind). LL +0.888 per team-game vs P0 (SE 0.075). Gated checks pass: medians trail1 114 vs 120 s, trail2 175 vs 185 s; re-pull 0.200 vs 0.220. D13 fold-1 guard PASS. trail3+ 252 vs 255.5 (n 98, UNDERPOWERED, listed). Offline pulled time is 0.906 of the in-sample P0 calibration (diagnostic).
+- **EN inventory.** A3g-c has no EN state, so EN attempts are a STAND-IN as-of M1 K500 level per EN state. EN-against goal per SOG is a STAND-IN M1 K500 level (1.0). Block and miss serve B0's and S0t's own ENF / ENA groups on the ES level; the spec's "ES group" wording does not match the offline models, and the ES group would fail parity by 0.28 / 0.53. Stage 4 is the L0s baseline on EN rows (L33). EN-for goals are C1s EAF. Every served-vs-offline parity is <= 3e-8.
+- **Engine.** Flag `tables["pull"]` (default off) is bit-identical to d5e387a on 16 cases. The pull-off 200-seed loop is bit-identical (sha256) to Lane E3's loop. 26 new tests pass, including the goalie-out state never persisting past a tying goal. Full suite: 312 passed, 1 xfailed.
+- **Closed loop (200 seeds, fold 2, pull on, part A only).**
+  - Pulled time per game 66.0 vs 77.8 s, **-15.2% FAIL**.
+  - Trailing-by-1 share 0.599 vs 0.608, **PASS**.
+  - G7: EN goals 0.345 vs 0.406 **FAIL**; regulation-tie 0.2376 vs 0.2082 **FAIL** (pull off 0.2045); shootout 0.0726 vs 0.0551 **FAIL**.
+  - G1 / G3 unchanged (PASS). G2 4v4 +2.8% -> +3.2% (listed INV-42).
+- **Decomposition.**
+  - EN scoring per pulled second matches actual (EN-against 18.8 vs 18.5 per hour). The EN-goal miss is pull timing: 2024-25 pulled earlier than any training season (77.8 s vs 63.9-67.6 s per game; medians 120 / 185 vs about 111 / 175 s). That is a level, EG-R2's first item per the spec.
+  - The tie-rate rise comes from the trailing team's 6v5 scoring (tying goals while pulled 0.069 vs 0.054 per game). The pull-off engine already matched the actual tie rate without any 6v5, which points to an upstream compensating bias (G5 margins too narrow). Not fixed here.
+- **Missing by construction:** delayed-penalty pulls, 10.6 s per game (INV-70). Not produced: last-2-min goals by deficit.
