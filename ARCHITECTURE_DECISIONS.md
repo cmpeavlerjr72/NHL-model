@@ -593,3 +593,12 @@ Status: ADOPTED.
 - **Resume.** Fold-1 grade under the restated check, the blind fold-2 grade, then the engine step after `engine_b1aas` and the closed loop (the tie-break run if needed).
 
 Status: ADOPTED.
+
+## D52 (2026-10-21): SB-R5 closed loop passed; B1a-as is the provisional block incumbent; the default set gains B1a-as and the 3v3 OT level at the next engine step
+
+- **Closed loop (Lane B5, 4c7570d, `engine_b1aas`; `docs/tests/block_sb_r5_2026-10-21.md`, `docs/tests/gates_block_b1aas_engine_2026-10-21.md`).** Flag off bit-identical to 0838766 on 16 cases; served vs offline 1.67e-16 over 162,300 rows from the committed snapshot (no recompute, D47); 225 engine and as-of tests pass. 200 seeds, fold 2, paired with Lane E3's default loop: block share overall +0.35 pp (band 1.0), ES +0.25, PP +0.97, PK +0.27 (band 1.5), all PASS; 4v4 -0.40 and 3v3 -0.14 UNDERPOWERED, reported. Blocked / unblocked attempts per 60 match by state (5v5 17.20 vs 16.98 blocked, 41.50 vs 41.49 unblocked). Team-decile R on the sim block share 0.979 / 1.012 (UNDERPOWERED, in band). G3 PASS and unchanged (every gated delta under 0.01); G2 unchanged (3v3 +5.4% listed, because this loop does not carry the OT level, which is also behind a flag).
+- **Ruling.** block is CONFIRMED-INCUMBENT (provisional). B1a-as replaces the B0 stand-in. The stand-ins left in the engine are miss S0t and the EN levels. INV-64 is closed.
+- **INV-77 (small engine step, Sonnet, after Lane G4's engine step):** `default_attr` serves B1a-as and the 3v3 OT level (both passed their gates, D50 / D52); the pull process and the shootout stay behind flags until EG-R2. The default loop is re-run and must be file-identical to the union of the two flag-on loops where the flags do not interact (state the check), and the `stand_in` marker drops block.
+- **Listed.** The AS-1 floor note for LEARNINGS (the goalie burn-in spike was 109-113 raw and G-R3 never listed it) is folded into L38.
+
+Status: ADOPTED.
