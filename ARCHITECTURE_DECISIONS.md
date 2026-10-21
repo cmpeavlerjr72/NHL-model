@@ -562,3 +562,11 @@ Status: ADOPTED.
 - **Method note.** The diagnosis ran a recording hook over the engine pinned at 8464696 with no random draws; its 279,600 rows are identical to Lane E3's loop.
 
 Status: ADOPTED.
+
+## D49 (2026-10-21): SM-R3 stopped at step 0; S0t stays; no as-of score construction for misses
+
+- **Step 0 (Lane M3, 4d41af0; `docs/tests/miss_sm_r3_step0_2026-10-21.md`).** On the training seasons, with S0t's tier level as the offset, the pooled score-bucket coefficients are +0.005 / +0.012 / -0.002 / -0.020 logit (SE about 0.011): no score gradient survives the matched tier level. The lead-1 and lead-2+ coefficients trend (z -2.17 / -2.06, one degree of freedom, weak), so the spec's stop rule fired. Nothing on fold 2 was read.
+- **Ruling.** SM-R3 is closed with no arm. The 5% share INV-71 attributed to misses is either fold-2 specific or inside noise, and an as-of construction for an effect of 0.02 logit is not worth a round. S0t stays the stand-in. INV-75 is closed. The sim.py order drops M3: H8b -> B5 -> G4.
+- **Listed.** If G5b still fails after G-R4 and B1a-as are wired, the miss score gradient on fold 2 is re-examined as a diagnostic before any respec.
+
+Status: ADOPTED.
