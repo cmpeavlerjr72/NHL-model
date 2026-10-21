@@ -254,3 +254,186 @@ def episodes_and_rows(G: pd.DataFrame, EV: pd.DataFrame, P: pd.DataFrame, has_sh
 def unpack(paths: pd.DataFrame, col: str) -> np.ndarray:
     """(n_team_games, NSEC) int8 array from a paths column."""
     return np.stack([np.frombuffer(b, np.int8) for b in paths[col]]).astype(np.int16)
+
+
+# ============================================================================================ arms
+PRIOR_SD = 10.0
+N_P1 = 3 * NBIN + 4                     # deficit x bin cells | pk | pp | pulled_before | home
+
+
+def _cells(rows: pd.DataFrame) -> pd.DataFrame:
+    b = rem_bin(rows.s.to_numpy())
+    k = pd.DataFrame(dict(dcat=rows.dcat.to_numpy(), bin=b, pen=rows.pen.to_numpy(), pb=rows.pb.to_numpy(),
+                          home=rows.is_home.to_numpy(), y=rows.y.to_numpy()))
+    return k.groupby(["dcat", "bin", "pen", "pb", "home"]).y.agg(["size", "sum"]).reset_index()
+
+
+def _design(dcat, b, pen, pb, home) -> np.ndarray:
+    dcat, b, pen, pb, home = (np.asarray(x) for x in (dcat, b, pen, pb, home))
+    n = len(dcat)
+    X = np.zeros((n, N_P1))
+    X[np.arange(n), dcat * NBIN + b] = 1.0
+    X[:, 3 * NBIN] = pen == 1
+    X[:, 3 * NBIN + 1] = pen == 2
+    X[:, 3 * NBIN + 2] = pb
+    X[:, 3 * NBIN + 3] = home
+    return X
+
+
+def fit_p1(rows: pd.DataFrame, max_iter: int = 100) -> dict:
+    """P1: logistic per second, one-hot deficit x 10-s bin + pk + pp + pulled_before + home; Newton on the aggregated
+    cells with a Gaussian prior SD PRIOR_SD on every coefficient (numerical guard for empty cells)."""
+    c = _cells(rows)
+    X = _design(c.dcat, c["bin"], c.pen, c.pb, c.home)
+    n, y = c["size"].to_numpy(float), c["sum"].to_numpy(float)
+    w = np.zeros(N_P1)
+    w[:3 * NBIN] = np.log(y.sum() / n.sum())
+    lam = 1.0 / PRIOR_SD ** 2
+
+    def obj(w_):
+        z = X @ w_
+        return float((y * z - n * np.logaddexp(0.0, z)).sum() - 0.5 * lam * (w_ @ w_))
+
+    f = obj(w)
+    for it in range(max_iter):
+        p = 1.0 / (1.0 + np.exp(-(X @ w)))
+        g = X.T @ (y - n * p) - lam * w
+        H = (X * (n * p * (1 - p))[:, None]).T @ X + lam * np.eye(N_P1)
+        step = np.linalg.solve(H, g)
+        t = 1.0
+        while obj(w + t * step) < f - 1e-12 and t > 1e-8:          # backtracking (Newton overshoots on empty cells)
+            t *= 0.5
+        w = w + t * step
+        f_new = obj(w)
+        if abs(f_new - f) < 1e-9 and np.abs(t * step).max() < 1e-6:
+            f = f_new
+            break
+        f = f_new
+    return dict(arm="P1", coef=w.tolist(), n_iter=it + 1, prior_sd=PRIOR_SD, n_rows=int(n.sum()), n_pulls=int(y.sum()))
+
+
+def p1_table(m: dict) -> np.ndarray:
+    """Served P1 lookup: probability per second [dcat 3, bin 60, pen 3, pb 2, home 2]."""
+    w = np.asarray(m["coef"], np.float64)
+    d, b, pe, pb, h = np.meshgrid(np.arange(3), np.arange(NBIN), np.arange(3), np.arange(2), np.arange(2), indexing="ij")
+    z = _design(d.ravel(), b.ravel(), pe.ravel(), pb.ravel(), h.ravel()) @ w
+    return (1.0 / (1.0 + np.exp(-z))).reshape(3, NBIN, 3, 2, 2)
+
+
+def fit_p0(rows: pd.DataFrame) -> dict:
+    """P0: empirical first-pull hazard per (deficit, penalty-on, second) and re-pull hazard per second since the
+    return (no smoothing)."""
+    r0 = rows[rows.pb == 0]
+    po = (r0.pen > 0).astype(int).to_numpy()
+    i = r0.s.to_numpy().astype(np.int64) - WIN0
+    n = np.zeros((3, 2, NSEC)); y = np.zeros((3, 2, NSEC))
+    np.add.at(n, (r0.dcat.to_numpy(), po, i), 1); np.add.at(y, (r0.dcat.to_numpy(), po, i), r0.y.to_numpy())
+    r1 = rows[rows.pb == 1]
+    lag = np.clip(r1.lag.to_numpy().astype(np.int64), 0, NSEC)
+    n1 = np.bincount(lag, minlength=NSEC + 1).astype(float)
+    y1 = np.bincount(lag, weights=r1.y.to_numpy().astype(float), minlength=NSEC + 1)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        h0 = np.where(n > 0, y / n, 0.0)
+        h1 = np.where(n1 > 0, y1 / n1, 0.0)
+    return dict(arm="P0", h_first=h0.tolist(), h_repull=h1.tolist(), n_rows=int(len(rows)), n_pulls=int(rows.y.sum()),
+                n_first=int(r0.y.sum()), n_repull=int(r1.y.sum()))
+
+
+def p0_tables(m: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Served P0 lookups: h_first [dcat 3, penalty-on 2, second 600], h_repull [lag 0..600]."""
+    return np.asarray(m["h_first"], np.float64), np.asarray(m["h_repull"], np.float64)
+
+
+def hazard(m: dict, dcat, s, pen, pb, home, lag) -> np.ndarray:
+    """Per-second pull probability under arm m (P0 or P1) for arrays of row features."""
+    dcat, s, pen, pb, home, lag = (np.asarray(x).astype(np.int64) for x in (dcat, s, pen, pb, home, lag))
+    if m["arm"] == "P1":
+        if "_table" not in m:
+            m["_table"] = p1_table(m)
+        return m["_table"][dcat, rem_bin(s), pen, pb, home]
+    if m["arm"] == "P0":
+        if "_h0" not in m:
+            m["_h0"], m["_h1"] = p0_tables(m)
+        a = m["_h0"][dcat, (pen > 0).astype(np.int64), s - WIN0]
+        b = m["_h1"][np.clip(lag, 0, NSEC)]
+        return np.where(pb == 1, b, a)
+    raise ValueError(m["arm"])
+
+
+def team_game_ll(m: dict, rows: pd.DataFrame) -> pd.Series:
+    """Per-team-game Bernoulli LL over the rows, hazards clipped to [CLIP, 1 - CLIP]."""
+    h = np.clip(hazard(m, rows.dcat, rows.s, rows.pen, rows.pb, rows.is_home, rows.lag), CLIP, 1 - CLIP)
+    y = rows.y.to_numpy()
+    ll = np.where(y == 1, np.log(h), np.log1p(-h))
+    return pd.Series(ll).groupby([rows.game_id.to_numpy(), rows.team_id.to_numpy()]).sum()
+
+
+# ============================================================================================ offline simulator
+def actual_stats(paths: pd.DataFrame, ep: pd.DataFrame) -> dict:
+    """Bias-check quantities on the data (engine-rule episodes)."""
+    ng = paths.game_id.nunique()
+    first = ep[~ep.pulled_before.astype(bool)]
+    fd = np.minimum(first.deficit, 3)
+    med = {d: float((WIN1 - first[fd == d].start).median()) for d in (1, 2, 3)}
+    dfc, dp = unpack(paths, "deficit"), unpack(paths, "dp")
+    den = ((dfc == 1) & (dp == 0)).any(1)
+    key = paths.game_id.astype(str) + "_" + paths.team_id.astype(str)
+    e1 = ep[ep.deficit == 1]
+    num = key.isin(set(e1.game_id.astype(str) + "_" + e1.team_id.astype(str))).to_numpy() & den
+    ga = ep[ep.cause == "goal_against"]
+    nxt = ep.sort_values("start").groupby(["game_id", "team_id"]).start.shift(-1)
+    return dict(pulled_s_per_game=float(paths.out_engine.sum() / ng), literal_s_per_game=float(paths.out_literal.sum() / ng),
+                first_median_trail1=med[1], first_median_trail2=med[2], first_median_trail3=med[3],
+                n_first=[int((fd == d).sum()) for d in (1, 2, 3)],
+                share_trail1_pulled=float(num.sum() / den.sum()), n_trail1_team_games=int(den.sum()),
+                repull_share=float(nxt.reindex(ga.index).notna().mean()), n_ended_goal_against=int(len(ga)))
+
+
+def simulate_offline(m: dict, paths: pd.DataFrame, reps: int = 200, seed: int = 0) -> dict:
+    """The arm's pull process on the actual paths (score before each second, penalty state, DP-on, goal seconds) with
+    the engine's return rules; `reps` replications per team-game."""
+    rng = np.random.default_rng(seed)
+    dfc, pen, dp, ret, tie = (np.repeat(unpack(paths, c), reps, 0) for c in ("deficit", "pen", "dp", "ret", "tie"))
+    home = np.repeat(paths.is_home.to_numpy().astype(np.int64), reps)
+    N = dfc.shape[0]
+    out = np.zeros(N, bool); pb = np.zeros(N, np.int64); last = np.full(N, -1, np.int64)
+    out_s = np.zeros(N, np.int64)
+    first_s = np.full(N, -1, np.int64); first_d = np.zeros(N, np.int64); any_t1 = np.zeros(N, bool)
+    n_ga = 0; n_ga_rep = 0
+    ga_open = np.zeros(N, bool)                       # an episode ended by a goal against, not yet followed by a pull
+    for i in range(NSEC):
+        s = WIN0 + i
+        el = (dfc[:, i] >= 1) & ~out & (dp[:, i] == 0)
+        j = np.flatnonzero(el)
+        if j.size:
+            h = hazard(m, dcat_of(dfc[j, i]), np.full(j.size, s), pen[j, i], pb[j], home[j],
+                       np.where(last[j] >= 0, s - last[j], -1))
+            hit = j[rng.random(j.size) < h]
+            out[hit] = True
+            nf = hit[first_s[hit] < 0]
+            first_s[nf] = s; first_d[nf] = np.minimum(dfc[nf, i], 3)
+            any_t1[hit[dfc[hit, i] == 1]] = True
+            n_ga_rep += int(ga_open[hit].sum()); ga_open[hit] = False
+        out_s += out
+        r = out & (ret[:, i] == 1)
+        g_a = r & (tie[:, i] == 0)
+        n_ga += int(g_a.sum())
+        ga_open[g_a] = True
+        out[r] = False; pb[r] = 1; last[r] = s
+    ng = paths.game_id.nunique()
+    den = ((dfc == 1) & (dp == 0)).any(1)
+    med = {d: float(np.median(WIN1 - first_s[(first_s >= 0) & (first_d == d)])) for d in (1, 2, 3)}
+    return dict(pulled_s_per_game=float(out_s.sum() / reps / ng), first_median_trail1=med[1], first_median_trail2=med[2],
+                first_median_trail3=med[3], share_trail1_pulled=float((any_t1 & den).sum() / den.sum()),
+                repull_share=float(n_ga_rep / max(n_ga, 1)), reps=reps)
+
+
+def bias_checks(sim: dict, act: dict) -> dict:
+    """Pre-registered checks: pulled time per game within 10%, first-pull median by deficit within 10 s, trailing-by-1
+    pulled share within 3 pp, re-pull share within 5 pp."""
+    c = dict(pulled_time=abs(sim["pulled_s_per_game"] / act["pulled_s_per_game"] - 1) <= 0.10,
+             **{f"median_trail{d}": abs(sim[f"first_median_trail{d}"] - act[f"first_median_trail{d}"]) <= 10 for d in (1, 2, 3)},
+             trail1_share=abs(sim["share_trail1_pulled"] - act["share_trail1_pulled"]) <= 0.03,
+             repull_share=abs(sim["repull_share"] - act["repull_share"]) <= 0.05)
+    c["all"] = bool(all(c.values()))
+    return {k: bool(v) for k, v in c.items()}
