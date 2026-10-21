@@ -76,3 +76,32 @@ def l0s_attr(games: np.ndarray) -> tuple[dict, dict]:
     attr = dict(state_pdf=sp, game_mult=gm, p_block_game=pb, p_miss_game=pm, goal=goal, xg=xg, n_type=N_TYPE,
                 stand_in=dict(CT.STAND_IN))
     return attr, dict(parity=par, l0s_level=linfo, **info)
+
+
+# --------------------------------------------------------------------------- EG-R1 parts B and C (Lane H8b, default off)
+ATT_A3GC_FOLD2 = "results/shot_attempt_r3/att_lam_A3g-c_fold2.npy"
+SHOOTOUT_LABEL = "shootout S1: rules mechanics, as-of M1 K500 per-attempt success, as-of home-first share (EG-R1 part C)"
+OT3V3_LABEL = "3v3 OT attempt level: own as-of M1 K500 (EG-R1 part B), A3g-c cell refit on the training rows"
+
+
+def att_table(games: np.ndarray, ot3v3: bool = False) -> tuple[np.ndarray, dict]:
+    """The stage-3 table served to the engine (A3g-c, fold 2). ot3v3=False: the table as it is on disk (default,
+    bit-identical to the pre-EG-R1 loops). ot3v3=True: its 3v3 entries re-levelled by the own as-of 3v3 level
+    (`end_game.ot_level.served_att_lam`); every other state is bit-identical, and the served 3v3 rows are checked
+    against the offline prediction (< 1e-6 relative) before the table is returned."""
+    att = np.load(ATT_A3GC_FOLD2)
+    if not ot3v3:
+        return att, {}
+    from nhl_sim.end_game import ot_level as OL
+    new, info = OL.served_att_lam(att, games, 2)
+    par = OL.served_parity(new, games, 2)
+    _log(f"ot3v3 parity: max rel diff {par['max_rel_diff']:.3e} over {par['n_rows']:,} rows")
+    if not par["max_rel_diff"] <= TOL:
+        raise RuntimeError(f"served 3v3 != offline: {par}")
+    return new, dict(label=OT3V3_LABEL, parity=par, **info)
+
+
+def shootout_tables(games: np.ndarray) -> dict:
+    """tables["shootout"] for the engine flag (S1): per-game as-of success p and home-shoots-first share."""
+    from nhl_sim.end_game import shootout as SOF
+    return dict(SOF.s1_tables(games), label=SHOOTOUT_LABEL)

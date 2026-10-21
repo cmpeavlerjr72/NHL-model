@@ -106,6 +106,15 @@ pull["p_en_goal"][g] (STAND-IN level, no goalie). Stage 1 keeps reading the pena
 state (INV-70). Recording arrays by team-view state have 7 states when the flag is on (5 otherwise); outputs add
 pull_s / n_pulls / n_repulls / first_pull_t / first_pull_def / pull_at_trail1 / trail1_seen / n_ret_ga / n_ret_tie /
 n_repull_after_ga and the pull_model / pull_stand_in markers. Flag off: bit-identical (tests/engine/test_sim_pull.py).
+
+SHOOTOUT S1 (EG-R1 part C, INV-67, Lane H8b, 2026-10-21; default off, on when `tables` holds "shootout" = dict(p_home,
+p_away, home_first, label), per game): replaces the 50 / 50 winner stub for the sims that end level after the 5-minute
+regular-season OT (end_state SO). The shootout is played attempt by attempt with the rules mechanics of
+`end_game.shootout` on its own stream "shootout"; outputs add so_n_att / so_goals_home / so_goals_away / so_home_first and
+the shootout_model marker, and `so_home_win` is the S1 winner. Flag off: bit-identical (tests/engine/test_sim_otso.py).
+The 3v3 OT attempt level (EG-R1 part B) is a stage-3 table builder (`end_game.ot_level.served_att_lam`, which re-levels
+only the st = 3v3 entries of the A3g-c table; `defaults.att_table(games, ot3v3=True)`), not an engine branch: sudden death
+and the 4v3 / 3v4 / 4v4 OT states are the regulation cascade with the OT period type (tests/test_end_game_otso.py).
 """
 from __future__ import annotations
 
@@ -379,6 +388,11 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         gs.end_second()
     so = gs.end_state == 3
     so_home = rng.uniform(K["shootout_stub"], 0, 0) < 0.5
+    so_home_win = so & so_home
+    so_extra = {}
+    shoot = tables.get("shootout")
+    if shoot is not None:                                # EG-R1 part C: S1 replaces the 50 / 50 stub
+        so_home_win, so_extra = _shootout_s1(shoot, so, gi, seeds, gid, N)
     extra = {} if att is None else dict(att_st=att_st, att_sc=att_sc, toi_st_sc=toi_st_sc)
     if AS is not None:
         extra.update(attr_fen=AS["fen"], attr_xg=AS["xg_sum"], attr_goals=AS["goals"], attr_cell=AS["cell"],
@@ -395,7 +409,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
                      first_pull_def=PS["first_d"], pull_at_trail1=PS["at_t1"], trail1_seen=PS["t1_seen"],
                      n_ret_ga=gs.n_ret_ga.copy(), n_ret_tie=gs.n_ret_tie.copy(), n_repull_after_ga=PS["rep_ga"],
                      pull_model=np.array([PS["label"]]), pull_stand_in=np.array(PS["stand_in"]))
-    return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so & so_home,
+    return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so_home_win, **so_extra,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),
                 coinc_4v4=n_coinc_4v4, unfinished=int(gs.alive.sum()))
@@ -587,6 +601,35 @@ def _pull_setup(pull: dict, AS, G: int, N: int, gs) -> dict:
                 reg_end=gs.reg_end, pull_s=np.zeros((N, 2), np.int32), n_pulls=np.zeros((N, 2), np.int16),
                 n_repulls=np.zeros((N, 2), np.int16), first_t=np.full((N, 2), -1, np.int32), first_d=np.zeros((N, 2), np.int8),
                 at_t1=np.zeros((N, 2), bool), t1_seen=np.zeros((N, 2), bool), rep_ga=np.zeros((N, 2), np.int16))
+
+
+def _shootout_s1(shoot: dict, so: np.ndarray, gi: np.ndarray, seeds: np.ndarray, gid: np.ndarray, N: int):
+    """EG-R1 part C, S1 (default off; on when `tables` holds "shootout"): the shootout of every sim that ends level
+    after the 5-minute OT is played with the rules mechanics of `end_game.shootout` (three rounds, early termination,
+    sudden death, alternating shooters), a constant per-attempt success p for both sides and the as-of home-shoots-first
+    share, per game. Stream "shootout" (counter (0, 0): who shoots first; (1, j): attempt j). Returns (home_win (N,)
+    bool, outputs: so_n_att / so_goals_home / so_goals_away / so_home_first (N,), shootout_model marker)."""
+    from nhl_sim.end_game import shootout as SOF
+    G = len(shoot["p_home"])
+    p_h, p_a, hf = (np.asarray(shoot[k], np.float64) for k in ("p_home", "p_away", "home_first"))
+    if p_h.shape != (G,) or p_a.shape != (G,) or hf.shape != (G,) or not ((p_h > 0) & (p_h < 1) & (p_a > 0) & (p_a < 1)).all()             or not ((hf >= 0) & (hf <= 1)).all():
+        raise ValueError("tables['shootout'] needs per-game p_home / p_away in (0, 1) and home_first in [0, 1]")
+    if not shoot.get("label"):
+        raise ValueError("tables['shootout'] needs a model label")
+    hw = np.zeros(N, bool)
+    n_att = np.zeros(N, np.int16)
+    gh = np.zeros(N, np.int16)
+    ga = np.zeros(N, np.int16)
+    first = np.zeros(N, bool)
+    idx = np.nonzero(so)[0]
+    if idx.size:
+        keys = rng.stream_keys(seeds[idx], gid[idx], "shootout")
+        u_att = np.stack([rng.uniform(keys, 1, j) for j in range(SOF.MAX_ATTEMPTS)], 1)
+        g = gi[idx]
+        w, n, h_, a_, f = SOF.shootout_home_win(rng.uniform(keys, 0, 0), u_att, p_h[g], p_a[g], hf[g])
+        hw[idx], n_att[idx], gh[idx], ga[idx], first[idx] = w, n, h_, a_, f
+    return hw, dict(so_n_att=n_att, so_goals_home=gh, so_goals_away=ga, so_home_first=first,
+                    shootout_model=np.array([str(shoot["label"])]))
 
 
 def pull_hazard(PS: dict, dcat, t, pen, pb, home, lag) -> np.ndarray:
