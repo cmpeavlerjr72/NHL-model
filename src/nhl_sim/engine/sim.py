@@ -97,6 +97,12 @@ tables are built by nhl_sim.block.serve_b1aas.b1aas_tables from the committed sn
 never recomputed). EN states (pull on) keep B0's own EN groups. Output carries "block_model". Flag off: bit-identical
 (tests/engine/test_sim_b1aas.py).
 
+GOAL C1s-sap (G-R4, INV-74, Lane G4, 2026-10-21; default off, on when attr["goal"] holds "sc_game" (G, 4, 7)): the score
+term of the goal model becomes sc_game[g, period index, sc7] (period index min(t // 1200, 3): P1 / P2 / P3 / OT) instead
+of the pooled sc_logit[sc7]: the as-of score-bucket deviations of the game date plus the pooled period interactions,
+built by nhl_sim.engine.goal_r4_tables.goal_r4_tables (cls_logit / game_logit are C1s's, unchanged). EAF rows (EN
+cascade) carry no score term, as before. Flag off: bit-identical (tests/engine/test_sim_goal_r4.py).
+
 GOALIE PULL + EN CASCADE (EG-R1 part A, INV-66, Lane H8a, 2026-10-21; default off, on when `tables` holds "pull", which
 needs the stage-3 attempt table, the L0s state_pdf baseline, block B0 (p_block_game), miss S0t and goal C1s): at the
 start of each second t in the last 600 s of regulation, before the second's draws, each team trailing before the
@@ -280,6 +286,11 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             AS.update(goal_cls=cl, goal_game=gl_, goal_sc=sl, goalie_id=gid_, goal_label=str(gm_["label"]),
                       oracle_goalie=str(gm_["oracle_goalie"]), sog=np.zeros((N, 2, n_st), np.int32),
                       gprob=np.zeros((N, 2, n_st)))
+            if "sc_game" in gm_:                        # G-R4 C1s-sap: per game x period score term (default off)
+                scg = np.asarray(gm_["sc_game"], np.float64)
+                if scg.shape != (G, 4, 7) or not np.isfinite(scg).all():
+                    raise ValueError(f"attr goal sc_game must be a finite (G, 4, 7) table, got {scg.shape}")
+                AS["goal_sc_game"] = scg
         elif "p_miss" in AS:
             raise ValueError("the miss stand-in needs the C1s goal model (attr['goal']): xG_ref is per unblocked attempt")
         if labels:
@@ -512,7 +523,7 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     x = AS["xg"][cls, rg]
     if "p_miss" in AS:                                  # INV-60: miss S0t -> shot on goal -> goal C1s
         sog = rng.uniform(K["attempt_miss"][ai], t, kk) >= miss_prob(AS, gi, st, t, cls)
-        pg = goal_prob(AS, gi, team, st, sc, cls)
+        pg = goal_prob(AS, gi, team, st, sc, cls, min(t // 1200, 3))
         goal = sog & (rng.uniform(K["attempt_goal"][ai], t, kk) < pg)
         np.add.at(AS["sog"], (ai, team, st), sog.astype(np.int32))
         np.add.at(AS["gprob"], (ai, team, st), np.where(sog, pg, 0.0))
@@ -570,20 +581,29 @@ def miss_prob(AS, gi, st, t, cls):
     return AS["p_miss"][gi, ST_RGRP7[st], int(t >= 3600), cls]
 
 
-def goal_prob(AS, gi, team, st, sc, cls):
+def _goal_sc(AS, gi, sc, per):
+    if "goal_sc_game" in AS:                            # G-R4 C1s-sap flag
+        if per is None:
+            raise ValueError("the C1s-sap score term needs the period index")
+        return AS["goal_sc_game"][gi, per, sc]
+    return AS["goal_sc"][sc]
+
+
+def goal_prob(AS, gi, team, st, sc, cls, per=None):
     """Served C1s goal probability per shot on goal (INV-60): sigmoid(cls_logit[class, st] + game_logit[g, team, st] +
-    sc_logit[sc7]); team = shooting team (0 home), st = its team-view state 0..4, sc = its score bucket 0..6."""
+    sc_logit[sc7]); team = shooting team (0 home), st = its team-view state 0..4, sc = its score bucket 0..6.
+    With the G-R4 flag (AS["goal_sc_game"]) the score term is sc_game[g, per, sc7], per = period index 0..3."""
     st = np.asarray(st)
     if "en" in AS and (st > 4).any():                   # EG-R1 part A: EN-for = C1s EAF, EN-against = the EN level
         PS = AS["en"]
         ef, ea = st == 5, st == 6
         s4 = np.minimum(st, 4)
-        z = AS["goal_cls"][cls, s4] + AS["goal_game"][gi, team, s4] + AS["goal_sc"][sc]
+        z = AS["goal_cls"][cls, s4] + AS["goal_game"][gi, team, s4] + _goal_sc(AS, gi, sc, per)
         z[ef] = PS["eaf_cls"][cls[ef]] + PS["eaf_game"][gi[ef], team]       # C1s EAF: no score dummies (L33)
         p = 1.0 / (1.0 + np.exp(-z))
         p[ea] = PS["p_en_goal"][gi[ea]]
         return p
-    z = AS["goal_cls"][cls, st] + AS["goal_game"][gi, team, st] + AS["goal_sc"][sc]
+    z = AS["goal_cls"][cls, st] + AS["goal_game"][gi, team, st] + _goal_sc(AS, gi, sc, per)
     return 1.0 / (1.0 + np.exp(-z))
 
 
