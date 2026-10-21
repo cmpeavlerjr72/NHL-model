@@ -461,3 +461,14 @@ Status: ADOPTED; the user decision is pending.
 - **INV-53 status.** The as-of scale works on goalies. Blocks (D34) and the stage-3 over-response (D33) are candidates for it next, each pre-registered separately.
 
 Status: ADOPTED.
+
+## D41 (2026-10-21): INV-60 accepted; the engine carries the C1s goal model, the S0t miss stand-in, L0s on M1 K500 and B0 with own 4v4 / 3v3 groups
+
+- **What Lane E2 delivered (80f0b2e; `docs/tests/engine_c1s_2026-10-21.md`).** Flag-off output is bit-identical to 7fac157 on 13 fixture cases (sha256). Served vs offline maxima: L0s on M1 K500 2.98e-8, B0 1.49e-8, S0t 2.98e-8, C1s 1.1e-16 (the 1e-8 residuals are float32 storage of the offline predictions). 218 tests pass, 1 xfailed; 26 new tests cover flag-off identity, the four parities, the seal and the `oracle_goalie` / `stand_in` markers.
+- **Plumbing loop (200 seeds, fold 2, oracle goalie; nothing gates).** Save % 90.06 vs 89.94 actual (+0.11 pp); goals per 60 +0.2%; by state 5v5 +1.3%, PP -3.7%, PK -3.1%, 4v4 +4.3% and 3v3 +5.4% (both UNDERPOWERED and carrying the listed stage-3 cells). Served goalie R 0.975 (CI 0.55-2.72, UNDERPOWERED) against 0.98 offline; sim vs actual per-goalie save % correlation 0.71 over 62 goalies. G3 xG +0.18% CLEAN. G2 4v4 +2.88% PASS, 3v3 +5.44% FAIL (INV-42 / INV-35, listed). G5-G7 are labelled "plumbing, stages 7-8 absent" and are not read as gates.
+- **INV-54 ruling.** The 4v4 / 3v3 block groups get one intercept each, not split by period type: 3v3 has 3 regulation training rows and no fit exists for that cell. This is a construction constraint, not tuning, and it is accepted with the listing. Served block share moves from 29.0 / 20.9% to 23.7 / 17.1% against 24.0 / 17.5% actual; 5v5 / PP / PK unchanged. INV-54 is closed.
+- **INV-57 ruling.** The L0s stand-in level is M1 K500 (D35). Closed.
+- **Listed, not fixed here.** The starter faces every shot (2.4% of fold-2 SOG were faced by relief goalies); the starter is the box-score goalie (oracle, D8); no rebounds, goalie pull, OT or shootout model (shootout 50/50 stub); miss share is 1.0 pp low overall and about 3 pp high at 4v4 / 3v3, which is S0t's own offline bias (D37). Results are not on HF.
+- **Status.** INV-60 is closed. The goal stage stays CONFIRMED-INCUMBENT (provisional) in the engine. Stage 8 (goalie pull, OT / shootout, in-game goalie change; INV-35) and a projected-goalie starter table (non-oracle) are the next engine items after SL-R7 reports; each is pre-registered separately.
+
+Status: ADOPTED.
