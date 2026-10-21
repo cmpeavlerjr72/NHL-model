@@ -207,7 +207,7 @@ def write(fold):
     floor = abs(float(pair[(pair.a == h[s1]) & (pair.b == h[s2])].diff_per_game.iloc[0]))
     L = [f"## Fold {fold} ({'selection' if fold == 2 else 'diagnostic'}): {r.season.iloc[0]} test, {int((r.grp <= 2).sum()):,} "
          f"gated attempts ({len(r):,} incl. EN), {G} games", "",
-         f"Generated {now()} by `scripts/grade_block_v4.py --fold {fold}` (blind: every label scored before `labels_sealed.json` was "
+         f"Generated {now()} by `scripts/grade_block_v5.py --fold {fold}` (blind: every label scored before `labels_sealed.json` was "
          f"opened; salt `SB-R5-2026-10-21`).", "", "### Summary", "", md(S.drop(columns=["label"]), ".4f"), "",
          f"- Seed floor |{s1} - {s2}| = {floor:.5f} nats/game. References (never selectable): {list(REFS)}.", ""]
     P = pair.assign(a=pair.a.map(hn), b=pair.b.map(hn))

@@ -447,12 +447,19 @@ def cmd_pred2(a):
     Dd = fold_data(2, True)
     Fr, secs = build_snap(2, True, a.procs)
     tr_dates = Fr.season != F[2][1]
+    dev = {}
     for cell in Fr.cell.unique():
         n_ = Fr[(Fr.cell == cell) & tr_dates].reset_index(drop=True)
         o_ = old[old.cell == cell].reset_index(drop=True)
-        assert len(n_) == len(o_) and np.array_equal(n_[["s_for", "s_against"]].to_numpy(), o_[["s_for", "s_against"]].to_numpy()), cell
+        assert len(n_) == len(o_) and (n_.date.to_numpy() == o_.date.to_numpy()).all(), cell
+        d = np.abs(n_[["s_for", "s_against"]].to_numpy() - o_[["s_for", "s_against"]].to_numpy())
+        dev[cell] = dict(max_abs=float(d.max()), n_dates_differing=int((d.max(1) > 0).sum()))
+    # the training-date inputs are identical (checked); a longer row array changes BLAS summation blocking, so the
+    # training-date pairs agree to rounding, not bit-for-bit (labelled numerical fact; tolerance 1e-10)
+    assert max(v["max_abs"] for v in dev.values()) < 1e-10, dev
+    (RES / "pred2_snap_dev.json").write_text(json.dumps(dev, indent=1))
     Fr.to_parquet(snap_path(2), index=False)
-    print(now(), "fold-2 snapshot extended to 2024-25; training dates bit-identical", secs, flush=True)
+    print(now(), "fold-2 snapshot extended to 2024-25; training dates vs step-1 snapshot", dev, secs, flush=True)
     x, P, info = write_preds(2, Dd, Fr)
     print(now(), "fold-2 predictions written", S["selected"], info, flush=True)
 
