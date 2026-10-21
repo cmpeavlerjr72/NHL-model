@@ -2,6 +2,35 @@
 
 PM-owned. Newest block first.
 
+## SUMMARY FOR USER 2026-10-21 (session, PM on Fable at your request)
+
+**Headline:** Stage 4 is done. The shot-location model L1x-as passed the round you granted (SL-R7): it beats the flat stand-in by 2.5 standard errors, every bias check passes, and the response ratios are inside the band on the next season (for 1.18, against 1.14). The in-season response strength from the goalie work is now the standing fix for any rating whose effect fades season to season. Separately, the engine now carries the goal model with goalie talent, so the cascade runs from penalties through goals with real sub-models at stages 1, 3, 4 and 6; blocks and misses remain flat stand-ins.
+
+**Decisions D41-D43** (in `ARCHITECTURE_DECISIONS.md`)
+
+| # | Decision |
+|---|---|
+| D41 | INV-60 accepted. Engine carries goal C1s (box-score starter, labelled oracle goalie), miss stand-in S0t, stage-4 level M1 K500, block stand-in B0 with own 4v4 / 3v3 groups. Plumbing loop: save % 90.06 vs 89.94 actual, goals per 60 +0.2% |
+| D42 | SL-R7 stopped in-sample at 4v4; the miss was entirely the first two weeks of the 2021-22 burn-in season, which the spec never judges. Check read on judged seasons (passes), round continued with nothing changed |
+| D43 | SL-R7 passed: L1x-as is the provisional stage-4 incumbent. Closed loop passes G3 and the G2 re-check. Watch items listed. Stage 4 is no longer a decision for you |
+
+**Needs you:** nothing right now. Keep Windows logged in for the live loggers and the Monday 06:00 weekly pull.
+
+**Open items, in order**
+1. Engine default table set: switch the L1x-as flag on alongside C1s (small engine step, with the plumbing loop re-run).
+2. INV-62: pre-register a prior floor for the as-of scale's burn-in spike (L38), before the scale is reused.
+3. INV-53 next applications, each pre-registered: blocks (SB-R5, replacing stand-in B0), then the stage-3 over-response watch item.
+4. Stage 8 (goalie pull, OT 3v3 hazard INV-35, shootout, in-game goalie change) and stage 7 (rebounds, faceoffs); then a projected-goalie (non-oracle) starter table (INV-8 path) so backtests stop being "oracle goalie".
+5. INV-61: monitor the live-season drift of the stage-4 "for" response ratio (1.18 offline, 1.24 in the loop; gate 1.2).
+6. INV-42 (stage-3 4v4), INV-34 (seasonal profile shape), INV-12 (Kalshi fee schedule retry), INV-7 (seed-noise study, before any ROI number).
+
+**AWS:** approved for the session, $60 cap. Lane O4 served the queue; no request was filed because every heavy step ran locally in under 10 minutes. Spend and the zero-instance proof are in `docs/ops/aws_operator_O4_2026-10-21.md`.
+
+**Worker incidents (disclosed, none harmful)**
+- Lane A7 stopped only its own snapshot processes after checking their command lines.
+- Lane E2's wrapper script exited non-zero on a `tail` flag after all blocks had finished; no effect on results.
+- PM: none this session. Pushes again printed the Windows credential-manager "Key not valid" warning; every push was verified with `git ls-remote`.
+
 ## SUMMARY FOR USER 2026-10-16 (day session, 09:20-14:10)
 
 **Headline:** The cascade now runs end to end in the engine. Stages 1, 3 and 6 have provisional models: penalties, shot attempts, and the goal model with goalie talent. Stages 4, 5a and 5b run on labelled flat stand-ins. The day's main finding: team and goalie rating effects fade season to season, so any effect strength fixed from past seasons over-reacts next season. An as-of (in-season) effect strength now fixes this for goalies, and stage 4 gets one more round with it.

@@ -483,3 +483,18 @@ Status: ADOPTED.
 - **Next.** Step 4 proceeds as pre-registered: blind fold-2 grade of L0s / L1x-ot0 / L1x-as, bias checks, R for and against, the D13 guard on fold 1, the D40 decision. If L1x-as is not eligible, the round has failed and the result goes to the user (no SL-R8).
 
 Status: ADOPTED.
+
+## D43 (2026-10-21): SL-R7 passed; L1x-as is the provisional stage-4 incumbent; the as-of response scale is the standing fix for a drifting rating response
+
+- **Fold 2 (3de175b, e0d7047; `docs/tests/shot_attribute_sl_r7_2026-10-21.md`).** L1x-as (as-of two-slope scale on Qa, fallback cell H45 P10000, on L1x-ot0 terms and L0s M1 K500) is eligible: every bias check passes (xG +0.45%, PK +2.41%, tiers within 0.81 pp), ES "for" R 1.182 (CI 0.91-1.67) and "against" R 1.138 (CI 0.87-1.63), both UNDERPOWERED with the point estimates in band, D13 guard on fold 1 PASS (R 1.105 / 1.001, +0.0324 nats/game, SE 0.0212). It beats L0s by +0.0463 nats/game (SE 0.0182, 2.5 SE). The SL-R6 reference L1x-ot0 reproduces exactly (for R 1.291, still failing). Under the D40 rule, **L1x-as is selected.**
+- **Engine (e0d7047).** Default-off flag `attr["l1x"]` on top of 80f0b2e; flag off bit-identical on 16 cases; served vs offline 1.5e-8 over 116,716 rows; 134 engine and scale tests pass.
+- **Closed loop (200 seeds, fold 2, B0 and S0t stand-ins, C1s oracle goalie).** G3 PASS: xG per unblocked attempt +0.34% overall, 5v5 +0.66%, PP -0.03%, PK +2.21%, tiers within 0.78 pp. G2 re-check PASS on every gated cell; 3v3 +5.3% listed under INV-35, 4v4 listed under INV-42 and passing.
+- **Status.** shot_attribute is CONFIRMED-INCUMBENT (provisional): L1x-as replaces the L0s stand-in. The flag is switched on in the engine's default table set at the next engine step. Listed watch items:
+  - "for" R is close to the gate (1.182 offline; 1.243 in the closed loop, reported only); the live-season drift of the "for" R is a monitoring item (INV-61);
+  - the parity step used the fallback cell (no cell in [0.9, 1.1]);
+  - the burn-in start-up spike (D42) needs a pre-registered prior floor before the scale is reused (INV-62);
+  - 4v4 / 3v3 xG are -4.9% / -3.7% in the loop (reported), from the L0s baseline's 4v4 / 3v3 cells.
+- **INV-53 ruling.** The as-of response scale has now fixed a drifting rating response at two stages (goalie: R 0.70 -> 0.98; stage-4 "for": 1.291 -> 1.182) with no bias cost. It is the standing construction for any rating whose step-0 trend test fails. Its next applications remain separately pre-registered: blocks (D34) and the stage-3 over-response (D33), each with the prior floor from INV-62.
+- **Stage 4 is no longer a user item.** The D39 / D40 "options to the user" path is closed.
+
+Status: ADOPTED.
