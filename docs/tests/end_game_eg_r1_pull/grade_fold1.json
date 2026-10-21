@@ -1,0 +1,124 @@
+{
+ "fold": 1,
+ "train": [
+  20212022,
+  20222023
+ ],
+ "test": 20232024,
+ "n_rows": 548154,
+ "n_pulls": 906,
+ "n_team_games": 2624,
+ "actual": {
+  "pulled_s_per_game": 67.57621951219512,
+  "literal_s_per_game": 60.00381097560975,
+  "first_median_trail1": 113.0,
+  "first_median_trail2": 175.5,
+  "first_median_trail3": 272.5,
+  "n_first": [
+   417,
+   312,
+   80
+  ],
+  "share_trail1_pulled": 0.5982783357245337,
+  "n_trail1_team_games": 697,
+  "repull_share": 0.21846846846846846,
+  "n_ended_goal_against": 444
+ },
+ "arms": {
+  "arm_78f7a1": {
+   "ll_sum": -6467.083539990671,
+   "ll_per_team_game": -5.232268236238407,
+   "sim": {
+    "pulled_s_per_game": 74.69711890243902,
+    "first_median_trail1": 111.0,
+    "first_median_trail2": 176.0,
+    "first_median_trail3": 250.0,
+    "share_trail1_pulled": 0.566312769010043,
+    "repull_share": 0.2111725425432613,
+    "reps": 200
+   },
+   "checks": {
+    "pulled_time": false,
+    "median_trail1": true,
+    "median_trail2": true,
+    "median_trail3": false,
+    "trail1_share": false,
+    "repull_share": true,
+    "all": false
+   },
+   "ll_by_deficit": {
+    "dcat0": -2619.9152220063615,
+    "dcat1": -2667.049099099026,
+    "dcat2": -1180.1192188852833
+   },
+   "checks_d45": {
+    "median_trail1": true,
+    "median_trail2": true,
+    "repull_share": true,
+    "all": true,
+    "listed_median_trail3_within_10s": false
+   },
+   "diag_vs_calibration": {
+    "pulled_ratio": 0.9934732579354595,
+    "trail1_share_pp": -0.5086083213773351
+   }
+  },
+  "arm_e55524": {
+   "ll_sum": -4951.452102266009,
+   "ll_per_team_game": -4.006029208953082,
+   "sim": {
+    "pulled_s_per_game": 76.10737423780488,
+    "first_median_trail1": 112.0,
+    "first_median_trail2": 176.0,
+    "first_median_trail3": 247.0,
+    "share_trail1_pulled": 0.569103299856528,
+    "repull_share": 0.19750650659054655,
+    "reps": 200
+   },
+   "checks": {
+    "pulled_time": false,
+    "median_trail1": true,
+    "median_trail2": true,
+    "median_trail3": false,
+    "trail1_share": true,
+    "repull_share": true,
+    "all": false
+   },
+   "ll_by_deficit": {
+    "dcat0": -2060.169359170514,
+    "dcat1": -2075.326360428406,
+    "dcat2": -815.956382667089
+   },
+   "checks_d45": {
+    "median_trail1": true,
+    "median_trail2": true,
+    "repull_share": true,
+    "all": true,
+    "listed_median_trail3_within_10s": false
+   },
+   "diag_vs_calibration": {
+    "pulled_ratio": 1.0122296836602145,
+    "trail1_share_pp": -0.22955523672884004
+   }
+  }
+ },
+ "calibration_P0_in_sample": {
+  "pulled_s_per_game": 75.1878506097561,
+  "first_median_trail1": 114.0,
+  "first_median_trail2": 175.0,
+  "first_median_trail3": 270.0,
+  "share_trail1_pulled": 0.5713988522238164,
+  "repull_share": 0.20495576236431162,
+  "reps": 200
+ },
+ "paired": {
+  "first": "arm_e55524",
+  "second": "arm_78f7a1",
+  "mean_diff": 1.2262390272853254,
+  "se": 0.08794302318423411,
+  "n_team_games": 1236,
+  "z": 13.943562353052677
+ },
+ "noise_floor": "0 (P1 is a deterministic logistic; a second-seed refit is identical by construction)",
+ "seconds": 51.3
+}

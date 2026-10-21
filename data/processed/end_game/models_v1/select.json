@@ -1,0 +1,23 @@
+{
+ "labels": {
+  "arm_78f7a1": "P0",
+  "arm_e55524": "P1"
+ },
+ "p1_minus_p0": {
+  "first": "arm_e55524",
+  "second": "arm_78f7a1",
+  "mean_diff": 0.8880175955236607,
+  "se": 0.0745758703739677,
+  "n_team_games": 1182,
+  "z": 11.90757266486617
+ },
+ "p1_ll_better_2se": true,
+ "p1_checks": true,
+ "p0_checks": true,
+ "d13_fold1": {
+  "P0": true,
+  "P1": true
+ },
+ "selected": "P1",
+ "rule": "D45: P1 if LL better by > 2 SE and the gated checks pass (medians trail1 / trail2 within 10 s, re-pull within 5 pp) and the fold-1 D13 guard passes; otherwise P0 if its checks pass. Pulled time and trail1 share gate in the closed loop; trail3+ median listed (UNDERPOWERED)"
+}

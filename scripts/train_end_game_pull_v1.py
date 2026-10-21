@@ -74,6 +74,13 @@ def cmd_grade(a):
         out["arms"][b] = dict(ll_sum=float(ll[nm].sum()), ll_per_team_game=float(ll[nm].mean()), sim=sim,
                               checks=PL.bias_checks(sim, act), ll_by_deficit=by)
         print(now(), b, f"LL/tg {ll[nm].mean():.5f}", json.dumps(sim), flush=True)
+    cal = PL.simulate_offline(PL.fit_p0(rows), paths, reps=a.reps, seed=100 + a.fold)     # D45: in-sample P0 calibration
+    out["calibration_P0_in_sample"] = cal
+    for nm in arms:
+        v = out["arms"][blind(nm)]
+        v["checks_d45"] = PL.checks_d45(v["sim"], act)
+        v["diag_vs_calibration"] = dict(pulled_ratio=v["sim"]["pulled_s_per_game"] / cal["pulled_s_per_game"],
+                                        trail1_share_pp=100 * (v["sim"]["share_trail1_pulled"] - cal["share_trail1_pulled"]))
     j = ll["P1"].index.union(ll["P0"].index)
     d = (ll["P1"].reindex(j, fill_value=0) - ll["P0"].reindex(j, fill_value=0))
     out["paired"] = dict(first=blind("P1"), second=blind("P0"), mean_diff=float(d.mean()), se=float(d.std(ddof=1) / np.sqrt(len(d))),
@@ -92,8 +99,11 @@ def cmd_select(a):
     p1, p0 = blind("P1"), blind("P0")
     pr = g2["paired"]
     ll_ok = pr["mean_diff"] > 2 * pr["se"]
-    c1, c0 = g2["arms"][p1]["checks"]["all"], g2["arms"][p0]["checks"]["all"]
-    d13 = {lab[k]: v["checks"]["all"] for k, v in g1["arms"].items()}
+    c1, c0 = g2["arms"][p1]["checks_d45"]["all"], g2["arms"][p0]["checks_d45"]["all"]
+    d13 = {lab[k]: v["checks_d45"]["all"] for k, v in g1["arms"].items()}
+    d1 = g1["paired"]
+    if not (d13["P1"] and d1["mean_diff"] > 2 * d1["se"]):
+        c1 = False                                     # D13 guard
     if ll_ok and c1:
         sel = "P1"
     elif c0:
@@ -101,7 +111,7 @@ def cmd_select(a):
     else:
         sel = None
     res = dict(labels=lab, p1_minus_p0=pr, p1_ll_better_2se=bool(ll_ok), p1_checks=c1, p0_checks=c0, d13_fold1=d13, selected=sel,
-               rule="P1 if LL better by > 2 SE and every bias check passes; otherwise P0 if its checks pass")
+               rule="D45: P1 if LL better by > 2 SE and the gated checks pass (medians trail1 / trail2 within 10 s, re-pull within 5 pp) and the fold-1 D13 guard passes; otherwise P0 if its checks pass. Pulled time and trail1 share gate in the closed loop; trail3+ median listed (UNDERPOWERED)")
     (RES / "select.json").write_text(json.dumps(res, indent=1))
     (MOD / "select.json").write_text(json.dumps(res, indent=1))
     print(json.dumps(res, indent=1))

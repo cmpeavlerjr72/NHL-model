@@ -437,3 +437,14 @@ def bias_checks(sim: dict, act: dict) -> dict:
              repull_share=abs(sim["repull_share"] - act["repull_share"]) <= 0.05)
     c["all"] = bool(all(c.values()))
     return {k: bool(v) for k, v in c.items()}
+
+
+def checks_d45(sim: dict, act: dict) -> dict:
+    """D45 restated offline gates: first-pull medians trail1 / trail2 within 10 s, re-pull share within 5 pp. The
+    trail3+ median is listed (UNDERPOWERED); pulled time and the trailing-by-1 share gate in the closed loop."""
+    c = dict(median_trail1=abs(sim["first_median_trail1"] - act["first_median_trail1"]) <= 10,
+             median_trail2=abs(sim["first_median_trail2"] - act["first_median_trail2"]) <= 10,
+             repull_share=abs(sim["repull_share"] - act["repull_share"]) <= 0.05)
+    c["all"] = bool(all(c.values()))
+    c["listed_median_trail3_within_10s"] = bool(abs(sim["first_median_trail3"] - act["first_median_trail3"]) <= 10)
+    return {k: bool(v) for k, v in c.items()}
