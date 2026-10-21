@@ -442,3 +442,56 @@ The per-season L1-style coefficient on each construction (the SL-R1 rating, Qr, 
 - **Not eligible, so no arm is selected; the round has failed (D38).** No engine change, no closed loop.
 - The "for" scale chosen on fold 1 (R 0.97) over-responds on fold 2, consistent with the falling per-season Qa "for" coefficient in step 0.
 - Status: BUILDING (SL-R6 failed; user decision).
+
+---
+
+## SL-R7: L1x-ot0 with the as-of response scale on Qa (pre-registered 2026-10-21 by the PM, before any run; D40, INV-59, INV-53)
+
+User-granted (D40) and the last automatic stage-4 round. Everything not listed is frozen from SL-R6 / D38: the L0s baseline and strata on level M1 K500 (D35), rating construction Qa (as-of, w 0.7, b 1,000, arena-adjusted xG_ref), the quality direction (centred log xG_ref per class), the fitted home / score / rest terms, score terms zero on OT rows (L1x-ot0, L33), EN served L0s only, the inherited in-sample stratum check, the D28 guard, the bias checks, R (D32) on ES "for" and "against", grading, floor 0. No booster (D31). The SL-R6 fixed multiplier (Qa x0.75) is NOT used; the as-of scale replaces it.
+
+### Construction (the G-R3 template, two slopes)
+
+The ratings enter as s_for,t x Qa_for x c and s_against,t x Qa_against x c, where c is the frozen quality direction and (s_for,t, s_against,t) is an as-of estimate of the pair of L1x slopes:
+- **Estimation window:** every in-scope Fenwick attempt (the SL-R4 row scope; OT rows included with their score terms zero; EN rows excluded as in SL-R6) dated before the game date, across seasons, weighted by 0.5^(age in days / H).
+- **Fit:** a two-parameter multinomial-logit slope fit with the offset fixed at log L0s (levelled, M1 K500) plus the frozen home / score / rest terms of the fold's SL-R6 L1x-ot0 fit; shrunk toward the previous date's (s_for, s_against) with a prior of strength P attempts (precision = P x the per-attempt Fisher information), as in `src/nhl_sim/goal/scale.py`.
+- **Start:** s = 0 on the first date; 2021-22 is burn-in and is never judged (as in G-R3).
+- **Snapshot:** per game date, `created_at` = the previous date's last puck drop + 6 h, asserted `< puck_drop`.
+- **Units:** Qa is standardised by its 2021-22 SD (unit only), as z was in G-R3.
+- **Leakage test** (required before step 2, as `tests/test_shot_attribute_asof_scale.py`): flipping every outcome and rating on or after a date leaves s on that date and earlier bit-identical; the first date equals the prior; shuffling rows within a day changes nothing.
+- **Grid:** H in {45, 90, 180, 365} days x P in {2000, 10000}. H45 is added because G-R3 selected the grid edge (H90) with every cell still over-responding; the grid is otherwise INV-53's.
+
+### Step 0 (training seasons only; committed before step 2)
+
+Re-state the SL-R6 step-0 per-season Qa "for" / "against" coefficients (the season MLEs) as the trend the as-of scale must track; add the per-date s_t path for each cell as a plot / table (training dates only).
+
+### Parity analogue (training seasons only; out of sample by construction)
+
+Per genuine-prior training season (fold 1: 2022-23; fold 2: 2022-23 and 2023-24), the ES "for" R and "against" R of the arm must both lie in [0.9, 1.1].
+- Selection: the simplest passer (larger H, then larger P, counts as simpler).
+- Otherwise: the smallest max |log R| over both directions and all judged seasons, listed, then proceed.
+- Also report the per-season R of the SL-R6 fixed-scale L1x-ot0 (Qa x0.75) for comparison, and the post-hoc season-own-MLE R as a labelled diagnostic (as G-R3 did), used for no choice.
+- The table is committed before any fold-2 row is predicted.
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| L0s | stand-in comparator (M1 K500) |
+| L1x-ot0 | SL-R6's fixed-scale arm (reference; must reproduce the SL-R6 fold-2 grade) |
+| L1x-as | L1x-ot0 with the as-of scale pair on Qa for / against |
+
+### Checks before fold 2 (stop if any fails)
+
+- The inherited in-sample stratum check on L1x-as (every gated stratum within 0.5% of L0s).
+- The D28 guard (L1x-as minus L0s on fold 1, xG within 0.5%, tiers within 0.5 pp).
+
+### Decision (D40 harmonised rule)
+
+- **Eligible:** every fold-2 bias check passes, ES "for" R and "against" R are both in [0.8, 1.2] (point estimate gates; the CI is listed, UNDERPOWERED when it contains 1 on both sides), and the D13 guard holds on fold 1 (R in band, not worse than L0s by > 2 SE, bias clean).
+- **Selected:** eligible and not worse than L0s by > 2 SE on fold 2 (LL per game).
+- On selection: wire L1x-as into the engine behind a default-off flag (flag off bit-identical to HEAD; s_t served from the committed per-date snapshot, keyed by game date), replacing the L0s stand-in when on, then run the closed loop as SL-R4 states (G3 gates overall / 5v5 / PP / PK; G2 re-check lists 4v4 under INV-42 and 3v3 under INV-35). The engine step waits for Lane E2's INV-60 commit (see the brief).
+- If L1x-as is not selected, stage 4 stays on the L0s stand-in, the round has failed, and the result goes to the user. There is no automatic SL-R8 (D40).
+
+### Results
+
+(append below this line)
