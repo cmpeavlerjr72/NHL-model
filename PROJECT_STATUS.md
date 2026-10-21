@@ -4,12 +4,12 @@ PM-owned. One SESSION block per PM session, newest first.
 
 ## SESSION 2026-10-21 (PM: Fable 5.1, user's choice for this session; workers Opus / Sonnet)
 
-- Rulings D41-D54. CONFIRMED-INCUMBENT (provisional): stage 1 H3''-LC2 + T2, stage 3 A3g-c (+ own 3v3 OT level, D50), stage 4 L1x-as (D43), stage 5 block B1a-as (D52), stage 6 C1s (D40; G-R4's C1s-sap failed its closed loop, D54).
+- Rulings D41-D55. CONFIRMED-INCUMBENT (provisional): stage 1 H3''-LC2 + T2, stage 3 A3g-c (+ own 3v3 OT level, D50), stage 4 L1x-as (D43), stage 5 block B1a-as (D52), stage 6 C1s (D40; G-R4's C1s-sap failed its closed loop, D54).
 - Engine default set (D54): H3''-LC2 + T2, A3g-c with the 3v3 OT level, B1a-as, L1x-as, S0t stand-in, C1s (oracle goalie). Flags off: pull P1, shootout S1, goal sc_game. G2 and G3 pass in the default loop; G5b (55:00 tie) fails by +3.05 pp (2 SE = 2.1 pp).
 - Stand-ins left: miss S0t, EN levels (no stage-3 EN states). Stages 7 and 8 not accepted; INV-71 margin compression located in goal conversion by score state (D48).
 - The as-of response scale (INV-53) with the AS-1 prior floor (D44) is the standing fix for a drifting rating response; it fixed goalie, stage 4 and blocks.
 - LEARNINGS L37-L39.
-- Next session: Lane D2's INV-78 report first, then EG-R2 (INV-72), INV-70, INV-68 / INV-69.
+- Next session: INV-82 (period-specific score terms, step 0 first), then EG-R2 (INV-72), INV-70, INV-79 / INV-80 small fixes, INV-68 / INV-69.
 
 ## SESSION 2026-10-16 (PM: Opus 5.5)
 

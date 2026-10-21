@@ -624,3 +624,17 @@ Status: ADOPTED.
 - **Default set at session end:** H3''-LC2 + T2, A3g-c with the 3v3 OT level, B1a-as, L1x-as, S0t stand-in, C1s (oracle goalie). Flags off: pull P1, shootout S1, goal sc_game.
 
 Status: ADOPTED.
+
+## D55 (2026-10-21): INV-78 closed; the 55:00 gap is half season deviation and half a located period-3 conversion defect; G5b becomes a pooled two-fold read; next pre-registration named
+
+- **Fold-1 G5b (Lane D2, 39c899f; `docs/tests/margin_diagnosis_inv78_2026-10-21.md`).** On 2023-24 with the fold-1 tables the 55:00 tie gap is +0.83 pp (0.77 SE), inside 2 SE; fold 2 is +3.05 pp. Same time profile on both folds (below real in period 1, built in period 2), different cell on fold 1 (one-goal games +2.48 pp, two-goal -3.09 pp). Pooled over both folds the tie gap is +1.94 pp (2.6 SE); the gap implied by each season's own goal rates is +1.56 / +1.82 pp (also 2.6 SE pooled). A real defect of about 1.7 pp exists, and a one-season gate at 2.1 pp cannot detect it reliably.
+- **Split of the fold-2 gap.** (a) Season deviation 1.4-1.6 pp (45-52%): the real 2024-25 tie share is 1.22 pp below what its own goal rates imply (1.9 SD; fold 1 deviates the other way), plus an unusually high 2024-25 tied-period-2 scoring rate. (b) Located model defect 1.5-1.7 pp (48-55%): period-3 conversion by score state (trailing over-converts 1.06-1.13, lead-by-1 under-converts 0.91-0.93, on both folds; 1.0-1.3 pp) and tied period-2 conversion (sim 0.952 / 0.873 of real, mostly goal per SOG; 0.3-0.5 pp). (c) Unattributed about 0. Attempts match within 0.96-1.05 in every period x score cell; stage 1 shows no repeating shape. The responsible pieces: goal C1s lead-by-1 conversion in period 3 (0.88 / 0.92), block B1a-as and miss S0t score terms pooled over periods, a little from stage 4.
+- **The chain was not what failed.** The Markov attribution reproduces all four wired loops within 0.0014-0.0027 and each realised repair (goal -0.0075 predicted vs -0.0086 observed; block -0.0030 vs -0.0032). INV-71's counterfactual assumed full per-cell correction; the pooled score terms realised 35% (C1s-sap) and 54% (B1a-as) of it.
+- **Rulings.**
+  - INV-78 is closed. The G-R4 failure (D54) is explained: a score term pooled over periods cannot fix a period-3 defect.
+  - **G5b is re-registered as a pooled two-fold read** (fold 1 and fold 2 loops, aligned seeds), reported with the rate-implied gap and the share of games within one goal; tolerance 2 SE of the pooled real tie share. A single-fold G5b is reported, never gated.
+  - **Next pre-registration (next session, INV-82):** a step-0 check on the training seasons for a score x period-3 term and a tied x period-2 term in goal-per-SOG, block and miss, with bands sized by parametric redraw first (per-cell noise 0.04-0.06); arms only if the step-0 effect is powered and stable across seasons (L35); the same as-of treatment if it trends. Stage 8's G7 re-read (EG-R2) follows it.
+  - **Code findings (Sonnet, small):** INV-79, `ot_level.served_delta` reads the fold-2 frozen A3g-c cell whatever fold it is given (Lane D2 worked around it; the module is unchanged); INV-80, no fold-1 T2 penalty-type table was ever committed (Lane D2 refit it with the committed code, labelled): commit the fold-1 table with a parity test against the refit.
+  - **Listed:** real play has a 30-second scoring lull after each goal that the engine lacks; it does not move the tie share (stage 7 note under INV-69).
+
+Status: ADOPTED.

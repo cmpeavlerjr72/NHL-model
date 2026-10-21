@@ -29,7 +29,7 @@ g5_total_cell_pp: 1.0   # |P_sim(total=k) - P_real(total=k)| per k
 g6_win_pp: 1.5
 g6_goal_diff: 0.08
 
-# G5b -- regulation margin at 55:00, pull flag off, vs actual with goalie-out goals removed (D48, INV-71)
+# G5b -- regulation margin at 55:00, pull flag off, vs actual with goalie-out goals removed (D48, INV-71). POOLED two-fold read (D55): a single-fold value is reported, never gated
 g5b_tie_pp: 2.1          # |tie share sim - real| at 55:00; 2 SE of one season's real tie share (D54, L39; was 1.5, below the noise floor)
 g5b_margin_cell_pp: 2.1  # |P_sim(|margin|=k) - P_real| for k in 0, 1, 2, 3+ (D54)
 
