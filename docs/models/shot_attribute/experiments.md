@@ -514,3 +514,15 @@ Per genuine-prior training season (fold 1: 2022-23; fold 2: 2022-23 and 2023-24)
 - **D28 guard (fold 1): PASS** (xG within 0.12%, tiers within 0.09 pp). Fold-1 R: 1.105 / 1.001.
 - **Stopped before fold 2.** Nothing on 2024-25 was predicted or read; no engine change, no closed loop.
 - Status: BUILDING; the PM rules. Proposal: read the inherited check on judged seasons only, since the spec already calls 2021-22 burn-in, never judged; then predict fold 2.
+
+---
+
+## PM ruling on the SL-R7 in-sample stop (2026-10-21, D42)
+
+- The inherited in-sample stratum check is read on the judged training seasons (2022-23 onward); 2021-22 is burn-in per this spec and is never served. On the judged seasons every stratum is within 0.09%: PASS.
+- The burn-in start-up spike of the as-of slopes (no prior strength while the ratings have no spread) is listed as a construction defect, not fixed in this round.
+- All else frozen: the fallback cell H45 P10000, L1x-ot0 terms, M1 K500. Step 4 proceeds: blind fold-2 grade, R for / against, D13 guard, the D40 decision.
+
+### SL-R7 results after D42
+
+(append below this line)

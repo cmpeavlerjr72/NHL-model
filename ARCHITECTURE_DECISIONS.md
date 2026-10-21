@@ -472,3 +472,14 @@ Status: ADOPTED.
 - **Status.** INV-60 is closed. The goal stage stays CONFIRMED-INCUMBENT (provisional) in the engine. Stage 8 (goalie pull, OT / shootout, in-game goalie change; INV-35) and a projected-goalie starter table (non-oracle) are the next engine items after SL-R7 reports; each is pre-registered separately.
 
 Status: ADOPTED.
+
+## D42 (2026-10-21): SL-R7 in-sample stop; the inherited stratum check is read on the judged seasons, before any fold-2 read
+
+- **The stop (416b8a7; `docs/tests/shot_attribute_sl_r7_2026-10-21.md`).** L1x-as fails the inherited in-sample stratum check at 4v4: +0.62% vs L0s (n 4,334; limit 0.5%). Nothing on fold 2 has been predicted or read. The D28 guard passes (xG within 0.12%, tiers within 0.09 pp), and the L1x-ot0 reference reproduces SL-R6 exactly.
+- **Cause.** The whole miss sits in 2021-10-12 to 10-25, the first two weeks of the burn-in season. The as-of ratings carry almost no spread then, so a prior of "P attempts" (P x the per-attempt Fisher information) has no strength, and the slope pair spikes (raw values 500-680; 4v4 +20% on n 116). With 2021-22 excluded every stratum is within 0.09%; counting everything after 2021-10-25, within 0.22%. The later season starts (2022-23, 2023-24) show no spike, because the slopes carry forward with spread already in the ratings.
+- **Ruling.** The spec calls 2021-22 burn-in, "never judged", and the engine never serves a 2021-22 row. The inherited check is therefore read on the judged training seasons (2022-23 onward), where it passes (within 0.09%). This is the same kind of ruling as D28 and D38: a reading of the pre-registered construction, made before any holdout read, within the round the user granted. It is not a new round and no parameter changes.
+  - The start-up spike is a real construction defect of the as-of scale and is listed (LEARNINGS candidate: a prior sized as P x the per-event information has no strength while the ratings have no spread). It is NOT fixed in this round: a prior floor would be a new construction and is pre-registered separately if the scale is used again.
+  - The parity fallback (H45 P10000, max |log R| 0.173; "for" R 1.14-1.19 on the judged seasons) stands as the spec allows. The "for" R is expected to run close to the 1.2 gate on fold 2; the gate is the gate.
+- **Next.** Step 4 proceeds as pre-registered: blind fold-2 grade of L0s / L1x-ot0 / L1x-as, bias checks, R for and against, the D13 guard on fold 1, the D40 decision. If L1x-as is not eligible, the round has failed and the result goes to the user (no SL-R8).
+
+Status: ADOPTED.
