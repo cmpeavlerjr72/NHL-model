@@ -19,12 +19,12 @@ PM-owned. Newest block first.
 | D49 | Miss score term: no effect after the tier level; closed with no change |
 | D50 | Overtime 3v3 level adopted (the long-listed INV-35 cell passes). Shootout mechanics wired but not selected: my 5 pp gate was below its noise floor (L39) |
 | D51 | Same defect on the goal round's by-bucket check; restated at 2 SE before the holdout was read |
-| D53 | Goal model C1s-sap (as-of score levels plus period terms) selected offline; closed-loop read pending in the right configuration (Lane E4) |
+| D53, D54 | Goal model C1s-sap (as-of score levels plus period terms) selected offline, but it fails its closed loop (the 55:00 tie gate and the power-play save % gate), so it does not ship. The goal model stays C1s. The block and overtime repairs are on by default. The remaining tie-share gap (about 2 points, at the one-season noise floor) goes to a second diagnosis |
 
 **Needs you:** nothing right now. Keep Windows logged in for the loggers and the Monday 06:00 weekly pull.
 
 **Open items, in order**
-1. Read Lane E4's G5b result (`docs/tests/engine_defaults_g5b_2026-10-21.md`): if the 55:00 tie gate passes with every repair wired, C1s-sap is confirmed and the default set switches to it; if not, a diagnosis of the remaining gap (no tuning).
+1. Read Lane D2's second-pass diagnosis (`docs/tests/margin_diagnosis_inv78_2026-10-21.md`, INV-78; it was running at 17:00). It reads the same 55:00 gate on the 2023-24 season to tell a one-season deviation from a model defect, and locates the period-2 origin. Then rule: a pre-registered fix at the located stage, or accept the gate at its noise floor.
 2. EG-R2 (INV-72): the as-of pull-timing level (2024-25 teams pulled 78 s per game vs 64-68), a re-pull lag term, the shootout past-round-3 check at 2 SE pooled, then G7 re-read.
 3. INV-70: a delayed-penalty state in the engine (the offline penalty hazard has one; the engine does not). Needed for 11 s per game of pulled time.
 4. INV-68 (in-game goalie changes, 2.9% of shots, needed for saves props) and INV-69 (stage 7: rebounds, faceoffs).
@@ -32,7 +32,7 @@ PM-owned. Newest block first.
 
 **AWS:** approved for the session, $60 cap. Lane O4 served the queue for an hour; no request was filed and $0.00 was spent (every heavy step ran locally in under 10 minutes). Zero instances verified at 12:47.
 
-**PM errors today (disclosed):** four spec defects, each caught by the worker before a holdout was read: an impossible offline pulled-time check (D45), an "ES group" wording for blocks and misses at empty net (D46), and two gates set below their one-season noise floor (D50, D51; now L39). Lane H8b's standalone report file could not be written by its tool; its content is in the experiments results block.
+**PM errors today (disclosed):** five spec defects, each caught before a result was misread: an impossible offline pulled-time check (D45), an "ES group" wording for blocks and misses at empty net (D46), and three gates set below their one-season noise floor (D50, D51, D54; now L39 and the G5b tolerance is corrected to 2 SE). Lane H8b's standalone report file could not be written by its tool; its content is in the experiments results block.
 
 **Worker incidents (disclosed, none harmful):** Lane A7 and Lane E3 each stopped only their own processes after checking command lines. Lane E2's wrapper script exited non-zero after all work had finished. Every push printed the Windows credential-manager "Key not valid" warning and every push was verified with `git ls-remote`.
 
