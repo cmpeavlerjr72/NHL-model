@@ -98,3 +98,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-21 | block | BUILDING (SB-R5 pre-registered) | CONFIRMED-INCUMBENT (provisional, offline; closed loop pending) | D47: B1a-as selected under D40; engine step after engine_otso | (this commit) |
 | 2026-10-21 | goal | CONFIRMED-INCUMBENT (provisional) | BUILDING (G-R4 pre-registered) | D48: score-state terms respec (as-of bucket levels / bucket x period); INV-71 attributes ~53% of the 55:00 tie gap to the pooled dummies | (this commit) |
 | 2026-10-21 | miss | STAND-IN (S0t) | BUILDING (SM-R3 pre-registered) | D48: score-bucket term on S0t; step-0 trend stop | (this commit) |
+| 2026-10-21 | miss | BUILDING (SM-R3 pre-registered) | STAND-IN (S0t) | SM-R3 step 0 stop: lead1 / lead2+ coefficient trend |z| 2.17 / 2.06 on training seasons; no arm fitted, fold 2 unread; as-of construction needs a new pre-registration; see docs/tests/miss_sm_r3_step0_2026-10-21.md | (this commit) |

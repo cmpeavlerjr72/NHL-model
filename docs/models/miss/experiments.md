@@ -157,3 +157,9 @@ Per-season logistic score-bucket coefficients (relative to tied) on top of S0t w
 ### Results
 
 (append below this line)
+
+### SM-R3 results (Lane M3, 2026-10-21; step 0 only; report `docs/tests/miss_sm_r3_step0_2026-10-21.md`)
+
+- **Stopped at step 0 by the pre-registered rule.** Training seasons 2021-22 / 2022-23 / 2023-24, gated rows, score-bucket logit coefficients vs tied on top of S0t, trend z per bucket (WLS over 3 seasons, 1 df, weak test): trail2+ +0.93, trail1 -0.14, **lead1 -2.17, lead2+ -2.06**. Two buckets exceed |z| 2, so no arm was fitted and fold 2 was not read.
+- Pooled training coefficients are small (trail2+ +0.005, trail1 +0.012, lead1 -0.002, lead2+ -0.020 logit; SE about 0.011): on top of the matched tier level the training-season score gradient in miss share is near zero; the gradient the diagnosis saw is concentrated in fold 2 (not examined here).
+- An as-of construction (L35 / L37) would need its own pre-registration.
