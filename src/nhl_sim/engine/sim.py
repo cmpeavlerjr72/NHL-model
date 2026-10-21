@@ -80,6 +80,14 @@ rating group] + l1x["sc_logit"][ptype, sc7]) (cumsum / last). game_logit bakes i
 rest terms and the as-of rating tilt (s_for,t(date) zf + s_against,t(date) za) x c of the game's teams; sc_logit holds
 the centred score terms, zero on OT rows (ptype 1, D38). Tables: shot_attribute.serve_l1xas. The output carries
 "attr_model". Flag off: bit-identical (tests/engine/test_sim_l1xas.py).
+
+DEFAULT TABLE SET (INV-63, Lane E3, 2026-10-21, D40-D43): simulate() itself is unchanged (every variant above is still a
+default-off flag keyed on tables / tables["attr"], so absent keys give the old paths bit for bit). What changed is the
+table builder the closed-loop runners call with no flags: nhl_sim.engine.defaults.default_attr(games) serves stage 4
+L1x-as (attr["l1x"]), block B0 and miss S0t as labelled STAND-INS, goal C1s with the ORACLE GOALIE; stage 1 H3''-LC2 + T2
+and stage 3 A3g-c are the other tables keys. Its output carries stand_in = [block, miss] (no "attr" label), attr_model,
+goal_model, oracle_goalie. The L0s stand-in (defaults.l0s_attr) and the xG_ref goal stub (attr["xg"] without
+attr["goal"]) stay behind their explicit flags. tests/engine/test_sim_defaults.py.
 """
 from __future__ import annotations
 

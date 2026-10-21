@@ -20,6 +20,22 @@ Real finals use the identical definition (`nhl_sim.eval.gates.real_games`: `veri
 
 `engine_tag`, `fold`, `season`, `n_seeds`, `sealed_touched` (must be false or absent; true makes the grader refuse), free-form notes (for example `oracle_goalie: true`).
 
+### Engine output markers and the default table set (INV-63, 2026-10-21)
+
+`simulate()` output carries marker arrays whenever `tables["attr"]` is present; runners copy them into `run_meta.json`:
+
+| marker | default set (`nhl_sim.engine.defaults.default_attr`) | explicit L0s path (`defaults.l0s_attr`) |
+|---|---|---|
+| `stand_in` | `block: B0 ... (INV-54)`, `miss: S0t ... (D37)`; NO `attr` label | adds `attr: L0s M1 K500 ...` |
+| `attr_model` | `stage 4: L1x-as (SL-R7, D42; ...)` | absent |
+| `goal_model` | `goal: C1s (provisional, D40)` | same |
+| `oracle_goalie` | `ORACLE GOALIE (D8) ...` (box-score starter faces every SOG) | same |
+
+Default set = stage 1 H3''-LC2 + T2, stage 3 A3g-c, block B0 stand-in, stage 4 L1x-as (D43), miss S0t stand-in, goal C1s
+(oracle goalie). Explicit flags that remain: `defaults.l0s_attr` (L0s stand-in, reproduces the INV-60 loops), the xG_ref
+goal stub (`attr["xg"]` without `attr["goal"]`), and every older variant keyed on `tables` / `tables["attr"]`. Runner:
+`scripts/run_engine_defaults_v1.py`. Stages 7-8 are absent (no rebounds, no goalie pull; OT = stage-1 3v3 OT; shootout 50 / 50 stub).
+
 ## `results/<tag>/players.parquet` (optional, not yet consumed): one row per game x seed x player
 
 `game_id, seed, player_id, team ('home'|'away'), position, toi_s, sog, goals, assists, saves` (goalies carry `saves`, skaters `sog`). G8 needs it (NEEDS-INSTRUMENTATION until present).
