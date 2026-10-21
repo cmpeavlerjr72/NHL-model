@@ -295,3 +295,8 @@ The "for" R and "against" R of B1a-as must both lie in [0.9, 1.1]. Selection: th
   - The SB-R4 B1a reference reproduces exactly (+0.0699 vs B0, R 1.213 / 1.328).
 - Engine wiring and the closed loop are PENDING. The PM's sim.py order is H8a -> H8b -> B5, and no `engine_otso` commit appeared by 14:48.
   - The serving table (`block/serve_b1aas.py`) matches the offline prediction to 1.1e-16.
+- **Engine and closed loop (resumed after `engine_otso`, commit marker `engine_b1aas`).**
+  - Flag `attr["block_b1aas"]` is default off. Flag-off output is bit-identical to HEAD 0838766 on 16 fixture cases. Served vs offline: 1.67e-16.
+  - 200-seed fold-2 loop (default set + flag; pull and shootout off): block share by state passes the SB-R1 bands. Overall +0.35 pp; ES +0.25, PP +0.97, PK +0.27; 4v4 -0.40 and 3v3 -0.14 (UNDERPOWERED).
+  - Team-decile R on the sim block share: 0.979 / 1.012 (UNDERPOWERED).
+  - G3 PASS and unchanged vs the paired B0' loop (deltas < 0.01). G2 unchanged; 3v3 +5.4% is listed as before.

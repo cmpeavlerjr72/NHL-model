@@ -67,6 +67,22 @@ def default_attr(games: np.ndarray) -> tuple[dict, dict]:
     return attr, dict(parity=par, l0s_level=linfo, l1xas=xinfo, **info)
 
 
+def b1aas_attr(games: np.ndarray) -> tuple[dict, dict]:
+    """The default attr plus the SB-R5 block flag (default off; Lane B5): block B1a-as on the B0' base replaces the
+    B0 STAND-IN (attr["block_b1aas"]; stand_in keeps miss S0t only). Tables from the committed snapshot (never
+    recomputed); the engine-served block probability is checked against the offline fold-2 B1a-as prediction."""
+    from nhl_sim.block import serve_b1aas as SB
+    attr, info = default_attr(games)
+    T, binfo = SB.b1aas_tables(games, attr["p_block_game"])
+    par = SB.engine_parity(np.asarray(games, np.int64), attr["p_block_game"], T)
+    _check(dict(block_b1aas=par))
+    attr["block_b1aas"] = dict(game_logit=T["game_logit"], sc_logit=T["sc_logit"], label=SB.LABEL)
+    attr["stand_in"] = {k: v for k, v in attr["stand_in"].items() if k != "block"}
+    info = dict(info, block_b1aas=binfo)
+    info["parity"] = dict(info["parity"], block_b1aas=par)
+    return attr, info
+
+
 def l0s_attr(games: np.ndarray) -> tuple[dict, dict]:
     """Explicit pre-D43 path: stage 4 = L0s STAND-IN (labelled `attr`), the rest as the default."""
     sp, gm, linfo = CT.l0s_m1k500_tables(games)

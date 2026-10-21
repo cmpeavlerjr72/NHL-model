@@ -80,3 +80,30 @@ def served(T: dict, gi, team, st, sc, t) -> np.ndarray:
     score bucket sc7, game second t."""
     z = T["base_logit"][gi, st, (np.asarray(t) >= 3600).astype(np.int64)] + T["game_logit"][gi, team, st] + T["sc_logit"][sc]
     return 1.0 / (1.0 + np.exp(-z))
+
+
+def engine_parity(games: np.ndarray, pbg5: np.ndarray, T: dict, res: Path = ROOT / "results/block_sb_r5") -> dict:
+    """The ENGINE's served block probability (sim.block_prob with the SB-R5 flag on, from the B0' table pbg5 and the
+    b1aas tables T) vs the offline fold-2 B1a-as prediction on every goalie-in row (team-view states 0..4)."""
+    from nhl_sim.engine import sim as SIM
+    lab = json.loads((res / "labels_sealed.json").read_text())["B1aas"]
+    rows = pd.read_parquet(res / "fold2_rows.parquet", columns=["game_id", "team", "st", "sc", "t", "ptype"])
+    pred = np.load(res / f"fold2_pred_{lab}.npy").astype(np.float64)
+    m = (rows.st <= 4).to_numpy()
+    r, p = rows[m].reset_index(drop=True), pred[m]
+    gi = np.searchsorted(games, r.game_id.to_numpy())
+    if not (np.asarray(games)[np.minimum(gi, len(games) - 1)] == r.game_id.to_numpy()).all():
+        raise ValueError("offline rows outside the engine game list")
+    pbg = np.asarray(pbg5, np.float64)
+    AS = dict(p_block_game=pbg, b1aas_base=np.log(pbg) - np.log1p(-pbg), b1aas_game=T["game_logit"], b1aas_sc=T["sc_logit"])
+    served = np.zeros(len(r))
+    st, sc, tm, pt = (r[c].to_numpy().astype(np.int64) for c in ("st", "sc", "team", "ptype"))
+    for team in (0, 1):
+        for t_ in (0, 1):
+            k = (tm == team) & (pt == t_)
+            served[k] = SIM.block_prob(AS, gi[k], st[k], 3600 * t_, team, sc[k])
+    d = np.abs(served - p)
+    names = ("5v5", "PP", "PK", "4v4", "3v3")
+    by = [dict(state=names[s_], n=int((st == s_).sum()), served=float(served[st == s_].mean()),
+               max_abs_diff=float(d[st == s_].max())) for s_ in range(5)]
+    return dict(n_rows=int(len(r)), max_abs_diff=float(d.max()), by_state=by)

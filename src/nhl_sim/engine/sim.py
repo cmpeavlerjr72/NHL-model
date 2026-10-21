@@ -89,6 +89,14 @@ and stage 3 A3g-c are the other tables keys. Its output carries stand_in = [bloc
 goal_model, oracle_goalie. The L0s stand-in (defaults.l0s_attr) and the xG_ref goal stub (attr["xg"] without
 attr["goal"]) stay behind their explicit flags. tests/engine/test_sim_defaults.py.
 
+BLOCK B1a-as (SB-R5, INV-64, Lane B5, 2026-10-21; default off, on when attr holds "block_b1aas" = dict(game_logit
+(G, 2, 5), sc_logit (7,), label)): replaces the B0 STAND-IN. The block probability per attempt is
+sigmoid(logit p_block_game[g, st, period type] + game_logit[g, shooting team, st] + sc_logit[sc7]) on the (G, 5, 2) B0'
+table (INV-54), so attr still carries p_block_game (the B0' base) but attr["stand_in"] must NOT label "block". The
+tables are built by nhl_sim.block.serve_b1aas.b1aas_tables from the committed snapshot (block_scale_v1_f2.parquet,
+never recomputed). EN states (pull on) keep B0's own EN groups. Output carries "block_model". Flag off: bit-identical
+(tests/engine/test_sim_b1aas.py).
+
 GOALIE PULL + EN CASCADE (EG-R1 part A, INV-66, Lane H8a, 2026-10-21; default off, on when `tables` holds "pull", which
 needs the stage-3 attempt table, the L0s state_pdf baseline, block B0 (p_block_game), miss S0t and goal C1s): at the
 start of each second t in the last 600 s of regulation, before the second's draws, each team trailing before the
@@ -231,7 +239,20 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             pbg = np.asarray(attr["p_block_game"], np.float64)
             if pbg.shape not in ((G, 3, 2), (G, 5, 2)) or not ((pbg >= 0) & (pbg <= 1)).all():
                 raise ValueError(f"attr p_block_game must be (G, 3, 2) or (G, 5, 2) probabilities, got {pbg.shape}")
-            if "block" not in labels:
+            if "block_b1aas" in attr:                   # SB-R5 B1a-as on the B0' base (INV-64)
+                bx = attr["block_b1aas"]
+                if "block" in labels:
+                    raise ValueError("attr block_b1aas replaces the B0 STAND-IN: do not label 'block' as a stand-in")
+                if pbg.shape != (G, 5, 2) or not ((pbg > 0) & (pbg < 1)).all():
+                    raise ValueError("attr block_b1aas needs the (G, 5, 2) B0' base table with 0 < p < 1")
+                bg, bs = np.asarray(bx["game_logit"], np.float64), np.asarray(bx["sc_logit"], np.float64)
+                if bg.shape != (G, 2, 5) or bs.shape != (7,) or not (np.isfinite(bg).all() and np.isfinite(bs).all()):
+                    raise ValueError("attr block_b1aas needs finite game_logit (G, 2, 5) and sc_logit (7,)")
+                if not bx.get("label"):
+                    raise ValueError("attr block_b1aas needs a model label")
+                AS.update(b1aas_base=np.log(pbg) - np.log1p(-pbg), b1aas_game=bg, b1aas_sc=bs,
+                          block_model=str(bx["label"]))
+            elif "block" not in labels:
                 raise ValueError("attr p_block_game is a STAND-IN: attr['stand_in'] must label it ('block')")
             AS["p_block_game"] = pbg
         elif AS["p_block"] is None:
@@ -413,6 +434,8 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             extra["stand_in"] = AS["stand_in"]
         if "attr_model" in AS:
             extra["attr_model"] = np.array([AS["attr_model"]])
+        if "block_model" in AS:
+            extra["block_model"] = np.array([AS["block_model"]])
         if "goal_cls" in AS:
             extra.update(attr_sog=AS["sog"], attr_gprob=AS["gprob"], goal_model=np.array([AS["goal_label"]]),
                          oracle_goalie=np.array([AS["oracle_goalie"]]), goalie_against=AS["goalie_id"])
@@ -477,7 +500,8 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     """Stage-4 variant, for attempt j of `team` in sims ai: block stub, then joint class, then the xG_ref goal draw.
     Returns goals (0/1) per sim; records unblocked counts, xG_ref, goals, cell and type by team-view state."""
     kk = 2 * team + j
-    unb = rng.uniform(K["attempt_block"][ai], t, kk) >= block_prob(AS, gi, st, t)
+    unb = rng.uniform(K["attempt_block"][ai], t, kk) >= (block_prob(AS, gi, st, t, team, sc) if "b1aas_game" in AS
+                                                         else block_prob(AS, gi, st, t))
     if not unb.any():
         return np.zeros(len(ai), np.int64)
     ai, gi, st, sc = ai[unb], gi[unb], st[unb], sc[unb]
@@ -504,9 +528,24 @@ def _attribute_draw(AS, ai, t, gi, team, j, st, sc, m, K):
     return out
 
 
-def block_prob(AS, gi, st, t):
+def block_prob(AS, gi, st, t, team=None, sc=None):
     """Served block probability per attempt (game index gi, team-view state st, game second t): the B0 stand-in
-    p_block_game[g, rating group, period type] when on, else the empirical stub p_block[st]."""
+    p_block_game[g, rating group, period type] when on, else the empirical stub p_block[st]. With the SB-R5 flag
+    (AS["b1aas_game"]): sigmoid(logit B0'[g, st, ptype] + game_logit[g, team, st] + sc_logit[sc]); team = shooting team
+    (0 home), sc = its score bucket sc7 (both required)."""
+    if "b1aas_game" in AS:
+        if team is None or sc is None:
+            raise ValueError("block B1a-as needs the shooting team and score bucket")
+        st = np.asarray(st)
+        en = st > 4
+        if en.any() and "en" not in AS:
+            raise ValueError("EN state without the pull tables")
+        b = BLK_ST[st]
+        z = AS["b1aas_base"][gi, b, int(t >= 3600)] + AS["b1aas_game"][gi, team, b] + AS["b1aas_sc"][np.asarray(sc)]
+        v = 1.0 / (1.0 + np.exp(-z))
+        if en.any():
+            v[en] = AS["en"]["p_block_en"][gi[en], st[en] - 5, int(t >= 3600)]
+        return v
     if "en" in AS and (np.asarray(st) > 4).any():      # EG-R1 part A: B0's own ENF / ENA groups (ES level)
         st = np.asarray(st)
         en = st > 4
