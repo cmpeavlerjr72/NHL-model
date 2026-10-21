@@ -464,11 +464,24 @@ def cmd_pred2(a):
     print(now(), "fold-2 predictions written", S["selected"], info, flush=True)
 
 
+def cmd_freeze(a):
+    """Frozen fold-2 serving parameters of the selected arm -> docs/models/block/sb_r5_frozen_params.json."""
+    S = selected()
+    Dd = fold_data(2, False)
+    out = dict(arm="B1a-as", spec="SB-R5", cell=S["selected"], H=S["H"], P=S["P"], floor_f=SC.F_FLOOR,
+               iref=Dd["iref"].tolist(), sd=list(Dd["sd"]), W=Dd["W"].tolist(), xbar=Dd["xbar"].tolist(),
+               W_names=["sc0", "sc1", "sc2", "sc4", "sc5", "sc6", "is_home", "b2b_own", "b2b_opp", "arena_f"],
+               groups=Dd["groups"], snapshot="data/processed/block/block_scale_v1_f2.parquet",
+               b0="results/block_sb_r1/models/B0.json", b1a="results/block_sb_r4/models/B1a.json")
+    (ROOT / "docs/models/block/sb_r5_frozen_params.json").write_text(json.dumps(out, indent=1))
+    print(out, flush=True)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["snap", "parity", "checks", "pred2"])
+    ap.add_argument("cmd", choices=["snap", "parity", "checks", "pred2", "freeze"])
     ap.add_argument("--procs", type=int, default=8)
     a = ap.parse_args()
     print(now(), "start", a.cmd, flush=True)
-    {"snap": cmd_snap, "parity": cmd_parity, "checks": cmd_checks, "pred2": cmd_pred2}[a.cmd](a)
+    {"snap": cmd_snap, "parity": cmd_parity, "checks": cmd_checks, "pred2": cmd_pred2, "freeze": cmd_freeze}[a.cmd](a)
     print(now(), "done", a.cmd, flush=True)

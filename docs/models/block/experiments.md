@@ -279,3 +279,19 @@ The "for" R and "against" R of B1a-as must both lie in [0.9, 1.1]. Selection: th
 ### Results
 
 (append below this line)
+
+### SB-R5 results (Lane B5, 2026-10-21; report `docs/tests/block_sb_r5_2026-10-21.md`)
+
+- AS-1 floor f = 0.5 (D44). Snapshots `block_scale_v1_f{1,2}`. Parity analogue: no cell in [0.9, 1.1]; the fallback selects **H90 P2000** (max |log R| 0.138; the 2022-23 "against" R is 1.15). This was committed (b04dabd) before any fold-2 prediction.
+- Both checks before fold 2 pass:
+  - in-sample, B1a-as minus B0' within 0.10 pp by strength group on the judged seasons (every group x period cell within 0.49 pp);
+  - D28-form guard on fold 1, overall +0.08 pp.
+- Fold-1 D13 guard: PASS (R 0.981 / 0.994, +0.0957 nats/game vs B0', SE 0.0124, bias clean).
+- Fold 2: **B1a-as is selected (D40).**
+  - +0.0701 nats/game vs B0' (SE 0.0113).
+  - ES R "for" 0.986 (CI 0.60-2.54), "against" 0.999 (CI 0.78-1.35); both UNDERPOWERED.
+  - Every block-share bias check passes: overall +0.34 pp; ES +0.25, PP +0.95, PK +0.22.
+  - Arena slope +4.6 (SE 5.4), PASS.
+  - The SB-R4 B1a reference reproduces exactly (+0.0699 vs B0, R 1.213 / 1.328).
+- Engine wiring and the closed loop are PENDING. The PM's sim.py order is H8a -> H8b -> B5, and no `engine_otso` commit appeared by 14:48.
+  - The serving table (`block/serve_b1aas.py`) matches the offline prediction to 1.1e-16.
