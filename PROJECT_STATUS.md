@@ -4,12 +4,12 @@ PM-owned. One SESSION block per PM session, newest first.
 
 ## SESSION 2026-10-21 (PM: Fable 5.1, user's choice for this session; workers Opus / Sonnet)
 
-- Rulings D41-D43. Stage 4 L1x-as (as-of response scale on Qa) is CONFIRMED-INCUMBENT (provisional), joining stage 1 H3''-LC2 + T2, stage 3 A3g-c and stage 6 C1s.
-- Engine: goal C1s (oracle goalie), miss stand-in S0t, L0s on M1 K500, B0 with own 4v4 / 3v3 groups, and L1x-as behind a default-off flag. Plumbing loop save % 90.06 vs 89.94; SL-R7 closed loop G3 PASS, G2 re-check PASS.
-- Stand-ins still in the engine: block B0, miss S0t. Stages 7-8 absent.
-- INV-53 (as-of response scale) is the standing fix for a drifting rating response (D43). New: INV-61 (live "for" R drift monitor), INV-62 (prior floor for the burn-in spike).
-- LEARNINGS L37-L38.
-- Next session: switch the L1x-as flag on in the default table set; INV-62; SB-R5 (blocks with the as-of scale); stage 8.
+- Rulings D41-D53. CONFIRMED-INCUMBENT (provisional): stage 1 H3''-LC2 + T2, stage 3 A3g-c (+ own 3v3 OT level, D50), stage 4 L1x-as (D43), stage 5 block B1a-as (D52), stage 6 C1s (D40; C1s-sap selected offline in G-R4, closed loop pending, D53).
+- Engine: default set serves L1x-as + C1s + B0 / S0t (D44); B1a-as, the 3v3 level, the pull process P1, the shootout S1 and the goal flag sc_game are wired behind flags; INV-77 (Lane E4) switches B1a-as and the 3v3 level on and reads G5b.
+- Stand-ins left: miss S0t, EN levels (no stage-3 EN states). Stages 7 and 8 not accepted; INV-71 margin compression located in goal conversion by score state (D48).
+- The as-of response scale (INV-53) with the AS-1 prior floor (D44) is the standing fix for a drifting rating response; it fixed goalie, stage 4 and blocks.
+- LEARNINGS L37-L39.
+- Next session: E4's G5b read, then EG-R2 (INV-72), INV-70, INV-68 / INV-69.
 
 ## SESSION 2026-10-16 (PM: Opus 5.5)
 

@@ -2,34 +2,39 @@
 
 PM-owned. Newest block first.
 
-## SUMMARY FOR USER 2026-10-21 (session, PM on Fable at your request)
+## SUMMARY FOR USER 2026-10-21 (day session, 11:45-17:00, PM on Fable at your request)
 
-**Headline:** Stage 4 is done. The shot-location model L1x-as passed the round you granted (SL-R7): it beats the flat stand-in by 2.5 standard errors, every bias check passes, and the response ratios are inside the band on the next season (for 1.18, against 1.14). The in-season response strength from the goalie work is now the standing fix for any rating whose effect fades season to season. Separately, the engine now carries the goal model with goalie talent, so the cascade runs from penalties through goals with real sub-models at stages 1, 3, 4 and 6; blocks and misses remain flat stand-ins.
+**Headline:** Three stages were fixed today by one idea. The in-season effect strength (the as-of response scale from the goalie work) now carries the shot-location model (stage 4, SL-R7), the block model (stage 5, SB-R5) and the goalie, all with response ratios inside the band on the next season. The engine runs from penalties through goals with real sub-models at stages 1, 3, 4, 5 and 6; only the miss model and the empty-net levels are flat stand-ins. Stage 8 (goalie pull, overtime, shootout) is built and wired but not accepted: its gates exposed a compression of regulation margins upstream, traced to goal conversion by score state, and the goal model's repair closes part of it. That repair, and a pull-timing level, are next.
 
-**Decisions D41-D43** (in `ARCHITECTURE_DECISIONS.md`)
+**Decisions D41-D53** (in `ARCHITECTURE_DECISIONS.md`)
 
 | # | Decision |
 |---|---|
-| D41 | INV-60 accepted. Engine carries goal C1s (box-score starter, labelled oracle goalie), miss stand-in S0t, stage-4 level M1 K500, block stand-in B0 with own 4v4 / 3v3 groups. Plumbing loop: save % 90.06 vs 89.94 actual, goals per 60 +0.2% |
-| D42 | SL-R7 stopped in-sample at 4v4; the miss was entirely the first two weeks of the 2021-22 burn-in season, which the spec never judges. Check read on judged seasons (passes), round continued with nothing changed |
-| D43 | SL-R7 passed: L1x-as is the provisional stage-4 incumbent. Closed loop passes G3 and the G2 re-check. Watch items listed. Stage 4 is no longer a decision for you |
+| D41 | Engine carries the goal model C1s (box-score starter, labelled oracle goalie), the miss stand-in, and the block stand-in with own 4v4 / 3v3 groups |
+| D42, D43 | SL-R7 passed. Stage 4 model L1x-as adopted (provisional). The burn-in spike of the as-of scale was listed, then fixed by a prior floor (D44) |
+| D44 | The prior floor at f = 0.5 is the as-of scale's construction; incumbents unchanged in effect. Engine default set serves L1x-as and C1s |
+| D45, D46 | Stage 8 part A: pull hazard P1 selected and wired. Two of my spec checks were impossible offline and moved to the closed loop. The loop failed G7: pull timing needs an in-season level, and the margin compression (INV-71) was found |
+| D47, D52 | SB-R5 passed offline and in the closed loop. Block model B1a-as adopted (provisional); the B0 stand-in is retired |
+| D48 | INV-71 diagnosed: trailing teams' shots convert about 8% too often relative to tied play; half from the goal model's pooled score dummies, a fifth from the block stand-in. G-R4 and a 55:00 gate (G5b) pre-registered |
+| D49 | Miss score term: no effect after the tier level; closed with no change |
+| D50 | Overtime 3v3 level adopted (the long-listed INV-35 cell passes). Shootout mechanics wired but not selected: my 5 pp gate was below its noise floor (L39) |
+| D51 | Same defect on the goal round's by-bucket check; restated at 2 SE before the holdout was read |
+| D53 | Goal model C1s-sap (as-of score levels plus period terms) selected offline; closed-loop read pending in the right configuration (Lane E4) |
 
-**Needs you:** nothing right now. Keep Windows logged in for the live loggers and the Monday 06:00 weekly pull.
+**Needs you:** nothing right now. Keep Windows logged in for the loggers and the Monday 06:00 weekly pull.
 
 **Open items, in order**
-1. Engine default table set: switch the L1x-as flag on alongside C1s (small engine step, with the plumbing loop re-run).
-2. INV-62: pre-register a prior floor for the as-of scale's burn-in spike (L38), before the scale is reused.
-3. INV-53 next applications, each pre-registered: blocks (SB-R5, replacing stand-in B0), then the stage-3 over-response watch item.
-4. Stage 8 (goalie pull, OT 3v3 hazard INV-35, shootout, in-game goalie change) and stage 7 (rebounds, faceoffs); then a projected-goalie (non-oracle) starter table (INV-8 path) so backtests stop being "oracle goalie".
-5. INV-61: monitor the live-season drift of the stage-4 "for" response ratio (1.18 offline, 1.24 in the loop; gate 1.2).
-6. INV-42 (stage-3 4v4), INV-34 (seasonal profile shape), INV-12 (Kalshi fee schedule retry), INV-7 (seed-noise study, before any ROI number).
+1. Read Lane E4's G5b result (`docs/tests/engine_defaults_g5b_2026-10-21.md`): if the 55:00 tie gate passes with every repair wired, C1s-sap is confirmed and the default set switches to it; if not, a diagnosis of the remaining gap (no tuning).
+2. EG-R2 (INV-72): the as-of pull-timing level (2024-25 teams pulled 78 s per game vs 64-68), a re-pull lag term, the shootout past-round-3 check at 2 SE pooled, then G7 re-read.
+3. INV-70: a delayed-penalty state in the engine (the offline penalty hazard has one; the engine does not). Needed for 11 s per game of pulled time.
+4. INV-68 (in-game goalie changes, 2.9% of shots, needed for saves props) and INV-69 (stage 7: rebounds, faceoffs).
+5. INV-73 (reconcile the loop's goalie spread with the offline response ratio), INV-76 (grader label artefact), INV-61 (live-season drift of the stage-4 "for" ratio), INV-42, INV-34, INV-12, INV-7.
 
-**AWS:** approved for the session, $60 cap. Lane O4 served the queue; no request was filed because every heavy step ran locally in under 10 minutes. Spend and the zero-instance proof are in `docs/ops/aws_operator_O4_2026-10-21.md`.
+**AWS:** approved for the session, $60 cap. Lane O4 served the queue for an hour; no request was filed and $0.00 was spent (every heavy step ran locally in under 10 minutes). Zero instances verified at 12:47.
 
-**Worker incidents (disclosed, none harmful)**
-- Lane A7 stopped only its own snapshot processes after checking their command lines.
-- Lane E2's wrapper script exited non-zero on a `tail` flag after all blocks had finished; no effect on results.
-- PM: none this session. Pushes again printed the Windows credential-manager "Key not valid" warning; every push was verified with `git ls-remote`.
+**PM errors today (disclosed):** four spec defects, each caught by the worker before a holdout was read: an impossible offline pulled-time check (D45), an "ES group" wording for blocks and misses at empty net (D46), and two gates set below their one-season noise floor (D50, D51; now L39). Lane H8b's standalone report file could not be written by its tool; its content is in the experiments results block.
+
+**Worker incidents (disclosed, none harmful):** Lane A7 and Lane E3 each stopped only their own processes after checking command lines. Lane E2's wrapper script exited non-zero after all work had finished. Every push printed the Windows credential-manager "Key not valid" warning and every push was verified with `git ls-remote`.
 
 ## SUMMARY FOR USER 2026-10-16 (day session, 09:20-14:10)
 
