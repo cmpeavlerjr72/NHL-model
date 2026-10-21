@@ -7,6 +7,10 @@ Eligibility (both folds; fold 1 = the D13 guard, same checks):
   every G-R3 bias check (save % overall / group / tier / month, RS goals from SOG), goalie and team R in [0.8, 1.2]
   (point estimate gates, D18), AND served / actual conversion by score bucket relative to tied within +/-3% for each of
   trail 2+, trail 1, lead 1, lead 2+ (gated rows; point estimate; game-bootstrap SE reported).
+  D51 restatement (before any fold-2 read): the band is per bucket and season, |ratio - 1| <= 2 x SD_redraw, SD_redraw =
+  the SD of that bucket's ratio over N_REDRAW parametric redraws y* ~ Bernoulli(p) from the arm's OWN probabilities on the
+  season's gated rows (the `diag_goal_gr4_band_power.py` construction); the tolerance per bucket is printed.
+  Tie-break (D51): eligible arms whose LLs are within 2 SE of each other are listed as tied for the paired-seed loop.
 Decision (fold 2): among arms eligible on fold 2 with the fold-1 guard holding, those not worse than C1s by > 2 SE on
 LL per SOG; the best LL among them; the simplest (C1s < C1s-sa < C1s-sp < C1s-sap) within 2 SE of the best.
 Floor 0 (deterministic logistic; stated). C0 is flat in goalie and team and not adoptable (D24).
@@ -34,7 +38,9 @@ REPORT = ROOT / "docs/tests/goal_g_r4_grade_2026-10-21.md"
 ARMS = ("C0", "C1s", "C1s-sa", "C1s-sp", "C1s-sap")
 ORDER = ("C1s", "C1s-sa", "C1s-sp", "C1s-sap")          # complexity
 NB, BSEED = 1000, 20261021
-TOL3 = 0.03
+TOL3 = 0.03                      # superseded by D51 (kept for the record)
+N_REDRAW, RSEED = 2000, 20261021
+K_SE = 2.0
 BAND = G3.BAND
 
 
@@ -46,17 +52,30 @@ def md(df, fmt=".4f"):
     return df.to_markdown(floatfmt=fmt)
 
 
+def redraw_sd(p, b):
+    """D51: per-bucket SD of the ratio vs tied over parametric redraws from the arm's own probabilities."""
+    rng = np.random.default_rng(RSEED)
+    P_ = np.bincount(b, weights=p, minlength=5)
+    out = np.empty((N_REDRAW, 5))
+    for i in range(N_REDRAW):
+        Y_ = np.bincount(b, weights=(rng.random(len(p)) < p).astype(float), minlength=5)
+        out[i] = (P_ / Y_) / (P_[SA.TIED] / Y_[SA.TIED])
+    return out.std(0)
+
+
 def bucket_check(p, r, gp_all, W):
     g = (r.sg <= 2).to_numpy()
     b = SA.bucket(r)[g]
     games, gp = np.unique(gp_all[g], return_inverse=True)
     rat, se = SA.bucket_ratio(p[g], r.y.to_numpy(float)[g], b, gp, len(games), W[:, games])
+    sd = redraw_sd(p[g], b)
     rows = []
     for k in range(5):
+        tol = K_SE * sd[k]
         rows.append(dict(bucket=SA.B_NAMES[k], n_sog=int((b == k).sum()), goals=int(r.y.to_numpy()[g][b == k].sum()),
                          pred_pct=100 * p[g][b == k].mean(), act_pct=100 * r.y.to_numpy()[g][b == k].mean(),
-                         ratio_vs_tied=rat[k], se=se[k],
-                         status="ref" if k == SA.TIED else ("PASS" if abs(rat[k] - 1) <= TOL3 else "FAIL")))
+                         ratio_vs_tied=rat[k], se=se[k], redraw_sd=sd[k], tol=tol,
+                         status="ref" if k == SA.TIED else ("PASS" if abs(rat[k] - 1) <= tol else "FAIL")))
     return pd.DataFrame(rows)
 
 
@@ -126,6 +145,7 @@ def write(fold):
                          sv_overall_pp=float(B[B.level == "overall"].diff_pp.iloc[0]), goals_pct=R["goals"]["diff_pct"],
                          bias_fails=", ".join(bf) or "none", R_goalie=gq["R"], R_team=tq["R"],
                          **{f"r_{b}": float(C.loc[b, "ratio_vs_tied"]) for b in SA.B_NAMES if b != "tied"},
+                         tol=", ".join(f"{C.loc[b, 'tol']:.4f}" for b in SA.B_NAMES if b != "tied"),
                          bucket_fails=", ".join(f"{b} {C.loc[b, 'ratio_vs_tied']:.3f}" for b in C.index
                                                 if C.loc[b, "status"] == "FAIL") or "none"))
     S = pd.DataFrame(rows).set_index("arm")
@@ -147,7 +167,8 @@ def write(fold):
          "### Summary", "", md(S.drop(columns=["bias_fails"]), ".4f"), "",
          "Bias failures: " + "; ".join(f"{a}: {S.loc[a, 'bias_fails']}" for a in ARMS), "",
          "- ll_sog_vs_C1s = LL per gated SOG minus C1s's (nats), game-block bootstrap SE. r_* = served / actual conversion "
-         "of the bucket relative to tied (gated rows), band +/-3%.", "",
+         "of the bucket relative to tied (gated rows); band per bucket = 2 x the arm's own parametric redraw SD (D51), "
+         "listed in `tol` (trail2+, trail1, lead1, lead2+).", "",
          "### Pairwise LL differences (a minus b)", "", md(P.set_index(["a", "b"]), ".6f"), ""]
     for a in ARMS:
         R = res[h[a]]
@@ -204,6 +225,10 @@ def write(fold):
                 ok.append(a)
         if ok:
             best = max(ok, key=lambda a: S.loc[a, "ll_sog"])
+            tied = [a for a in ok if a == best or diff(a, best)[0] >= -2 * diff(a, best)[1]]
+            out["tied_within_2se"] = tied
+            L.append(f"- Eligible, not worse than C1s, LL within 2 SE of the best ({best}): {tied}"
+                     + (" -> D51 tie-break: the paired-seed closed loop decides." if len(tied) > 1 else ""))
             L.append(f"- Best LL among the remaining: {best}.")
             for a in ORDER:
                 if a not in ok:

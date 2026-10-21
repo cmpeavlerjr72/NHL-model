@@ -4,21 +4,21 @@ Spec: `docs/models/goal/experiments.md` G-R4 (G-R3 / D40 frozen). Fold 1 is writ
 
 ## Fold 1 (diagnostic + D13 guard): 20232024 test, 80,610 gated SOG (83,904 in scope), 1400 games
 
-Generated 2026-10-21 15:08:15 -0400 by `scripts/grade_goal_v4.py --fold 1` (blind: every label scored before `labels_sealed.json` was opened; salt `G-R4-2026-10-21`). Floor 0 (deterministic logistic; stated).
+Generated 2026-10-21 15:12:42 -0400 by `scripts/grade_goal_v4.py --fold 1` (blind: every label scored before `labels_sealed.json` was opened; salt `G-R4-2026-10-21`). Floor 0 (deterministic logistic; stated).
 
 ### Summary
 
-| arm     |   ll_sog |   ll_sog_vs_C1s |   se_sog |   sv_overall_pp |   goals_pct |   R_goalie |   R_team |   r_trail2+ |   r_trail1 |   r_lead1 |   r_lead2+ | bucket_fails                             | bias_gate   | resp_gate        | bucket_gate   | all_checks   |
-|:--------|---------:|----------------:|---------:|----------------:|------------:|-----------:|---------:|------------:|-----------:|----------:|-----------:|:-----------------------------------------|:------------|:-----------------|:--------------|:-------------|
-| C0      |  -0.2819 |         -0.0001 |   0.0001 |          0.2428 |     -2.6486 |     0.2815 |   0.4736 |      1.0772 |     0.9754 |    0.9109 |     0.9277 | trail2+ 1.077, lead1 0.911, lead2+ 0.928 | FAIL        | FAIL (flat, D24) | FAIL          | False        |
-| C1s     |  -0.2818 |          0.0000 | nan      |          0.1042 |     -1.1541 |     1.0837 |   1.0477 |      1.0682 |     1.0266 |    0.9482 |     1.0136 | trail2+ 1.068, lead1 0.948               | PASS        | PASS             | FAIL          | False        |
-| C1s-sa  |  -0.2818 |          0.0000 |   0.0000 |          0.0815 |     -0.9519 |     1.1099 |   1.0518 |      1.0404 |     1.0090 |    1.0113 |     1.0041 | trail2+ 1.040                            | PASS        | PASS             | FAIL          | False        |
-| C1s-sp  |  -0.2819 |         -0.0001 |   0.0001 |          0.0927 |     -1.0390 |     1.0897 |   1.0431 |      1.0674 |     1.0284 |    0.9484 |     1.0160 | trail2+ 1.067, lead1 0.948               | PASS        | PASS             | FAIL          | False        |
-| C1s-sap |  -0.2818 |         -0.0001 |   0.0001 |          0.0673 |     -0.8119 |     1.1261 |   1.0500 |      1.0397 |     1.0103 |    1.0127 |     1.0060 | trail2+ 1.040                            | PASS        | PASS             | FAIL          | False        |
+| arm     |   ll_sog |   ll_sog_vs_C1s |   se_sog |   sv_overall_pp |   goals_pct |   R_goalie |   R_team |   r_trail2+ |   r_trail1 |   r_lead1 |   r_lead2+ | tol                            | bucket_fails                             | bias_gate   | resp_gate        | bucket_gate   | all_checks   |
+|:--------|---------:|----------------:|---------:|----------------:|------------:|-----------:|---------:|------------:|-----------:|----------:|-----------:|:-------------------------------|:-----------------------------------------|:------------|:-----------------|:--------------|:-------------|
+| C0      |  -0.2819 |         -0.0001 |   0.0001 |          0.2428 |     -2.6486 |     0.2815 |   0.4736 |      1.0772 |     0.9754 |    0.9109 |     0.9277 | 0.0660, 0.0640, 0.0631, 0.0674 | trail2+ 1.077, lead1 0.911, lead2+ 0.928 | FAIL        | FAIL (flat, D24) | FAIL          | False        |
+| C1s     |  -0.2818 |          0.0000 | nan      |          0.1042 |     -1.1541 |     1.0837 |   1.0477 |      1.0682 |     1.0266 |    0.9482 |     1.0136 | 0.0673, 0.0635, 0.0629, 0.0660 | trail2+ 1.068                            | PASS        | PASS             | FAIL          | False        |
+| C1s-sa  |  -0.2818 |          0.0000 |   0.0000 |          0.0815 |     -0.9519 |     1.1099 |   1.0518 |      1.0404 |     1.0090 |    1.0113 |     1.0041 | 0.0676, 0.0637, 0.0607, 0.0659 | none                                     | PASS        | PASS             | PASS          | True         |
+| C1s-sp  |  -0.2819 |         -0.0001 |   0.0001 |          0.0927 |     -1.0390 |     1.0897 |   1.0431 |      1.0674 |     1.0284 |    0.9484 |     1.0160 | 0.0669, 0.0637, 0.0623, 0.0658 | trail2+ 1.067                            | PASS        | PASS             | FAIL          | False        |
+| C1s-sap |  -0.2818 |         -0.0001 |   0.0001 |          0.0673 |     -0.8119 |     1.1261 |   1.0500 |      1.0397 |     1.0103 |    1.0127 |     1.0060 | 0.0677, 0.0640, 0.0601, 0.0661 | none                                     | PASS        | PASS             | PASS          | True         |
 
 Bias failures: C0: goals/game -2.65%; C1s: none; C1s-sa: none; C1s-sp: none; C1s-sap: none
 
-- ll_sog_vs_C1s = LL per gated SOG minus C1s's (nats), game-block bootstrap SE. r_* = served / actual conversion of the bucket relative to tied (gated rows), band +/-3%.
+- ll_sog_vs_C1s = LL per gated SOG minus C1s's (nats), game-block bootstrap SE. r_* = served / actual conversion of the bucket relative to tied (gated rows); band per bucket = 2 x the arm's own parametric redraw SD (D51), listed in `tol` (trail2+, trail1, lead1, lead2+).
 
 ### Pairwise LL differences (a minus b)
 
@@ -39,13 +39,13 @@ Bias failures: C0: goals/game -2.65%; C1s: none; C1s-sa: none; C1s-sp: none; C1s
 
 Score bucket check (gated rows; served / actual relative to tied):
 
-| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se | status   |
-|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|:---------|
-| trail2+  |   13298 |    1157 |     9.3162 |    8.7006 |          1.0772 | 0.0352 | FAIL     |
-| trail1   |   14617 |    1381 |     9.1599 |    9.4479 |          0.9754 | 0.0295 | PASS     |
-| tied     |   28036 |    2572 |     9.1187 |    9.1739 |          1.0000 | 0.0000 | ref      |
-| lead1    |   13340 |    1366 |     9.2714 |   10.2399 |          0.9109 | 0.0280 | FAIL     |
-| lead2+   |   11319 |    1166 |     9.4992 |   10.3013 |          0.9277 | 0.0295 | FAIL     |
+| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se |   redraw_sd |    tol | status   |
+|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|------------:|-------:|:---------|
+| trail2+  |   13298 |    1157 |     9.3162 |    8.7006 |          1.0772 | 0.0352 |      0.0330 | 0.0660 | FAIL     |
+| trail1   |   14617 |    1381 |     9.1599 |    9.4479 |          0.9754 | 0.0295 |      0.0320 | 0.0640 | PASS     |
+| tied     |   28036 |    2572 |     9.1187 |    9.1739 |          1.0000 | 0.0000 |      0.0000 | 0.0000 | ref      |
+| lead1    |   13340 |    1366 |     9.2714 |   10.2399 |          0.9109 | 0.0280 |      0.0316 | 0.0631 | FAIL     |
+| lead2+   |   11319 |    1166 |     9.4992 |   10.3013 |          0.9277 | 0.0295 |      0.0337 | 0.0674 | FAIL     |
 
 Predicted / actual goals by period x bucket (gated, regulation; no gate):
 
@@ -94,13 +94,13 @@ Responsiveness (decile goal % predicted / actual):
 
 Score bucket check (gated rows; served / actual relative to tied):
 
-| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se | status   |
-|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|:---------|
-| trail2+  |   13298 |    1157 |     9.1191 |    8.7006 |          1.0682 | 0.0348 | FAIL     |
-| trail1   |   14617 |    1381 |     9.5173 |    9.4479 |          1.0266 | 0.0311 | PASS     |
-| tied     |   28036 |    2572 |     9.0015 |    9.1739 |          1.0000 | 0.0000 | ref      |
-| lead1    |   13340 |    1366 |     9.5264 |   10.2399 |          0.9482 | 0.0292 | FAIL     |
-| lead2+   |   11319 |    1166 |    10.2455 |   10.3013 |          1.0136 | 0.0318 | PASS     |
+| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se |   redraw_sd |    tol | status   |
+|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|------------:|-------:|:---------|
+| trail2+  |   13298 |    1157 |     9.1191 |    8.7006 |          1.0682 | 0.0348 |      0.0336 | 0.0673 | FAIL     |
+| trail1   |   14617 |    1381 |     9.5173 |    9.4479 |          1.0266 | 0.0311 |      0.0317 | 0.0635 | PASS     |
+| tied     |   28036 |    2572 |     9.0015 |    9.1739 |          1.0000 | 0.0000 |      0.0000 | 0.0000 | ref      |
+| lead1    |   13340 |    1366 |     9.5264 |   10.2399 |          0.9482 | 0.0292 |      0.0315 | 0.0629 | PASS     |
+| lead2+   |   11319 |    1166 |    10.2455 |   10.3013 |          1.0136 | 0.0318 |      0.0330 | 0.0660 | PASS     |
 
 Predicted / actual goals by period x bucket (gated, regulation; no gate):
 
@@ -260,13 +260,13 @@ Per shooting team (no gate):
 
 Score bucket check (gated rows; served / actual relative to tied):
 
-| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se | status   |
-|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|:---------|
-| trail2+  |   13298 |    1157 |     8.8820 |    8.7006 |          1.0404 | 0.0341 | FAIL     |
-| trail1   |   14617 |    1381 |     9.3539 |    9.4479 |          1.0090 | 0.0306 | PASS     |
-| tied     |   28036 |    2572 |     9.0015 |    9.1739 |          1.0000 | 0.0000 | ref      |
-| lead1    |   13340 |    1366 |    10.1610 |   10.2399 |          1.0113 | 0.0312 | PASS     |
-| lead2+   |   11319 |    1166 |    10.1491 |   10.3013 |          1.0041 | 0.0320 | PASS     |
+| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se |   redraw_sd |    tol | status   |
+|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|------------:|-------:|:---------|
+| trail2+  |   13298 |    1157 |     8.8820 |    8.7006 |          1.0404 | 0.0341 |      0.0338 | 0.0676 | PASS     |
+| trail1   |   14617 |    1381 |     9.3539 |    9.4479 |          1.0090 | 0.0306 |      0.0319 | 0.0637 | PASS     |
+| tied     |   28036 |    2572 |     9.0015 |    9.1739 |          1.0000 | 0.0000 |      0.0000 | 0.0000 | ref      |
+| lead1    |   13340 |    1366 |    10.1610 |   10.2399 |          1.0113 | 0.0312 |      0.0304 | 0.0607 | PASS     |
+| lead2+   |   11319 |    1166 |    10.1491 |   10.3013 |          1.0041 | 0.0320 |      0.0330 | 0.0659 | PASS     |
 
 Predicted / actual goals by period x bucket (gated, regulation; no gate):
 
@@ -426,13 +426,13 @@ Per shooting team (no gate):
 
 Score bucket check (gated rows; served / actual relative to tied):
 
-| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se | status   |
-|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|:---------|
-| trail2+  |   13298 |    1157 |     9.1181 |    8.7006 |          1.0674 | 0.0348 | FAIL     |
-| trail1   |   14617 |    1381 |     9.5397 |    9.4479 |          1.0284 | 0.0312 | PASS     |
-| tied     |   28036 |    2572 |     9.0070 |    9.1739 |          1.0000 | 0.0000 | ref      |
-| lead1    |   13340 |    1366 |     9.5351 |   10.2399 |          0.9484 | 0.0293 | FAIL     |
-| lead2+   |   11319 |    1166 |    10.2758 |   10.3013 |          1.0160 | 0.0323 | PASS     |
+| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se |   redraw_sd |    tol | status   |
+|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|------------:|-------:|:---------|
+| trail2+  |   13298 |    1157 |     9.1181 |    8.7006 |          1.0674 | 0.0348 |      0.0335 | 0.0669 | FAIL     |
+| trail1   |   14617 |    1381 |     9.5397 |    9.4479 |          1.0284 | 0.0312 |      0.0319 | 0.0637 | PASS     |
+| tied     |   28036 |    2572 |     9.0070 |    9.1739 |          1.0000 | 0.0000 |      0.0000 | 0.0000 | ref      |
+| lead1    |   13340 |    1366 |     9.5351 |   10.2399 |          0.9484 | 0.0293 |      0.0312 | 0.0623 | PASS     |
+| lead2+   |   11319 |    1166 |    10.2758 |   10.3013 |          1.0160 | 0.0323 |      0.0329 | 0.0658 | PASS     |
 
 Predicted / actual goals by period x bucket (gated, regulation; no gate):
 
@@ -592,13 +592,13 @@ Per shooting team (no gate):
 
 Score bucket check (gated rows; served / actual relative to tied):
 
-| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se | status   |
-|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|:---------|
-| trail2+  |   13298 |    1157 |     8.8836 |    8.7006 |          1.0397 | 0.0340 | FAIL     |
-| trail1   |   14617 |    1381 |     9.3741 |    9.4479 |          1.0103 | 0.0308 | PASS     |
-| tied     |   28036 |    2572 |     9.0091 |    9.1739 |          1.0000 | 0.0000 | ref      |
-| lead1    |   13340 |    1366 |    10.1838 |   10.2399 |          1.0127 | 0.0313 | PASS     |
-| lead2+   |   11319 |    1166 |    10.1764 |   10.3013 |          1.0060 | 0.0321 | PASS     |
+| bucket   |   n_sog |   goals |   pred_pct |   act_pct |   ratio_vs_tied |     se |   redraw_sd |    tol | status   |
+|:---------|--------:|--------:|-----------:|----------:|----------------:|-------:|------------:|-------:|:---------|
+| trail2+  |   13298 |    1157 |     8.8836 |    8.7006 |          1.0397 | 0.0340 |      0.0338 | 0.0677 | PASS     |
+| trail1   |   14617 |    1381 |     9.3741 |    9.4479 |          1.0103 | 0.0308 |      0.0320 | 0.0640 | PASS     |
+| tied     |   28036 |    2572 |     9.0091 |    9.1739 |          1.0000 | 0.0000 |      0.0000 | 0.0000 | ref      |
+| lead1    |   13340 |    1366 |    10.1838 |   10.2399 |          1.0127 | 0.0313 |      0.0301 | 0.0601 | PASS     |
+| lead2+   |   11319 |    1166 |    10.1764 |   10.3013 |          1.0060 | 0.0321 |      0.0331 | 0.0661 | PASS     |
 
 Predicted / actual goals by period x bucket (gated, regulation; no gate):
 
@@ -757,7 +757,7 @@ Per shooting team (no gate):
 ### D13 guard (fold 1, every arm: the same checks)
 
 - C1s: bias PASS, R PASS (goalie 1.084, team 1.048), bucket FAIL -> FAILS
-- C1s-sa: bias PASS, R PASS (goalie 1.110, team 1.052), bucket FAIL -> FAILS
+- C1s-sa: bias PASS, R PASS (goalie 1.110, team 1.052), bucket PASS -> HOLDS
 - C1s-sp: bias PASS, R PASS (goalie 1.090, team 1.043), bucket FAIL -> FAILS
-- C1s-sap: bias PASS, R PASS (goalie 1.126, team 1.050), bucket FAIL -> FAILS
+- C1s-sap: bias PASS, R PASS (goalie 1.126, team 1.050), bucket PASS -> HOLDS
 
