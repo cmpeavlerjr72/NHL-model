@@ -120,3 +120,40 @@ There is no booster arm (D31).
 
 - Nothing is selected: S1t fails the binding fold-1 D13 guard (the arena slope flips sign, and there is no fold-1 LL gain).
 - S0t is the stand-in. Miss team terms are parked.
+
+---
+
+## SM-R3: score-state term on the miss stand-in (pre-registered 2026-10-21 by the PM, before any run; D48, INV-75, INV-71)
+
+Everything not listed is frozen from SM-R2 / D37: the tier level (M2 H30 by group x tier), the S0t cell x type x group table, EN rows served from their own group, the bias checks, grading, floor 0. Team terms stay parked. The arms here are stand-in-grade (flat in team) and are labelled STAND-IN in the engine whatever is selected.
+
+### Problem (INV-71)
+
+S0t has no score term; the real miss share has a stable score gradient (the same in all four seasons per the diagnosis), which contributes about 5% of the 55:00 tie-rate gap. Score state is the state BEFORE the attempt.
+
+### Step 0 (training seasons only; committed before any fit)
+
+Per-season logistic score-bucket coefficients (relative to tied) on top of S0t with SEs, and a trend z per bucket (L35). If any |z| > 2, the round stops after this commit and reports: an as-of construction would be needed, pre-registered separately.
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| S0t | the incumbent stand-in (reference) |
+| S0t-s | S0t + pooled score-bucket dummies (trail 2+, trail 1, tied, lead 1, lead 2+; tied reference), fitted on the training seasons |
+| S0t-sp3 | S0t-s with a separate set of bucket dummies in the third period (and OT rows served the baseline, L33) |
+
+### Checks before fold 2 (stop if any fails)
+
+- In-sample miss share by group x tier within 0.5 pp of S0t on the judged training seasons.
+- D28-form guard on fold 1: arm minus S0t miss share within 0.5 pp overall and per group.
+
+### Decision (fold 2, blind)
+
+- **Eligible:** every SM-R2 bias check passes (overall, group, tier, month), miss share by score bucket within +/-1 pp of actual on fold 2 and on the fold-1 D13 guard.
+- **Selected:** eligible and better than S0t by > 2 SE on LL per attempt; S0t-sp3 over S0t-s only if better by > 2 SE. Otherwise S0t stays.
+- On selection: engine flag (default off; flag off bit-identical; served 1e-6), after the sim.py order of D48; the closed loop is shared with G-R4's (G5b) and is run by whichever lane wires last.
+
+### Results
+
+(append below this line)

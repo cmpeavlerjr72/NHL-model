@@ -185,3 +185,43 @@ If C1s is not selected, stage 6 stays on the C0 stand-in. The PM then reports th
 - Status: CONFIRMED-INCUMBENT (provisional).
 - Listed: LL +1.2 SE, goalie R UNDERPOWERED, the parity fallback, and the step-0 trend.
 - The engine wiring and closed loop are INV-60.
+
+---
+
+## G-R4: score-state terms of the goal model (pre-registered 2026-10-21 by the PM, before any run; D48, INV-74, INV-71)
+
+Everything not listed is frozen from G-R3 / D40: level M1 K500, the as-of goalie scale (H90 P2000; the AS-1 floor leaves its served dates unchanged, D44), team finishing at its fixed scale, home, rest, the arena distance factor, the bias checks, R, grading, floor. Only the score-state terms change. No booster (D31).
+
+### Problem (INV-71, `docs/tests/margin_diagnosis_inv71_2026-10-21.md`)
+
+C1s carries pooled score-bucket dummies (trail 2+, trail 1, tied, lead 1, lead 2+; tied is the reference). On both holdouts the served tied conversion is under-predicted (0.968 / 0.973 of actual) and trailing is over-predicted relative to tied; the real trailing-by-1 vs tied conversion ratio drifts 1.038 -> 0.968 over four seasons, so pooled dummies lag a trend (L27). This explains about half of the 55:00 tie-rate gap. Score state is the state BEFORE the shot (modeling rule).
+
+### Arms
+
+| Arm | Model |
+|---|---|
+| C1s | the incumbent (reference; must reproduce G-R3) |
+| C1s-sa | the four score-bucket log-odds deviations (relative to tied) estimated as-of: the AS-1 floored as-of estimator generalised to four dummies, offset fixed at C0 + goalie (as-of scale) + team + home + rest + arena, rows weighted 0.5^(age / H), shrunk to the previous date's values with prior P SOG, start 0, burn-in 2021-22 never judged or served, `created_at < puck_drop`, leakage tests. Grid H in {90, 180, 365} x P in {2000, 10000} |
+| C1s-sp | pooled score bucket x period (P1 / P2 / P3) dummies, fitted on the training seasons (tied-P1 reference) |
+| C1s-sap | C1s-sa plus pooled period-interaction deviations (bucket x period minus bucket main effect) on top |
+
+Complexity order: C1s < C1s-sa < C1s-sp < C1s-sap. Ties within 2 SE go to the simpler arm.
+
+### Step 0 (training seasons only; committed before any arm is fit)
+
+Per-season pooled-dummy coefficients with SEs (the trend the as-of levels must track), and the per-season served / actual conversion by bucket relative to tied for C1s.
+
+### Parity analogue for C1s-sa (judged training seasons only; committed before any fold-2 read)
+
+Served / actual conversion by score bucket, relative to tied, within +/-3% on every judged season (fold 1: 2022-23; fold 2: 2022-23, 2023-24). Selection: the simplest passer (larger H, then larger P). Otherwise the smallest max |log ratio|, listed.
+
+### Checks and decision (fold 2, blind)
+
+- **Eligible:** every G-R3 bias check passes (save % by group, tier, month), goalie and team R in band, the fold-1 D13 guard holds (same checks), AND the new check: served / actual conversion by score bucket relative to tied within +/-3% on fold 2 and on fold 1.
+- **Selected:** eligible and not worse than C1s by > 2 SE on LL per SOG; among eligible arms, the simplest whose LL is within 2 SE of the best. Floor 0 (deterministic logistic; stated).
+- On selection: the engine serves the selected arm behind a default-off flag (flag off bit-identical; served vs offline 1e-6), after the sim.py order of D44 / D48. Closed loop (200 seeds, fold 2, pull off): G4 unchanged within noise; the team-standardised goal O/E by score bucket within 1 SE of real; and the new gate **G5b**: at 55:00 with the pull off, vs actual with goalie-out goals removed, the tie share within 1.5 pp and |margin| cells (0, 1, 2, 3+) within 1.5 pp (`docs/gates.yaml`).
+- If no arm is eligible, the goal model stays C1s and the PM rules; nothing downstream absorbs the gap.
+
+### Results
+
+(append below this line)
