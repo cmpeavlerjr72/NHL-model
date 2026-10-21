@@ -244,3 +244,10 @@ Served / actual conversion by score bucket, relative to tied, within +/-3% on ev
 ### G-R4 results after D51
 
 (append below this line)
+
+### G-R4 results after D51 (Lane G4, 2026-10-21; report `docs/tests/goal_g_r4_2026-10-21.md` section 7)
+
+- Fold-1 guard under the restated band (2 x the arm's own per-bucket redraw SD, tolerances 0.060-0.069; d90f501): holds for C1s-sa and C1s-sap; fails for C1s and C1s-sp (trail2+ 1.068 / 1.067 vs 0.067).
+- Fold 2 (blind, 9f115d2): bias and R pass every arm; the bucket check fails C1s and C1s-sp (trail1 1.070 / 1.072). LL per SOG vs C1s: C1s-sa -0.000070 (SE 0.000035, z -2.02, excluded), C1s-sap -0.000069 (0.000048, z -1.44). **Selected: C1s-sap** (the sole eligible arm within 2 SE of C1s; no tie-break). Listed: C1s-sa and C1s-sap have equal LL (+0.0000008); the selection turns on the wider SE.
+- Engine (`engine_goal_r4`, 7a6fd4b): flag attr["goal"]["sc_game"] (G, 4, 7), default off; flag off bit-identical to 4c7570d (fixture); served vs offline 1.1e-16; full suite 381 passed.
+- Closed loop (200 paired seeds, fold 2, pull off, default set with B0 / S0t, B1a-as off): G5b FAIL for both (55:00 RS tie +3.36 pp c1s -> +2.51 pp sap; real SE 1.04); team-standardised goal O/E FAIL for both (trail1 1.080 -> 1.049 vs real 0.996; max |z| 2.59 -> 1.63); G4: sap shifts loop sv % +0.11 pp overall (about 1 real SE), PP +0.64 vs actual (c1s +0.51). C1s-sap closes about 25% of the 55:00 tie gap. The default stays C1s pending the PM ruling.
