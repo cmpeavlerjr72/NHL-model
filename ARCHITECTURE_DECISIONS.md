@@ -508,3 +508,17 @@ Status: ADOPTED.
 - **sim.py edit order for the rest of the session:** H8a (pull) -> H8b (OT level, shootout) -> B5 (blocks, only if selected). Each waits for the previous lane's marker commit.
 
 Status: ADOPTED.
+
+## D45 (2026-10-21): EG-R1 part A, the offline pulled-time gate is a PM spec defect; moved to the closed loop before any fold-2 read
+
+- **The stop (3da15f8, 938f2a9; `docs/tests/end_game_eg_r1_pull_2026-10-21.md`).** The offline pulled-time check (within 10%) and the trailing-by-1 share check (within 3 pp) cannot be met by any stochastic arm. In-sample, the season's own empirical hazard P0 gives 1.104 / 1.111 of the actual pulled time and -2.7 / -2.6 pp on the share. Cause: the offline replay returns the goalie only at actual goals, and empty-net goals happen when the real goalie was out, so a simulated pull where the real team kept its goalie in has no goal to end it. Replaying the actual pull starts with 30 s jitter stays within 1.009, so it is not timing noise. First-pull medians and the re-pull share are unbiased in-sample. Nothing on fold 2 was read.
+- **Ruling (a D28 / D38-type construction ruling, before the holdout read).**
+  - The absolute gates on pulled time per game (within 10%) and the trailing-by-1 pull share (within 3 pp) move to the closed loop, where the empty-net scoring supplies the returns. They gate the round there, alongside G7.
+  - Offline, both quantities are reported relative to the in-sample P0 calibration (a diagnostic, not a gate).
+  - The first-pull medians by deficit, the re-pull share and the LL rule stay as written. The trailing-by-3+ median is UNDERPOWERED (80 fold-1 cases) and is listed, not gated.
+  - Under the restated rule the fold-1 D13 guard PASSES for P1 (LL +1.226 per team-game vs P0, SE 0.088; medians by 1 and 2 PASS; share PASS; re-pull PASS).
+- **Delayed-penalty rider.** The engine carries no stage-1 delayed-penalty state (the SS-R2 offline hazard has it; the engine's state machine does not), so the rider cannot be wired this round. Listed as INV-70 (engine delayed-penalty state). The closed-loop pulled-time gate is therefore on non-delayed-penalty pulled time, actual measured by the same detection rule; the missing 11-12 s per game and its EN-for goals are stated in the report. EN-against goals (the G7 quantity) are unaffected by construction.
+- **Reported only.** P1's constant `pulled_before` term spreads re-pulls over the remaining time where real re-pulls bunch at about 14 s (about 4 pp of in-sample pulled time); a re-pull lag construction is an EG-R2 candidate.
+- **Resume.** Step 2 (fold-2 grade with the restated checks), step 3, the engine step, the loop with the two moved gates.
+
+Status: ADOPTED.

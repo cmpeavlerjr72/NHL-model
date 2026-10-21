@@ -87,3 +87,16 @@ Fixes only the details the spec leaves to the lane. Code `src/nhl_sim/end_game/p
 - The pulled-time bias check is biased by construction under the offline method: P0 fitted in-sample (the exact empirical hazard) gives 1.104 / 1.111 of the actual engine-rule pulled time on 2022-23 / 2023-24, and the trailing-by-1 share -2.7 / -2.6 pp. Cause: on actual paths the returns are actual goals, which are endogenous to the real pull. Timing jitter alone gives at most 1.009. No arm can pass the 10% band, so the selection rule cannot be met; the lane stopped and reports for a ruling. Medians and re-pull share are unbiased in-sample.
 - Fold-1 D13 grade (2023-24): P1 - P0 LL +1.226 per team-game (SE 0.088); pulled time P0 +10.5%, P1 +12.6% (both FAIL; 0.995 / 1.013 of the in-sample calibration); medians t1 / t2 PASS, t3+ FAIL (n 80, UNDERPOWERED); trail1 share P0 FAIL, P1 PASS; re-pull PASS.
 - Not done: fold-2 grade and selection, EN cascade, engine wiring, closed loop.
+
+---
+
+## PM ruling on the EG-R1 part A stop (2026-10-21, D45)
+
+- The offline pulled-time and trailing-by-1 share gates were a PM construction defect (offline replay returns the goalie only at actual goals). Both move to the closed loop (10%, 3 pp), where EN scoring supplies the returns; offline they are reported relative to the in-sample P0 calibration.
+- Medians, re-pull share and the LL rule stand. Trailing-by-3+ median is UNDERPOWERED, listed.
+- The delayed-penalty rider cannot be wired: the engine has no stage-1 delayed-penalty state (INV-70). The loop gate is on non-delayed-penalty pulled time.
+- Fold-1 D13 guard PASSES for P1 under the restated rule. Resume at step 2.
+
+### EG-R1 part A results after D45
+
+(append below this line)

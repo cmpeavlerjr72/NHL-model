@@ -91,3 +91,4 @@ Append-only. One row per status change, same commit as the experiments.md entry.
 | 2026-10-21 | asof_scale | OPEN | ADOPTED (f = 0.5) | D44: AS-1 floor adopted; judged snapshots bit-identical; incumbents unchanged in effect | (this commit) |
 | 2026-10-21 | end_game | - | OPEN | EG-R1 pre-registered: pull P0/P1 + EN cascade, OT 3v3 level grid, shootout S0/S1/S2; closed loop gated on G7 | (this commit) |
 | 2026-10-21 | end_game | OPEN | OPEN (part A stopped at step 2) | EG-R1 part A (Lane H8a): offline pulled-time check biased +10-11% by construction (in-sample P0 calibration); no fold-2 read; ruling needed; see docs/tests/end_game_eg_r1_pull_2026-10-21.md | (this commit) |
+| 2026-10-21 | end_game | OPEN | OPEN (D45 restated) | EG-R1 part A: offline pulled-time / share gates moved to the closed loop (PM spec defect); delayed-penalty rider blocked by missing engine state (INV-70); resume at step 2 | (this commit) |
