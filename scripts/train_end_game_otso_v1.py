@@ -131,7 +131,6 @@ def ot_fold2():
 
 
 # =========================================================================== part C: the shootout
-from nhl_sim.data.load import load_events  # noqa: E402
 from nhl_sim.end_game import shootout as SO  # noqa: E402
 
 S_GRID = (0.5, 0.75, 1.0, 1.25, 1.5)
@@ -140,42 +139,8 @@ NB = 1000
 NL = chr(10)
 
 
-def so_attempts(seasons) -> pd.DataFrame:
-    """Regular-season shootout attempts (audit rule): SHOT / MISS / GOAL / FAILED_SHOT_ATTEMPT in period type SO,
-    in sort order; round from strict alternation; shoot_home = shooter's team is the home team."""
-    ev = load_events(seasons, columns=["game_id", "season", "game_type", "sort_order", "period_type", "event",
-                                       "owner_is_home", "shooter_id", "goalie_id"])
-    x = ev[(ev.period_type == "SO") & ev.event.isin(["SHOT", "MISS", "GOAL", "FAILED_SHOT_ATTEMPT"]) & (ev.game_type == 2)]
-    x = x.sort_values(["game_id", "sort_order"], kind="stable").copy()
-    x["k"] = x.groupby("game_id").cumcount()
-    x["round"] = x.k // 2 + 1
-    x["success"] = (x.event == "GOAL").astype(float)
-    x["shoot_home"] = x.owner_is_home.astype(bool)
-    g = OL.game_table(seasons)[["game_id", "date", "drop"]]
-    x = x.merge(g, on="game_id", how="left", validate="many_to_one")
-    if x.date.isna().any():
-        raise ValueError("shootout attempt without a game date")
-    alt = x.groupby("game_id").shoot_home.apply(lambda v: bool((v.to_numpy()[1:] != v.to_numpy()[:-1]).all()))
-    assert alt.all(), "shootout attempts do not alternate"
-    return x.drop(columns=["owner_is_home", "event", "period_type", "game_type"]).reset_index(drop=True)
-
-
-def so_levels(att: pd.DataFrame, seasons):
-    """As-of S1 inputs per regular-season game: p (M1 K500 over attempts) and the home-first share (M1, K = 100)."""
-    games = OL.game_table(seasons)
-    games = games[games.game_type == 2].reset_index(drop=True)
-    gi = pd.Series(np.arange(len(games)), index=games.game_id.to_numpy())
-    ix = gi.reindex(att.game_id.to_numpy()).to_numpy().astype(np.int64)
-    xg = np.bincount(ix, weights=att.success.to_numpy(), minlength=len(games))
-    mg = np.bincount(ix, minlength=len(games)).astype(float)
-    first = att[att.k == 0]
-    fi = gi.reindex(first.game_id.to_numpy()).to_numpy().astype(np.int64)
-    xf = np.bincount(fi, weights=first.shoot_home.to_numpy(float), minlength=len(games))
-    mf = np.bincount(fi, minlength=len(games)).astype(float)
-    meta, p = SO.asof_m1(games, xg, mg, SO.K_SUCCESS)
-    _, hf = SO.asof_m1(games, xf, mf, SO.K_FIRST)
-    return pd.DataFrame({"game_id": games.game_id.to_numpy(), "season": games.season.to_numpy(), "p": p, "home_first": hf,
-                         "created_at": meta.created_at.to_numpy(), "puck_drop": meta.puck_drop.to_numpy()})
+so_attempts = SO.so_attempts
+so_levels = SO.so_levels
 
 
 def s1_bias(att: pd.DataFrame, lv: pd.DataFrame, season: int, n_sim: int = 2000, seed: int = 20261021):

@@ -17,6 +17,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from nhl_sim.data.load import load_events
+
 MAX_ATTEMPTS = 100            # 50 rounds; the chance a shootout lasts that long is < 1e-10 at p = 0.31
 K_SUCCESS = 500.0             # attempts of prior at the previous season's final success rate (M1 K500)
 K_FIRST = 100.0               # shootouts of prior for the home-shoots-first share (labelled choice, spec silent)
@@ -149,3 +151,59 @@ def asof_shooter_ratings(att: pd.DataFrame, w: float = 0.7, b: float = 50.0) -> 
         prev_final = {sid: r_of(sid, lg_f) for sid in set(X) | set(prev_final)}
         prev_lg = lg_f
     return rating
+
+
+# --------------------------------------------------------------------------- data and engine inputs
+def _ot():
+    from nhl_sim.end_game import ot_level
+    return ot_level
+
+
+def so_attempts(seasons) -> pd.DataFrame:
+    """Regular-season shootout attempts (audit rule): SHOT / MISS / GOAL / FAILED_SHOT_ATTEMPT in period type SO,
+    in sort order; round from strict alternation; shoot_home = shooter's team is the home team."""
+    ev = load_events(seasons, columns=["game_id", "season", "game_type", "sort_order", "period_type", "event",
+                                       "owner_is_home", "shooter_id", "goalie_id"])
+    x = ev[(ev.period_type == "SO") & ev.event.isin(["SHOT", "MISS", "GOAL", "FAILED_SHOT_ATTEMPT"]) & (ev.game_type == 2)]
+    x = x.sort_values(["game_id", "sort_order"], kind="stable").copy()
+    x["k"] = x.groupby("game_id").cumcount()
+    x["round"] = x.k // 2 + 1
+    x["success"] = (x.event == "GOAL").astype(float)
+    x["shoot_home"] = x.owner_is_home.astype(bool)
+    g = _ot().game_table(seasons)[["game_id", "date", "drop"]]
+    x = x.merge(g, on="game_id", how="left", validate="many_to_one")
+    if x.date.isna().any():
+        raise ValueError("shootout attempt without a game date")
+    alt = x.groupby("game_id").shoot_home.apply(lambda v: bool((v.to_numpy()[1:] != v.to_numpy()[:-1]).all()))
+    assert alt.all(), "shootout attempts do not alternate"
+    return x.drop(columns=["owner_is_home", "event", "period_type", "game_type"]).reset_index(drop=True)
+
+
+def so_levels(att: pd.DataFrame, seasons):
+    """As-of S1 inputs per regular-season game: p (M1 K500 over attempts) and the home-first share (M1, K = 100)."""
+    games = _ot().game_table(seasons)
+    games = games[games.game_type == 2].reset_index(drop=True)
+    gi = pd.Series(np.arange(len(games)), index=games.game_id.to_numpy())
+    ix = gi.reindex(att.game_id.to_numpy()).to_numpy().astype(np.int64)
+    xg = np.bincount(ix, weights=att.success.to_numpy(), minlength=len(games))
+    mg = np.bincount(ix, minlength=len(games)).astype(float)
+    first = att[att.k == 0]
+    fi = gi.reindex(first.game_id.to_numpy()).to_numpy().astype(np.int64)
+    xf = np.bincount(fi, weights=first.shoot_home.to_numpy(float), minlength=len(games))
+    mf = np.bincount(fi, minlength=len(games)).astype(float)
+    meta, p = SO.asof_m1(games, xg, mg, SO.K_SUCCESS)
+    _, hf = SO.asof_m1(games, xf, mf, SO.K_FIRST)
+    return pd.DataFrame({"game_id": games.game_id.to_numpy(), "season": games.season.to_numpy(), "p": p, "home_first": hf,
+                         "created_at": meta.created_at.to_numpy(), "puck_drop": meta.puck_drop.to_numpy()})
+
+
+
+def s1_tables(games: np.ndarray, test: int = 20242025, train_through: int = 20232024) -> dict:
+    """Engine inputs for S1, per served game (sorted game ids of the fold-2 table): the as-of per-attempt success p
+    (both sides, M1 K500) and the as-of home-shoots-first share, from games dated strictly earlier."""
+    seasons = [s for s in (20212022, 20222023, 20232024, 20242025) if s <= test]
+    att = so_attempts(seasons)
+    lv = so_levels(att, seasons).set_index("game_id").reindex(games)
+    if lv.p.isna().any():
+        raise ValueError("a served game has no S1 level")
+    return dict(p_home=lv.p.to_numpy(float), p_away=lv.p.to_numpy(float), home_first=lv.home_first.to_numpy(float))
