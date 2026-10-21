@@ -307,6 +307,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
     goal_rate = np.asarray(tables["goal_rate"]) / 3600.0
     stop_p = 1.0 - np.exp(-tables["stop_rate_ot"])
     rec = Recorder(N)
+    late_goals = np.zeros((N, 2, 4), np.int16)            # [sim, scoring team, lead / tied / trail 1 / trail 2+] (pull flag only)
     pim = np.zeros(N, np.int32)
     n_type = np.zeros((N, 2, 4), np.int16)
     n_coinc_4v4 = np.zeros(N, np.int16)
@@ -346,7 +347,18 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
             ga &= gs.alive[a]
             gs.goal(a[ga], 1)
         else:
+            late = PS is not None and gs.reg_end - 120 <= t < gs.reg_end
+            if late:                                    # EG-R1 recording: goals in the last 2 min by the scorer's deficit
+                sc0 = gs.score[a].astype(np.int64)
             _attempts_second(gs, a, t, g_a, ast_h, ast_a, diff, K, att_flat, Ma, p_goal, att_st, att_sc, toi_st_sc, AS)
+            if late:
+                dg = gs.score[a].astype(np.int64) - sc0
+                for team in (0, 1):
+                    m = dg[:, team] > 0
+                    if m.any():
+                        lead = sc0[m, team] - sc0[m, 1 - team]
+                        cat = np.where(lead > 0, 0, np.where(lead == 0, 1, np.where(lead == -1, 2, 3)))
+                        np.add.at(late_goals, (a[m], team, cat), dg[m, team])
         live = gs.alive[a]
         # coincidental stoppages
         r_pair = 0.5 * (lh * Ph[:, 3] + la * Pa[:, 3])
@@ -408,7 +420,7 @@ def simulate(tables: dict, game_ids: np.ndarray, game_types: np.ndarray, n_seeds
         extra.update(pull_s=PS["pull_s"], n_pulls=PS["n_pulls"], n_repulls=PS["n_repulls"], first_pull_t=PS["first_t"],
                      first_pull_def=PS["first_d"], pull_at_trail1=PS["at_t1"], trail1_seen=PS["t1_seen"],
                      n_ret_ga=gs.n_ret_ga.copy(), n_ret_tie=gs.n_ret_tie.copy(), n_repull_after_ga=PS["rep_ga"],
-                     pull_model=np.array([PS["label"]]), pull_stand_in=np.array(PS["stand_in"]))
+                     pull_model=np.array([PS["label"]]), pull_stand_in=np.array(PS["stand_in"]), late_goals=late_goals)
     return dict(**extra, game_idx=gi, seed=seeds, score=gs.score.copy(), end_state=gs.end_state.copy(), so_home_win=so_home_win, **so_extra,
                 toi=rec.toi, ppo=rec.ppo, played_s=rec.played, pim=pim, n_type=n_type, pen_count=gs.pen_count.copy(),
                 n_minor=gs.box.n_minor.copy(), n_minor_pp_ended=gs.box.n_minor_pp_ended.copy(),

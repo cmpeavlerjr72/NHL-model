@@ -87,3 +87,16 @@ def test_bad_shootout_table_is_refused():
         _run(lambda G: dict(_tables(G), p_home=np.full(G, 1.2)))
     with pytest.raises(ValueError):
         _run(lambda G: {k: v for k, v in _tables(G).items() if k != "label"})
+
+
+def test_late_goal_recording_with_the_pull_flag():
+    """EG-R1 recording (Lane H8b): with tables['pull'] the output carries late_goals (N, 2, 4): goals in the last 120 s
+    of regulation by the scorer's lead / tied / trail 1 / trail 2+ before the goal. Consistency with the score, and the
+    arrays are absent without the flag."""
+    import test_sim_pull as TP
+    o = TP._syn_run("P1", h=0.03)
+    lg = o["late_goals"]
+    assert lg.shape == (len(o["score"]), 2, 4) and lg.min() >= 0
+    assert (lg.sum(2) <= o["score"]).all() and lg.sum() > 0
+    assert lg[:, :, 2:].sum() > 0                                       # trailing teams score late (EN-for / pulled)
+    assert "late_goals" not in _run()
