@@ -522,3 +522,22 @@ Status: ADOPTED.
 - **Resume.** Step 2 (fold-2 grade with the restated checks), step 3, the engine step, the loop with the two moved gates.
 
 Status: ADOPTED.
+
+## D46 (2026-10-21): EG-R1 part A: P1 selected offline and wired; the closed loop fails G7; a compensating margin bias upstream is opened (INV-71) and blocks stage-8 acceptance
+
+- **Offline (517373a, d5e387a; `docs/tests/end_game_eg_r1_pull_2026-10-21.md`).** P1 beats P0 on fold 2 by +0.888 LL per team-game (SE 0.075); D13 guard PASS; medians by 1 and 2 PASS (114 vs 120 s, 175 vs 185 s); re-pull share PASS (0.200 vs 0.220); trailing-by-3+ UNDERPOWERED (252 vs 255.5, n 98). **P1 is the selected pull arm.** 2024-25 teams pulled earlier and longer than any training season (77.8 s per game vs 64-68): a level is needed (EG-R2 item 1, as the spec anticipated).
+- **Engine (6ac4389, `engine_pull`).** Default-off flag; flag off bit-identical on 16 cases and the pull-off loop is file-identical to Lane E3's; 26 new tests; 312 passed. Stage 3 has no EN states, so EN attempts and the EN-against goal-per-shot (1.0) are labelled stand-in levels. **Spec wording corrected and accepted:** block B0 and miss S0t carry their own EN-for / EN-against groups and are served from them (the spec's "ES group" would have broken parity by 0.28 / 0.53); every EN parity is within 3e-8.
+- **Closed loop (200 seeds, fold 2, part A only): FAIL.**
+  - Pulled time 66.0 vs 77.8 s per game (-15.2%) FAIL; trailing-by-1 share 0.599 vs 0.608 PASS.
+  - G7 EN goals per game 0.345 vs 0.406 FAIL. Goals per pulled hour match (EN-against 18.8 vs 18.5, EN-for 8.3 vs 7.9): the miss is pull timing, not EN scoring.
+  - G7 regulation-tie rate 0.2376 vs 0.2082 FAIL (pull off: 0.2045, which passed). The 6-on-5 tying goals (0.069 vs 0.054 per game) land on a regulation engine whose tie rate before any pull effect already equals the post-pull actual. **The regulation margin distribution is compressed upstream of stage 8 and the missing pull process was masking it.** This is the compensating-bias case the guardrails name; stage 8 cannot be accepted over it, and nothing in stage 8 is adjusted to absorb it.
+  - G7 shootout share 0.0726 vs 0.0551 FAIL, which follows from the tie rate.
+  - G1 and G3 unchanged, PASS. G2 4v4 +3.2% (was +2.8%), listed under INV-42.
+- **Rulings.**
+  - EG-R1 part A: the construction is CONFIRMED offline and wired; the stage stays unaccepted (G7 FAIL). Flag stays off by default.
+  - **INV-71 (Opus diagnosis, before any stage-8 acceptance):** where the regulation margin compression comes from. Evidence required at 55:00 (before any pull effect) with the pull off: the sim vs actual distribution of |margin| and of the score state, goals per 60 by score state before the event (the score-effects check, L23 / L27), per-team margin variance against the team-rating spread, the per-period goal split, and the G5 / G6 decomposition. No fix inside the lane; it names the responsible sub-model and the pre-registration it needs.
+  - **EG-R2** (pre-registered after INV-71 reports): an as-of pull-timing level, a re-pull lag term (closed-loop re-pull share 0.272 vs 0.220), and goal-time recording in the engine.
+  - Lane H8b proceeds with the OT level, the shootout and the full stage-8 loop; its G7 read is reported against this ruling (the tie rate and EN goals fail by construction until INV-71 and EG-R2), and the OT-goal vs shootout split given a tie is the quantity that judges parts B and C.
+- **Listed.** INV-70 (10.6 s per game of delayed-penalty pulled time absent). Results not on HF.
+
+Status: ADOPTED.
